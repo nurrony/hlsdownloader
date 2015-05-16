@@ -1,0 +1,33 @@
+{
+  "name": "hlsdownloader",
+  "version": "1.0.0",
+  "description": "Downloads HLS Playlist file and TS chunks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hlsdownloader",
+    "m3u8downloader",
+    "m3u8",
+    "HLS",
+    "HLS",
+    "playlist"
+  ],
+  "author": "nmrony",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^0.9.0",
+    "debug": "^2.2.0",
+    "mkdirp": "^0.5.1",
+    "request-promise": "^0.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nmrony/hlsdownloader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nmrony/hlsdownloader/issues"
+  },
+  "homepage": "https://github.com/nmrony/hlsdownloader#readme"
+}
