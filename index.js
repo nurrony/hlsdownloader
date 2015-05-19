@@ -165,7 +165,7 @@ HLSParser.prototype.downloadItems = function(callback) {
     debug('In downloadItem', variantUrl);
 
     request.get(variantUrl).then(function(downloadedItem) {
-      if (self.destination !== null) {
+      if (self.destination !== null && self.destination !=='' && self.destination !== 'undefined') {
         return self.createItems(variantUrl, downloadedItem, cb);
       }
       downloadedItem = null;
