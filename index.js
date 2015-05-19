@@ -121,7 +121,7 @@ HLSParser.prototype.parseMasterPlaylist = function(playlistContent, callback) {
 
       async.each(variants, function(item, cb) {
         var variantPath = path.dirname(item);
-        var variantUrl = self.hostName + '/' + path.dirname(item) + '/' + path.basename(item);
+        var variantUrl = self.hostName + '/' + variantPath + '/' + path.basename(item);
         self.items.push(item);
         request.get(variantUrl).then(function(body) {
           self.parseVariantPlaylist(variantPath,body);
