@@ -18,10 +18,11 @@ function isValidPlaylist(playlistContent) {
 function validateURL(url) {
 
   //https://gist.github.com/dperini/729294
+  //ignoring FTP protocol
   var re_weburl = new RegExp(
       '^' +
       // protocol identifier
-      '(?:(?:https?|ftp)://)' +
+      '(?:(?:https?)://)' +
       // user:pass authentication
       '(?:\\S+(?::\\S*)?@)?' +
       '(?:' +
