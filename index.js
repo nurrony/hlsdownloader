@@ -120,11 +120,11 @@ HLSParser.prototype.parseMasterPlaylist = function(playlistContent, callback) {
       });
 
       async.each(variants, function(item, cb) {
-        var vaiantPath = path.dirname(item);
-        var variantUrl = self.hostName + '/' + path.dirname(item) + '/' + path.basename(item);
+        var variantPath = path.dirname(item);
+        var variantUrl = self.hostName + '/' + variantPath + '/' + path.basename(item);
         self.items.push(item);
         request.get(variantUrl).then(function(body) {
-          self.parseVariantPlaylist(vaiantPath,body);
+          self.parseVariantPlaylist(variantPath,body);
           return cb();
         }).catch(cb);
       }, function(err) {
@@ -165,7 +165,7 @@ HLSParser.prototype.downloadItems = function(callback) {
     debug('In downloadItem', variantUrl);
 
     request.get(variantUrl).then(function(downloadedItem) {
-      if (self.destination !== null) {
+      if (self.destination !== null && self.destination !=='' && self.destination !== 'undefined') {
         return self.createItems(variantUrl, downloadedItem, cb);
       }
       downloadedItem = null;
