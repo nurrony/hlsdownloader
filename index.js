@@ -10,15 +10,20 @@ var async = require('async');
 
 /**
  * @description Validate a Playlist
+ * @param {string} playlistContent
+ * @returns {boolean}
  */
 function isValidPlaylist(playlistContent) {
   return playlistContent.match(/^#EXTM3U/im) !== null;
 }
 
+/**
+ * @description Validate a URL
+ * @param {string} url URL to validate
+ * @returns {boolean}
+ */
 function validateURL(url) {
 
-  //https://gist.github.com/dperini/729294
-  //ignoring FTP protocol
   var re_weburl = new RegExp(
       '^' +
       // protocol identifier
@@ -58,7 +63,7 @@ function validateURL(url) {
 }
 
 /**
- * @constructor {Function} HLSParser
+ * @constructor HLSParser
  */
 function HLSParser(playListInfo) {
 
@@ -67,7 +72,8 @@ function HLSParser(playListInfo) {
       playListInfo.playlistURL === '' || !validateURL(playListInfo.playlistURL)) {
 
     var error = new Error('VALIDATION');
-    error.message = 'playListURL is required or check if your URL is valid or not!!';
+    error.message = 'playListURL is required or ' +
+                    'check if your URL is valid or not!!';
     throw error;
   }
 
@@ -77,12 +83,23 @@ function HLSParser(playListInfo) {
   this.hostName = urls.protocol + '//' +
   urls.hostname + (urls.port ?  ':' + urls.port : '');
   this.items = [];
-  debug('Configurations: \n', JSON.stringify(this));
+  debug('Configurations:', JSON.stringify(this));
 }
 
+/**
+ * @description initiate download
+ * @method {function} startDownload
+ * @param {function} callback
+ */
 HLSParser.prototype.startDownload = function(callback) {
   return this.getPlaylist(callback);
 };
+
+/**
+ * @description Download master playlist
+ * @method getPlaylist
+ * @param {function} callback
+ */
 HLSParser.prototype.getPlaylist = function(callback) {
 
   var self = this;
@@ -104,7 +121,12 @@ HLSParser.prototype.getPlaylist = function(callback) {
   });
 };
 
-
+/**
+ * @description Parse master playlist content
+ * @method parseMasterPlaylist
+ * @param {string} playlistContent
+ * @param {function} callback
+ */
 HLSParser.prototype.parseMasterPlaylist = function(playlistContent, callback) {
 
   var self = this;
@@ -143,6 +165,12 @@ HLSParser.prototype.parseMasterPlaylist = function(playlistContent, callback) {
 
 };
 
+/**
+ * @description Parse variant playlist content and index the TS chunk to download.
+ * @method parseVariantPlaylist
+ * @param {string} variantPath
+ * @param {string} playlistContent
+ */
 HLSParser.prototype.parseVariantPlaylist = function(variantPath, playlistContent) {
 
   var replacedPlaylistContent = playlistContent.replace(/^#[\s\S].*/igm, '');
@@ -155,6 +183,12 @@ HLSParser.prototype.parseVariantPlaylist = function(variantPath, playlistContent
   this.items = this.items.concat(items);
 };
 
+/**
+ * @description Download indexed chunks and playlist.
+ * @method downloadItems
+ * @param {function} variantPath
+ * @param {function} callback
+ */
 HLSParser.prototype.downloadItems = function(callback) {
 
   var self = this;
@@ -184,6 +218,13 @@ HLSParser.prototype.downloadItems = function(callback) {
   });
 };
 
+/**
+ * @description Strore downloaded Items to destination.
+ * @method createItems
+ * @param {string} variantURL
+ * @param {string} content
+ * @param {function} cb
+ */
 HLSParser.prototype.createItems = function(variantURL, content, cb) {
 
   var self = this;
@@ -197,4 +238,5 @@ HLSParser.prototype.createItems = function(variantURL, content, cb) {
 
 };
 
+//Expose to the world :-)
 module.exports = HLSParser;
