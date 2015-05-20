@@ -12,7 +12,7 @@ Install it via `npm`
 
 Configuration
 -------------
-`destination` is optional. If `destination` is not provided it won't do nothing. It can also be useful if you want
+`destination` is optional. If `destination` is not provided it just fetch the content. It can also be useful if you want
 to do CDN content pre-fetching for your end viewers. It's simple as below
 
 ```sh
@@ -30,5 +30,5 @@ downloader.startDownload(function(err, msg){
 });
 ```
 
-I will be grateful if you all help me to improve this package giving your suggestions, feature request and pull requests.
+I will be grateful if you all help me to improve this package by giving your suggestions, feature request and pull requests.
 I am all ears!!
