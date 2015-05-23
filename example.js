@@ -4,7 +4,7 @@ var params = {
   destination:'/tmp' // change it
 };
 var downloader = new HLSDownloader(params);
-downloader.startDownload(function(err, msg){
+downloader.startDownload(function(err, msg) {
   if (err) {
     return console.log(err);
   }
