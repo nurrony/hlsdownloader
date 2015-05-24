@@ -4,13 +4,12 @@
   "description": "Downloads HLS Playlist file and TS chunks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha test"
   },
   "keywords": [
     "hlsdownloader",
     "m3u8downloader",
     "m3u8",
-    "HLS",
     "HLS",
     "playlist"
   ],
@@ -29,5 +28,10 @@
   "bugs": {
     "url": "https://github.com/nmrony/hlsdownloader/issues"
   },
-  "homepage": "https://github.com/nmrony/hlsdownloader#readme"
+  "homepage": "https://github.com/nmrony/hlsdownloader#readme",
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5",
+    "sinon": "^1.14.1"
+  }
 }
