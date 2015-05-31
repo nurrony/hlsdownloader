@@ -35,10 +35,7 @@ describe('HLSDownloader', function() {
     });
 
     it('destination key should not be null', function() {
-      downloader = new HLSDownloader({
-        playlistURL: 'http://nmrony.local/hls/example.m3u8',
-        destination: '/test'
-      });
+      downloader.destination = '/test';
       expect(downloader.destination).to.be.not.null;
     });
   });
