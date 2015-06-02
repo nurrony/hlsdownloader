@@ -62,6 +62,12 @@ function validateURL(url) {
   return re_weburl.test(url);
 }
 
+function stripFirstSlash(s){
+  return s.substr(0, 1).replace('/','') + s.substring(1);
+}
+function stripLastSlash(s){
+  return s.substr(-1) + s.substr(0, -1).replace('/','');
+}
 /**
  * @constructor HLSParser
  */
@@ -111,7 +117,7 @@ HLSParser.prototype.getPlaylist = function(callback) {
       return callback(new Error('This playlist isn\'t a m3u8 playlist'));
     }
 
-    self.items.push(self.playlistURL.replace(self.hostName, ''));
+    self.items.push(self.playlistURL.replace(self.hostName + '/', ''));
     self.parseMasterPlaylist(body, callback);
   }).catch(function(err) {
     if (err) {
@@ -149,14 +155,17 @@ HLSParser.prototype.parseMasterPlaylist = function(playlistContent, callback) {
       async.each(variants, function(item, cb) {
 
         var variantPath = path.dirname(item);
-        var variantUrl = self.hostName + '/' + variantPath +
-          '/' + path.basename(item);
+        variantPath = variantPath.substr(0, 1).replace('/','') +
+                      variantPath.substring(1);
+
+        var variantUrl = self.hostName + '/' + variantPath + '/' +
+                         path.basename(item);
 
         request.get(variantUrl).then(function(body) {
 
           if (isValidPlaylist(body)) {
             debug('variant downloaded1', item);
-            self.items.push(item);
+            self.items.push(variantPath + '/' + path.basename(item));
             self.parseVariantPlaylist(variantPath, body);
             return cb();
           }
@@ -171,7 +180,9 @@ HLSParser.prototype.parseMasterPlaylist = function(playlistContent, callback) {
           return cb(null);
         });
       }, function(err) {
+
         if (err) {
+
           return callback({
             playlistURL: self.playlistURL,
             message: 'No valid Downloadable ' +
@@ -199,7 +210,7 @@ HLSParser.prototype.parseVariantPlaylist = function(variantPath, playlistContent
   var items = replacedPlaylistContent.split('\n').filter(function(item) {
     return item !== '';
   }).map(function(item) {
-    return variantPath + '/' + item.replace(variantPath + '/', '');
+    return variantPath + '/' + path.basename(item);
   });
 
   this.items = this.items.concat(items);
@@ -235,9 +246,10 @@ HLSParser.prototype.downloadItems = function(callback) {
   var self = this;
 
   async.each(this.items, function(item, cb) {
-    var variantUrl = self.hostName + item;
 
-    debug('In downloadItem', variantUrl);
+    var variantUrl = self.hostName + '/' + item;
+
+    debug('In downloadItem ', variantUrl);
 
     request.get(variantUrl).then(function(downloadedItem) {
       if (self.destination !== null && self.destination !== '' &&
