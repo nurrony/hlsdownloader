@@ -1,5 +1,9 @@
 HLSDownloader
 ==============
+[![NPM](https://nodei.co/npm/hlsdownloader.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/hlsdownloader)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nmrony/hlsdownloader/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 Downloads `m3u8` playlist and `TS` chunks for a given playlist URL.
 
 Installation
@@ -50,7 +54,4 @@ errors: [] // items url that is skipped or could not downloaded for error
 
 I will be grateful if you all help me to improve this package by giving your suggestions, feature request and
 pull requests. I am all ears!!
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nmrony/hlsdownloader/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
