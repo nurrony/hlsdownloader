@@ -50,3 +50,7 @@ errors: [] // items url that is skipped or could not downloaded for error
 
 I will be grateful if you all help me to improve this package by giving your suggestions, feature request and
 pull requests. I am all ears!!
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nmrony/hlsdownloader/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
