@@ -1,6 +1,6 @@
 HLSDownloader
 ==============
-[NPM](https://nodei.co/npm/hlsdownloader.png?downloads=true&downloadRank=true&stars=true "Go to HLSDownlader page")
+[![NPM](https://nodei.co/npm/hlsdownloader.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/hlsdownloader)
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nmrony/hlsdownloader/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
