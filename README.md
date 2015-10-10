@@ -1,6 +1,6 @@
 HLSDownloader
 ==============
-
+[![NPM](https://nodei.co/npm/<package>.png)](https://nodei.co/npm/hlsdownloader/?downloads=true&downloadRank=true&stars=true)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nmrony/hlsdownloader/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 Downloads `m3u8` playlist and `TS` chunks for a given playlist URL.
