@@ -1,8 +1,6 @@
 HLSDownloader
 ==============
-[![NPM](https://nodei.co/npm/hlsdownloader.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/hlsdownloader)
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nmrony/hlsdownloader/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![version][npm-version]][npm-url] [![dependencies][npm-dependencies]][npm-url] [![devDependencies][npm-dev-dependencies]][npm-url] [![Downloads][npm-month-downloads]][npm-url]
 
 Downloads `m3u8` playlist and `TS` chunks for a given playlist URL.
 
@@ -54,4 +52,11 @@ errors: [] // items url that is skipped or could not downloaded for error
 
 I will be grateful if you all help me to improve this package by giving your suggestions, feature request and
 pull requests. I am all ears!!
+
+[npm-badge]: https://nodei.co/npm/hlsdownloader.png?compact=true
+[npm-version]: https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square
+[npm-dependencies]: https://img.shields.io/david/nmrony/hlsdownloader.svg?style=flat-square
+[npm-dev-dependencies]: https://img.shields.io/david/dev/nmrony/hlsdownloader.svg?style=flat-square
+[npm-month-downloads]: https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/hlsdownloader
 
