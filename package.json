@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/nmrony/hlsdownloader/issues"
   },
-  "homepage": "https://github.com/nmrony/hlsdownloader#readme",
+  "homepage": "https://nmrony.github.io/hlsdownloader",
   "devDependencies": {
     "chai": "^3.4.0",
     "mocha": "^2.2.5",
