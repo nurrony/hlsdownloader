@@ -1,6 +1,6 @@
 HLSDownloader
 ==============
-[![version][npm-version]][npm-url] [![dependencies][npm-dependencies]][npm-url] [![devDependencies][npm-dev-dependencies]][npm-url] [![Downloads][npm-month-downloads]][npm-url]
+[![version][npm-version]][npm-url] [![dependencies][npm-dependencies]][dep-status] [![devDependencies][npm-dev-dependencies]][devdep-status] [![Downloads][npm-total-downloads]][npm-url]
 
 Downloads `m3u8` playlist and `TS` chunks for a given playlist URL.
 
@@ -57,6 +57,8 @@ pull requests. I am all ears!!
 [npm-version]: https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square
 [npm-dependencies]: https://img.shields.io/david/nmrony/hlsdownloader.svg?style=flat-square
 [npm-dev-dependencies]: https://img.shields.io/david/dev/nmrony/hlsdownloader.svg?style=flat-square
-[npm-month-downloads]: https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square
+[npm-total-downloads]: https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/hlsdownloader
+[dep-status]: https://david-dm.org/nmrony/hlsdownloader#info=dependencies&view=table
+[devdep-status]: https://david-dm.org/nmrony/hlsdownloader#info=devDependencies&view=table
 
