@@ -13,13 +13,13 @@
     "HLS",
     "playlist"
   ],
-  "author": "nmrony",
+  "author": "Nur Rony<pro.nmrony@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "async": "^1.5.0",
     "debug": "^2.2.0",
     "mkdirp": "^0.5.1",
-    "request-promise": "^1.0.2"
+    "request-promise": "^2.0.1"
   },
   "repository": {
     "type": "git",
