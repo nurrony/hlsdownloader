@@ -61,4 +61,3 @@ pull requests. I am all ears!!
 [npm-url]: https://www.npmjs.com/package/hlsdownloader
 [dep-status]: https://david-dm.org/nmrony/hlsdownloader#info=dependencies&view=table
 [devdep-status]: https://david-dm.org/nmrony/hlsdownloader#info=devDependencies&view=table
-
