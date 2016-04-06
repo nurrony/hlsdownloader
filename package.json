@@ -4,7 +4,7 @@
   "description": "Downloads HLS Playlist file and TS chunks",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha test"
+    "test": "mocha --compilers js:babel-core/register --recursive"
   },
   "keywords": [
     "hlsdownloader",
