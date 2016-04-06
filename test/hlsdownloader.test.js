@@ -1,30 +1,30 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var request = require('request-promise');
-var HLSDownloader = require('../');
+import { expect } from 'chai';
+import sinon from 'sinon';
+import request from 'request-promise';
+import HLSDownloader from '../';
 
-describe('HLSDownloader', function() {
+describe('HLSDownloader', () => {
 
-  describe('#constructor', function() {
+  describe('#constructor', () => {
 
-    var downloader = new HLSDownloader({
+    const downloader = new HLSDownloader({
       playlistURL: 'http://nmrony.local/hls/example.m3u8'
     });
 
-    it('should throw an error', function() {
-      expect(function() {
+    it('should throw an error', () => {
+      expect(() => {
         new HLSDownloader();
       }).to.be.throw(Error);
     });
 
-    it('should return an object', function() {
+    it('should return an object', () => {
       expect(downloader).to.be.an('object').and.to.be.not.null;
 
     });
 
-    it('should have all keys', function() {
+    it('should have all keys', () => {
 
       expect(downloader).to.have.all.keys(['playlistURL',
         'hostName',
@@ -34,7 +34,7 @@ describe('HLSDownloader', function() {
       ]);
     });
 
-    it('destination key should not be null', function() {
+    it('destination key should not be null', () => {
       downloader.destination = '/test';
       expect(downloader.destination).to.be.not.null;
     });
