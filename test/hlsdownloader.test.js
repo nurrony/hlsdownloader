@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import request from 'request-promise';
-import HLSDownloader from '../';
+import HLSDownloader from '../index.es2015';
 
 describe('HLSDownloader', () => {
 
