@@ -4,7 +4,9 @@
   "description": "Downloads HLS Playlist file and TS chunks",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --recursive"
+    "test": "mocha --compilers js:babel-core/register --recursive",
+    "compile": "babel hlsParser.es2015.js --out-file hlsParser.js",
+    "prepublish": "npm run compile"
   },
   "keywords": [
     "hlsdownloader",
