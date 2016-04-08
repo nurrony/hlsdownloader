@@ -89,7 +89,7 @@ export default class HLSParser {
       playlistInfo.playlistURL === 'undefined' ||
       playlistInfo.playlistURL === '' || !validateURL(playlistInfo.playlistURL))) {
 
-      const error = new Error('VALIDATION');
+      const error = new Error('ERR_VALIDATION');
       error.message = 'playListURL is required or ' +
         'check if your URL is valid or not!!';
       throw error;
