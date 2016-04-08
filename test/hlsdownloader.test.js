@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import request from 'request-promise';
-import HLSDownloader from '../index.es2015';
+import HLSDownloader from '../hlsParser';
 
 describe('HLSDownloader', () => {
 
@@ -14,9 +14,7 @@ describe('HLSDownloader', () => {
     });
 
     it('should throw an error', () => {
-      expect(() => {
-        new HLSDownloader();
-      }).to.be.throw(Error);
+      expect(() => new HLSDownloader()).to.be.throw(Error);
     });
 
     it('should return an object', () => {
