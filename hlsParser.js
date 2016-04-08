@@ -80,14 +80,14 @@ function stripLastSlash(url) {
 
 export default class HLSParser {
   /**
-   * @constructor
+   * @constructor HLSParser
    * @param  {Object} playlistInfo playlist information to download
    * @return {Object} Error object if any required piece is missing
    */
   constructor(playlistInfo) {
-    if (playListInfo.playlistURL === null ||
-      playListInfo.playlistURL === 'undefined' ||
-      playListInfo.playlistURL === '' || !validateURL(playListInfo.playlistURL)) {
+    if (playlistInfo && (playlistInfo.playlistURL === null ||
+      playlistInfo.playlistURL === 'undefined' ||
+      playlistInfo.playlistURL === '' || !validateURL(playlistInfo.playlistURL))) {
 
       const error = new Error('VALIDATION');
       error.message = 'playListURL is required or ' +
@@ -95,8 +95,8 @@ export default class HLSParser {
       throw error;
     }
 
-    this.playlistURL = playListInfo.playlistURL;
-    this.destination = playListInfo.destination || null;
+    this.playlistURL = playlistInfo.playlistURL;
+    this.destination = playlistInfo.destination || null;
     const urls = url.parse(this.playlistURL, true, true);
     this.hostName = urls.protocol + '//' + urls.hostname + (urls.port ? ':' + urls.port : '');
     this.items = [];
