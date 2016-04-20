@@ -78,21 +78,20 @@ function stripLastSlash(url) {
   return url.substr(-1) + url.substr(0, -1).replace('/', '');
 }
 
-export default class HLSParser {
+ class HLSDownloader {
   /**
    * @constructor HLSParser
    * @param  {Object} playlistInfo playlist information to download
    * @return {Object} Error object if any required piece is missing
    */
   constructor(playlistInfo) {
-    if (playlistInfo && (playlistInfo.playlistURL === null ||
-      playlistInfo.playlistURL === 'undefined' ||
-      playlistInfo.playlistURL === '' || !validateURL(playlistInfo.playlistURL))) {
-
-      const error = new Error('ERR_VALIDATION');
-      error.message = 'playListURL is required or ' +
-        'check if your URL is valid or not!!';
-      throw error;
+    if (typeof playlistInfo === 'object' &&
+        (playlistInfo.playlistURL === null ||
+          playlistInfo.playlistURL === 'undefined' ||
+          playlistInfo.playlistURL === '' ||
+          !validateURL(playlistInfo.playlistURL))) {
+      conosle.log('ERR_VALIDATION: playListURL is required ' +
+        'or check if your URL is valid or not!!');
     }
 
     this.playlistURL = playlistInfo.playlistURL;
@@ -274,3 +273,6 @@ export default class HLSParser {
     mkdirp(destDirectory, err => (err) ? cb(err) : fs.writeFile(filePath, content, cb));
   }
 }
+
+export const downloader = HLSDownloader;
+export default HLSDownloader;
