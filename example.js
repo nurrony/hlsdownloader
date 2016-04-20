@@ -1,5 +1,5 @@
-import HLSDownloader from './hlsParser'; //Using ES2015 module
-//var HLSDownloader = require('./hlsParser').downloader; using commonJS module
+import HLSDownloader from 'hlsdownloader'; //Using ES2015 module
+//var HLSDownloader = require('hlsdownloader').downloader; //using commonJS module
 
 const params = {
   playlistURL: 'http://nmrony.local/hls/playlist.m3u8', // change it
