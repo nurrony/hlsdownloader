@@ -4,10 +4,13 @@
   "description": "Downloads HLS Playlist file and TS chunks",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --recursive",
-    "compile": "babel hlsdownloader.js --out-file index.js",
-    "example": "npm run compile && babel-node example",
-    "prepublish": "npm run compile"
+    "build": "npm run compile && npm run uglify && npm run clean",
+    "compile": "babel hlsdownloader.js --out-file hlsdownloader.es5.js",
+    "clean": "rm -f hlsdownloader.es5.js",
+    "example": "npm run build && node example",
+    "prepublish": "npm run build",
+    "uglify": "uglifyjs --compress --mangle  -o index.js -- hlsdownloader.es5.js",
+    "test": "mocha --compilers js:babel-core/register --recursive"
   },
   "keywords": [
     "hlsdownloader",
@@ -21,7 +24,7 @@
   "dependencies": {
     "async": "^1.5.0",
     "mkdirp": "^0.5.1",
-    "request-promise": "^2.0.1"
+    "request-promise": "^3.0.0"
   },
   "repository": {
     "type": "git",
