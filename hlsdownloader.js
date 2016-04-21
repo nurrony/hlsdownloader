@@ -1,7 +1,6 @@
 import fs from 'fs';
 import url from 'url';
 import path from 'path';
-import debugMod from 'debug';
 import async from 'async';
 import mkdirp from 'mkdirp';
 import request from 'request-promise';
