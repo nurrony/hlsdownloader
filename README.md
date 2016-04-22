@@ -21,18 +21,15 @@ It can also be useful if you want to do content pre-fetching from CDN for your e
 It's simple as below.
 
 ```js
-var HLSDownloader = require('hlsdownloader');
-var params = {
-      playlistURL: 'http://example.com/hls/playlist.m3u8',
-      destination:'/tmp'
+import HLSDownloader from 'hlsdownloader'; //Using ES2015 module
+//var HLSDownloader = require('hlsdownloader').downloader; //using commonJS module
+
+const params = {
+  playlistURL: 'http://example.com/path/to/your/playlist.m3u8', // change it
+  destination:'/tmp' // change it (optional field)
 };
-var downloader = new HLSDownloader(params);
-downloader.startDownload(function(err, msg) {
-   if (err) {
-     return console.log(err);
-   }
-   console.log(msg);
-});
+const downloader = new HLSDownloader(params);
+downloader.startDownload((err, msg) => err ? console.log(err) : console.log(msg));
 ```
 `msg` is an object with following properties
 
