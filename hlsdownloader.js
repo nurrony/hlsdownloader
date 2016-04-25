@@ -77,7 +77,15 @@ function stripLastSlash(url) {
   return url.substr(-1) + url.substr(0, -1).replace('/', '');
 }
 
- class HLSDownloader {
+export function buildURL(urlToParse, hostURL) {
+  const parsedVariantURLObj = url.parse(urlToParse)
+  const parsedHostURL = parsedVariantURLObj.protocol + '//' + parsedVariantURLObj.host
+  const variantHost = parsedVariantURLObj.host === null || hostURL === parsedHostURL ? hostURL : parsedHostURL
+
+  return variantHost + '/'  + stripFirstSlash(parsedVariantURLObj.path);
+}
+
+class HLSDownloader {
   /**
    * @constructor HLSParser
    * @param  {Object} playlistInfo playlist information to download
@@ -96,7 +104,8 @@ function stripLastSlash(url) {
     this.playlistURL = playlistInfo.playlistURL;
     this.destination = playlistInfo.destination || null;
     const urls = url.parse(this.playlistURL, true, true);
-    this.hostName = urls.protocol + '//' + urls.hostname + (urls.port ? ':' + urls.port : '');
+    this.hostName = urls.hostname;
+    this.hostURL = urls.protocol + '//' + urls.hostname + (urls.port ? ':' + urls.port : '');
     this.items = [];
     this.errors = [];
   }
@@ -125,7 +134,7 @@ function stripLastSlash(url) {
         return callback(new Error('This playlist isn\'t a m3u8 playlist'));
       }
 
-      self.items.push(self.playlistURL.replace(self.hostName + '/', ''));
+      self.items.push(self.playlistURL);
       self.parseMasterPlaylist(body, callback);
     }).catch((err) => {
       if (err) {
@@ -159,19 +168,15 @@ function stripLastSlash(url) {
         const variantCount = variants.length;
 
         async.each(variants, (item, cb) => {
-
-          const variantPathObj = path.dirname(item);
-          const variantPath = variantPathObj.substr(0, 1).replace('/', '') + variantPathObj.substring(1);
-          const variantUrl = self.hostName + '/' + variantPath + '/' + path.basename(item);
-
+          const variantUrl = buildURL(item, self.hostURL);
           request.get(variantUrl).then(body => {
-
             if (isValidPlaylist(body)) {
-              self.items.push(variantPath + '/' + path.basename(item));
-              self.parseVariantPlaylist(variantPath, body);
+              self.items.push(variantUrl);
+              self.parseVariantPlaylist(body);
               return cb();
             }
           }).catch(err => {
+            console.log('in catch request', err);
             self.errors.push(err.options.uri);
 
             //check if all variants has error
@@ -199,12 +204,13 @@ function stripLastSlash(url) {
    * @param {string} variantPath
    * @param {string} playlistContent
    */
-  parseVariantPlaylist(variantPath, playlistContent) {
+  parseVariantPlaylist(playlistContent) {
+    const self = this;
     const replacedPlaylistContent = playlistContent.replace(/^#[\s\S].*/igm, '');
     let items = replacedPlaylistContent
       .split('\n')
       .filter((item) => item !== '')
-      .map((item) => variantPath + '/' + path.basename(item));
+      .map((item) => buildURL(item, self.hostURL));
 
     this.items = this.items.concat(items);
   }
@@ -215,13 +221,10 @@ function stripLastSlash(url) {
    * @param {function} callback
    */
   downloadItems(callback) {
-
     const self = this;
+    console.log(this.items);
 
-    async.each(this.items, (item, cb) => {
-
-      const variantUrl = self.hostName + '/' + item;
-
+    async.each(this.items, (variantUrl, cb) => {
       request.get(variantUrl).then(downloadedItem => {
         if (self.destination !== null &&
           self.destination !== '' &&
@@ -264,11 +267,10 @@ function stripLastSlash(url) {
    * @param {function} callback
    */
   createItems(variantURL, content, cb) {
+    const itemPath = url.parse(variantURL).pathname;
+    const destDirectory = this.destination + path.dirname(itemPath);
+    const filePath = this.destination + '/' + stripFirstSlash(itemPath);
 
-    const self = this;
-    const itemPath = variantURL.replace(this.hostName, '');
-    const destDirectory = self.destination + path.dirname(itemPath);
-    const filePath = self.destination + '/' + itemPath;
     mkdirp(destDirectory, err => (err) ? cb(err) : fs.writeFile(filePath, content, cb));
   }
 }
