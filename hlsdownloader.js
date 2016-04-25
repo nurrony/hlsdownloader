@@ -97,7 +97,7 @@ class HLSDownloader {
           playlistInfo.playlistURL === 'undefined' ||
           playlistInfo.playlistURL === '' ||
           !validateURL(playlistInfo.playlistURL))) {
-      conosle.log('ERR_VALIDATION: playListURL is required ' +
+      console.log('ERR_VALIDATION: playListURL is required ' +
         'or check if your URL is valid or not!!');
     }
 
@@ -173,10 +173,9 @@ class HLSDownloader {
             if (isValidPlaylist(body)) {
               self.items.push(variantUrl);
               self.parseVariantPlaylist(body);
-              return cb();
+              return cb(null);
             }
           }).catch(err => {
-            console.log('in catch request', err);
             self.errors.push(err.options.uri);
 
             //check if all variants has error
@@ -222,7 +221,6 @@ class HLSDownloader {
    */
   downloadItems(callback) {
     const self = this;
-    console.log(this.items);
 
     async.each(this.items, (variantUrl, cb) => {
       request.get(variantUrl).then(downloadedItem => {
