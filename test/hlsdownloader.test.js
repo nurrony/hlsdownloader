@@ -1,7 +1,6 @@
 'use strict';
 
 import { expect } from 'chai';
-import sinon from 'sinon';
 import request from 'request-promise';
 import {downloader as HLSDownloader, buildURL} from '../hlsdownloader';
 

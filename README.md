@@ -1,6 +1,6 @@
 HLSDownloader
 ==============
-[![version][npm-version]][npm-url] [![dependencies][npm-dependencies]][dep-status] [![devDependencies][npm-dev-dependencies]][devdep-status] [![Downloads][npm-total-downloads]][npm-url]
+[![version][npm-version]][npm-url] [![dependencies][npm-dependencies]][dep-status] [![devDependencies][npm-dev-dependencies]][devdep-status] [![Downloads][npm-total-downloads]][npm-url] [![Travis branch](https://img.shields.io/travis/nmrony/hlsdownloader/master.svg?style=flat-square)](https://travis-ci.org/nmrony/hlsdownloader) [![Maintenance](https://img.shields.io/maintenance/yes/2016.svg?style=flat-square)](https://github.com/nmrony/hlsdownloader)
 
 Downloads `m3u8` playlist and `TS` chunks for a given playlist URL.
 
