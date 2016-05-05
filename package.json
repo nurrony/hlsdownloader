@@ -23,6 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "^1.5.0",
+    "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "request-promise": "^3.0.0"
   },
