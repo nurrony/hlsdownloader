@@ -1,9 +1,10 @@
 'use strict'
 
 import { expect } from 'chai'
-import { downloader as HLSDownloader } from '../hlsdownloader'
+import {downloader as HLSDownloader} from '../hlsdownloader'
 
 describe('HLSDownloader', () => {
+
   let downloader
 
   beforeEach(() => {
@@ -19,6 +20,7 @@ describe('HLSDownloader', () => {
 
     it('should return an object', () => {
       expect(downloader).to.be.an('object').and.to.be.not.null
+
     })
 
     it('should have all keys', () => {
@@ -38,22 +40,22 @@ describe('HLSDownloader', () => {
 
   describe('#parseVariantPlaylist', () => {
     const variantPlaylistContent = `#EXTM3U
-      #EXT-X-TARGETDURATION:10
-      #EXT-X-VERSION:3
-      #EXT-X-MEDIA-SEQUENCE:0
-      #EXT-X-PLAYLIST-TYPE:VOD
-      #EXTINF:9.00900,
-      pure-relative.ts
-      #EXTINF:9.00900,
-      /other/root-relative.ts
-      #EXTINF:9.00900,
-      ../third/relative.ts
-      #EXTINF:9.00900,
-      http://www.example.com/other-host.ts
-      #EXTINF:9.00900,
-      //www.example.com/things/protocol-relative.ts
-      #EXT-X-ENDLIST
-      `
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:3
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXTINF:9.00900,
+pure-relative.ts
+#EXTINF:9.00900,
+/other/root-relative.ts
+#EXTINF:9.00900,
+../third/relative.ts
+#EXTINF:9.00900,
+http://www.example.com/other-host.ts
+#EXTINF:9.00900,
+//www.example.com/things/protocol-relative.ts
+#EXT-X-ENDLIST
+    `
     beforeEach(() => {
       downloader.parseVariantPlaylist(variantPlaylistContent)
     })
