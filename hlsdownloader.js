@@ -68,20 +68,6 @@ function stripFirstSlash (url) {
 }
 
 /**
- * Build URL for variants
- * @param  {String} urlToParse URL to parse
- * @param  {String} hostURL    Host URL
- * @return {String}            Constructed URL
- */
-export function buildURL (urlToParse, hostURL) {
-  const parsedVariantURLObj = url.parse(urlToParse)
-  const parsedHostURL = parsedVariantURLObj.protocol + '//' + parsedVariantURLObj.host
-  const variantHost = parsedVariantURLObj.host === null || hostURL === parsedHostURL ? hostURL : parsedHostURL
-
-  return variantHost + '/' + stripFirstSlash(parsedVariantURLObj.path)
-}
-
-/**
  * HLSDownloader Class
  */
 class HLSDownloader {
@@ -104,7 +90,6 @@ class HLSDownloader {
     this.destination = playlistInfo.destination || null
     const urls = url.parse(this.playlistURL, true, true)
     this.hostName = urls.hostname
-    this.hostURL = urls.protocol + '//' + urls.hostname + (urls.port ? ':' + urls.port : '')
     this.items = []
     this.errors = []
   }
@@ -164,7 +149,7 @@ class HLSDownloader {
         const variantCount = variants.length
 
         async.each(variants, (item, cb) => {
-          const variantUrl = buildURL(item, self.hostURL)
+          const variantUrl = url.resolve(self.playlistURL, item);
           request.get(variantUrl).then(body => {
             if (isValidPlaylist(body)) {
               self.items.push(variantUrl)
@@ -205,7 +190,7 @@ class HLSDownloader {
     let items = replacedPlaylistContent
       .split('\n')
       .filter((item) => item !== '')
-      .map((item) => buildURL(item, self.hostURL))
+      .map((item) => url.resolve(self.playlistURL, item))
 
     this.items = this.items.concat(items)
   }
