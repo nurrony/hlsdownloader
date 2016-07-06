@@ -149,7 +149,7 @@ class HLSDownloader {
         const variantCount = variants.length
 
         async.each(variants, (item, cb) => {
-          const variantUrl = url.resolve(self.playlistURL, item);
+          const variantUrl = url.resolve(self.playlistURL, item)
           request.get(variantUrl).then(body => {
             if (isValidPlaylist(body)) {
               self.items.push(variantUrl)
