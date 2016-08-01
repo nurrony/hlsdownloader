@@ -20,7 +20,7 @@ function isValidPlaylist (playlistContent) {
  * @returns {boolean}
  */
 function validateURL (url) {
-  var re_weburl = new RegExp(
+  var urlRegex = new RegExp(
     '^' +
     // protocol identifier
     '(?:(?:https?)://)' +
@@ -55,7 +55,7 @@ function validateURL (url) {
     '$', 'i'
   )
 
-  return re_weburl.test(url)
+  return urlRegex.test(url)
 }
 
 /**
