@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npm run compile && npm run uglify && npm run clean",
     "compile": "babel hlsdownloader.js --out-file hlsdownloader.es5.js",
+    "lint": "eslint . && echo 'No linting error found'",
     "clean": "rm -f hlsdownloader.es5.js",
     "example": "npm run build && node example",
     "prepublish": "npm run build",
