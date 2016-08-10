@@ -13,6 +13,10 @@
     "uglify": "uglifyjs --compress --mangle  -o index.js -- hlsdownloader.es5.js",
     "test": "mocha --compilers js:babel-core/register --recursive"
   },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "keywords": [
     "hlsdownloader",
     "m3u8downloader",
