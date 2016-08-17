@@ -24,7 +24,8 @@ describe('HLSDownloader', () => {
     })
 
     it('should have all keys', () => {
-      expect(downloader).to.have.all.keys(['playlistURL',
+      expect(downloader).to.have.all.keys([
+        'playlistURL',
         'hostName',
         'errors',
         'items',
