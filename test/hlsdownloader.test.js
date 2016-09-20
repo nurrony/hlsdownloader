@@ -4,7 +4,6 @@ import { expect } from 'chai'
 import {downloader as HLSDownloader} from '../hlsdownloader'
 
 describe('HLSDownloader', () => {
-
   let downloader
 
   beforeEach(() => {
