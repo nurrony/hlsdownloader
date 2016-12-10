@@ -113,7 +113,7 @@ class HLSDownloader {
 
     request.get(self.playlistURL).then((body) => {
       if (!isValidPlaylist(body)) {
-        return callback(new Error("This playlist isn't a m3u8 playlist"))
+        return callback(new Error("This playlist isn't a valid m3u8 playlist"))
       }
 
       self.items.push(self.playlistURL)
