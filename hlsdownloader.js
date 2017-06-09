@@ -1,7 +1,8 @@
+/* eslint-disable standard/no-callback-literal */
 import fs from 'fs'
 import url from 'url'
 import path from 'path'
-import async from 'async'
+import each from 'async/each'
 import mkdirp from 'mkdirp'
 import request from 'request-promise'
 
@@ -148,7 +149,7 @@ class HLSDownloader {
         let errorCounter = 0
         const variantCount = variants.length
 
-        async.each(variants, (item, cb) => {
+        each(variants, (item, cb) => {
           const variantUrl = url.resolve(self.playlistURL, item)
           request.get(variantUrl).then(body => {
             if (isValidPlaylist(body)) {
@@ -166,10 +167,9 @@ class HLSDownloader {
 
             return cb(null)
           })
-        }, err => (err) ? callback({
+        }, err => err ? callback({
           playlistURL: self.playlistURL,
-          message: 'No valid Downloadable ' +
-            'variant exists in master playlist'
+          message: 'No valid Downloadable variant exists in master playlist'
         }) : self.downloadItems(callback))
       } catch (exception) {
         // Catch any syntax error
@@ -203,7 +203,7 @@ class HLSDownloader {
   downloadItems (callback) {
     const self = this
 
-    async.each(this.items, (variantUrl, cb) => {
+    each(this.items, (variantUrl, cb) => {
       request.get(variantUrl).then(downloadedItem => {
         if (self.destination !== null &&
           self.destination !== '' &&

@@ -27,10 +27,10 @@
   "author": "Nur Rony<pro.nmrony@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "async": "^2.0.1",
+    "async": "^2.4.1",
     "minimist": "1.2.0",
     "mkdirp": "^0.5.1",
-    "request-promise": "^4.1.0"
+    "request-promise": "^4.2.1"
   },
   "repository": {
     "type": "git",
