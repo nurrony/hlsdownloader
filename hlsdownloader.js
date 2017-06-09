@@ -1,3 +1,4 @@
+/* eslint-disable standard/no-callback-literal */
 import fs from 'fs'
 import url from 'url'
 import path from 'path'
@@ -166,10 +167,9 @@ class HLSDownloader {
 
             return cb(null)
           })
-        }, err => (err) ? callback({
+        }, err => err ? callback({
           playlistURL: self.playlistURL,
-          message: 'No valid Downloadable ' +
-            'variant exists in master playlist'
+          message: 'No valid Downloadable variant exists in master playlist'
         }) : self.downloadItems(callback))
       } catch (exception) {
         // Catch any syntax error
