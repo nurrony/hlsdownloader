@@ -2,7 +2,7 @@
 import fs from 'fs'
 import url from 'url'
 import path from 'path'
-import async from 'async'
+import each from 'async/each'
 import mkdirp from 'mkdirp'
 import request from 'request-promise'
 
@@ -149,7 +149,7 @@ class HLSDownloader {
         let errorCounter = 0
         const variantCount = variants.length
 
-        async.each(variants, (item, cb) => {
+        each(variants, (item, cb) => {
           const variantUrl = url.resolve(self.playlistURL, item)
           request.get(variantUrl).then(body => {
             if (isValidPlaylist(body)) {
@@ -203,7 +203,7 @@ class HLSDownloader {
   downloadItems (callback) {
     const self = this
 
-    async.each(this.items, (variantUrl, cb) => {
+    each(this.items, (variantUrl, cb) => {
       request.get(variantUrl).then(downloadedItem => {
         if (self.destination !== null &&
           self.destination !== '' &&
