@@ -110,7 +110,7 @@ class HLSDownloader {
    * @param {function} callback
    */
   getPlaylist (callback) {
-    request.get(this.playlistURL).then((body) => {
+    request(this.playlistURL).then((body) => {
       if (!isValidPlaylist(body)) {
         return callback(new Error("This playlist isn't a valid m3u8 playlist"))
       }
@@ -147,7 +147,7 @@ class HLSDownloader {
 
         each(variants, (item, cb) => {
           const variantUrl = url.resolve(this.playlistURL, item)
-          request.get(variantUrl).then(body => {
+          request(variantUrl).then(body => {
             if (isValidPlaylist(body)) {
               this.items.push(variantUrl)
               this.parseVariantPlaylist(body)
@@ -197,7 +197,7 @@ class HLSDownloader {
    */
   downloadItems (callback) {
     each(this.items, (variantUrl, cb) => {
-      request.get(variantUrl).then(downloadedItem => {
+      request(variantUrl).then(downloadedItem => {
         if (this.destination !== null &&
           this.destination !== '' &&
           this.destination !== 'undefined') {
