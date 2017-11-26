@@ -1,6 +1,6 @@
 {
   "name": "hlsdownloader",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Downloads HLS Playlist file and TS chunks",
   "main": "index.js",
   "scripts": {
