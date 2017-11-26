@@ -1,8 +1,8 @@
-// import HLSDownloader from 'hlsdownloader' // Using ES2015 module
-var HLSDownloader = require('./index').downloader // using commonJS module
+import HLSDownloader from 'hlsdownloader' // Using ES2015 module
+// var HLSDownloader = require('hlsdownloader').downloader // using commonJS module
 
 const params = {
-  playlistURL: 'http://ito-demo.videoguyz.com/live/playlist/587-128-215513-trace.m3u8', // change it
+  playlistURL: 'http://example.com/url/to/your/hls.m3u8', // change it
   destination: '/tmp' // change it
 }
 const downloader = new HLSDownloader(params)
