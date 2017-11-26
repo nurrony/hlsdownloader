@@ -110,15 +110,13 @@ class HLSDownloader {
    * @param {function} callback
    */
   getPlaylist (callback) {
-    const self = this
-
-    request.get(self.playlistURL).then((body) => {
+    request.get(this.playlistURL).then((body) => {
       if (!isValidPlaylist(body)) {
         return callback(new Error("This playlist isn't a valid m3u8 playlist"))
       }
 
-      self.items.push(self.playlistURL)
-      self.parseMasterPlaylist(body, callback)
+      this.items.push(this.playlistURL)
+      this.parseMasterPlaylist(body, callback)
     }).catch((err) => {
       if (err) {
         const error = new Error('VariantDownloadError')
@@ -136,8 +134,6 @@ class HLSDownloader {
    * @param {function} callback
    */
   parseMasterPlaylist (playlistContent, callback) {
-    const self = this
-
     if (playlistContent.match(/^#EXT-X-TARGETDURATION:\d+/im)) {
       this.parseVariantPlaylist(playlistContent)
       this.downloadItems(callback)
@@ -150,15 +146,15 @@ class HLSDownloader {
         const variantCount = variants.length
 
         each(variants, (item, cb) => {
-          const variantUrl = url.resolve(self.playlistURL, item)
+          const variantUrl = url.resolve(this.playlistURL, item)
           request.get(variantUrl).then(body => {
             if (isValidPlaylist(body)) {
-              self.items.push(variantUrl)
-              self.parseVariantPlaylist(body)
+              this.items.push(variantUrl)
+              this.parseVariantPlaylist(body)
               return cb(null)
             }
           }).catch(err => {
-            self.errors.push(err.options.uri)
+            this.errors.push(err.options.uri)
 
             // check if all variants has error
             if (err && ++errorCounter === variantCount) {
@@ -168,9 +164,9 @@ class HLSDownloader {
             return cb(null)
           })
         }, err => err ? callback({
-          playlistURL: self.playlistURL,
+          playlistURL: this.playlistURL,
           message: 'No valid Downloadable variant exists in master playlist'
-        }) : self.downloadItems(callback))
+        }) : this.downloadItems(callback))
       } catch (exception) {
         // Catch any syntax error
         return callback(exception)
@@ -185,12 +181,11 @@ class HLSDownloader {
    * @param {string} playlistContent
    */
   parseVariantPlaylist (playlistContent) {
-    const self = this
     const replacedPlaylistContent = playlistContent.replace(/^#[\s\S].*/igm, '')
     let items = replacedPlaylistContent
       .split('\n')
       .filter((item) => item !== '')
-      .map((item) => url.resolve(self.playlistURL, item))
+      .map((item) => url.resolve(this.playlistURL, item))
 
     this.items = this.items.concat(items)
   }
@@ -201,41 +196,39 @@ class HLSDownloader {
    * @param {function} callback
    */
   downloadItems (callback) {
-    const self = this
-
     each(this.items, (variantUrl, cb) => {
       request.get(variantUrl).then(downloadedItem => {
-        if (self.destination !== null &&
-          self.destination !== '' &&
-          self.destination !== 'undefined') {
-          return self.createItems(variantUrl, downloadedItem, cb)
+        if (this.destination !== null &&
+          this.destination !== '' &&
+          this.destination !== 'undefined') {
+          return this.createItems(variantUrl, downloadedItem, cb)
         }
 
         downloadedItem = null
         return cb()
       }).catch(err => {
-        self.errors.push(err.options.uri)
+        this.errors.push(err.options.uri)
         return cb(null)
       })
     }, err => {
       if (err) {
         return callback({
-          playlistURL: self.playlistURL,
+          playlistURL: this.playlistURL,
           message: 'Internal Server Error from remote'
         })
       }
 
-      if (self.errors.length > 0) {
+      if (this.errors.length > 0) {
         return callback(null, {
           message: 'Download done with some errors',
-          playlistURL: self.playlistURL,
-          errors: self.errors
+          playlistURL: this.playlistURL,
+          errors: this.errors
         })
       }
 
       return callback(null, {
         message: 'Downloaded successfully',
-        playlistURL: self.playlistURL
+        playlistURL: this.playlistURL
       })
     })
   }
