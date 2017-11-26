@@ -1,6 +1,6 @@
 {
   "name": "hlsdownloader",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Downloads HLS Playlist file and TS chunks",
   "main": "index.js",
   "scripts": {
@@ -51,6 +51,8 @@
     "eslint": "^4.2.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-config-standard-jsx": "^4.0.2",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^3.0.1",
     "install": "^0.10.1",
