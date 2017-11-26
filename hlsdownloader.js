@@ -92,6 +92,7 @@ class HLSDownloader {
       formData,
       preambleCRLF,
       postambleCRLF,
+      json,
       jsonReviver,
       jsonReplacer,
       ...options

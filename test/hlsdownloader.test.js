@@ -62,6 +62,7 @@ describe('HLSDownloader', () => {
         'resolveWithFullResponse',
         'baseUrl',
         'form',
+        'json',
         'formData',
         'preambleCRLF',
         'postambleCRLF',

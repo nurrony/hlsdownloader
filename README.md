@@ -48,6 +48,28 @@ playlistURL: 'your playlist url',
 errors: [] // items url that is skipped or could not downloaded for error
 }
 ```
+Advance Usage
+---------------
+
+`HLSDownloader` accepts all parameters supported by [request-promise][request-promise] except these following **options**
+
+- method
+- uri
+- url
+- transform
+- resolveWithFullResponse
+- baseUrl
+- json
+- form
+- formData
+- preambleCRLF
+- postambleCRLF
+- jsonReviver
+- jsonReplacer
+
+
+It helps you to do `Auth`, limit `concurrency` of download and other various tasks without changing your code and workflow.
+
 
 I will be grateful if you all help me to improve this package by giving your suggestions, feature request and
 pull requests. I am all ears!!
@@ -62,3 +84,4 @@ pull requests. I am all ears!!
 [devdep-status]: https://david-dm.org/nmrony/hlsdownloader#info=devDependencies&view=table
 [standard-svg]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [standard-site]: http://standardjs.com
+[request-promise]: https://github.com/request/request-promise
