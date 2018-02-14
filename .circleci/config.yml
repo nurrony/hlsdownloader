@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    branches:
+      only:
+        - master
+    # https://circleci.com/docs/2.0/circleci-images/#nodejs
+    docker:
+      - image: node:9-alpine
+    # https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - run:
+          name: "Checking Versions"
+          command: |
+            node --version
+            npm --version
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn global add greenkeeper-lockfile@1
+      - run: yarn install
+      - run: greenkeeper-lockfile-update
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn test
+      - run: greenkeeper-lockfile-upload
