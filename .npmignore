@@ -5,7 +5,7 @@ hlsdownloader.js
 .editorconfig
 .eslintignore
 .vscode
-.nyc-output
+.nyc_output
 coverage
 *.log
 .babelrc.js
