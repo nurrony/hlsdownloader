@@ -1,5 +1,7 @@
 HLSDownloader
 ==============
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/nmrony/hlsdownloader.svg)](https://greenkeeper.io/)
 [![version][npm-version]][npm-url] [![coding style: standard][standard-svg]][standard-site]  [![dependencies][npm-dependencies]][dep-status] [![devDependencies][npm-dev-dependencies]][devdep-status] [![Downloads][npm-total-downloads]][npm-url] [![CircleCI][cci-image]][cci-url]
 
 
