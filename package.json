@@ -3,9 +3,6 @@
   "version": "2.1.0",
   "description": "Downloads HLS Playlist file and TS chunks",
   "main": "index.js",
-  "env": [
-    "mocha"
-  ],
   "scripts": {
     "build": "npm run compile && npm run uglify && npm run clean",
     "clean": "rm -f hlsdownloader.es5.js",
@@ -15,6 +12,7 @@
     "lint:fix": "eslint 'hlsdownloader.js' 'test/*.js' --fix",
     "test": "mocha --compilers js:@babel/register --recursive",
     "code:quality": "npm run lint && npm run lint:fix && npm run test",
+    "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text npm test",
     "uglify": "uglifyjs --compress --mangle -o index.js -- hlsdownloader.es5.js"
   },
   "pre-commit": [
