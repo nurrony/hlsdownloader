@@ -2,3 +2,11 @@ hlsdownloader.js
 .idea
 .nvmrc
 .eslintrc
+.editorconfig
+.eslintignore
+.vscode
+.nyc-output
+coverage
+*.log
+.babelrc.js
+README.md
