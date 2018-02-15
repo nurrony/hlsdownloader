@@ -3,6 +3,9 @@
   "version": "2.1.0",
   "description": "Downloads HLS Playlist file and TS chunks",
   "main": "index.js",
+  "engines": {
+    "node": ">=6.10"
+  },
   "scripts": {
     "build": "npm run compile && npm run uglify && npm run clean",
     "clean": "rm -f hlsdownloader.es5.js",
