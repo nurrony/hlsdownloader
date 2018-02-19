@@ -19,13 +19,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "./../package.json" }}
+          - v1-dependencies-{{ checksum "package.json" }}
       - run: yarn global add greenkeeper-lockfile@1
       - run: yarn install
       - run: greenkeeper-lockfile-update
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "./../package.json" }}
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn test
       - run: greenkeeper-lockfile-upload
