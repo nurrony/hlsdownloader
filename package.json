@@ -13,7 +13,7 @@
     "example": "npm run build && node example",
     "lint": "eslint . && echo 'No linting error found'",
     "lint:fix": "eslint 'hlsdownloader.js' 'test/*.js' --fix",
-    "test": "mocha --compilers js:@babel/register --recursive",
+    "test": "mocha --require @babel/register --recursive",
     "code:quality": "npm run lint && npm run lint:fix && npm run test",
     "coverage": "NODE_ENV=test nyc -x .babelrc.js -x test --reporter=lcov --reporter=text npm test",
     "uglify": "uglifyjs --compress --mangle -o index.js -- hlsdownloader.es5.js"
