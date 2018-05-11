@@ -18,22 +18,13 @@
     "coverage": "NODE_ENV=test nyc -x .babelrc.js -x test --reporter=lcov --reporter=text npm test",
     "uglify": "uglifyjs --compress --mangle -o index.js -- hlsdownloader.es5.js"
   },
-  "pre-commit": [
-    "lint",
-    "test"
-  ],
-  "keywords": [
-    "hlsdownloader",
-    "m3u8downloader",
-    "m3u8",
-    "HLS",
-    "playlist"
-  ],
+  "pre-commit": ["lint", "test"],
+  "keywords": ["hlsdownloader", "m3u8downloader", "m3u8", "HLS", "playlist"],
   "author": "Nur Rony<pro.nmrony@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:nmrony/hlsdownloader.git"
+    "url": "https://github.com/nmrony/hlsdownloader.git"
   },
   "bugs": {
     "url": "https://github.com/nmrony/hlsdownloader/issues"
