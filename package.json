@@ -9,6 +9,7 @@
   "scripts": {
     "build": "npm run compile && npm run uglify && npm run clean",
     "clean": "rm -f hlsdownloader.es5.js",
+    "commit": "git-cz",
     "compile": "babel hlsdownloader.js --out-file hlsdownloader.es5.js",
     "example": "npm run build && node example",
     "lint": "eslint . && echo 'No linting error found'",
@@ -20,7 +21,6 @@
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
   },
-  "pre-commit": ["lint", "test"],
   "keywords": ["hlsdownloader", "m3u8downloader", "m3u8", "HLS", "playlist"],
   "author": "Nur Rony<pro.nmrony@gmail.com>",
   "license": "MIT",
@@ -53,6 +53,8 @@
     "@babel/register": "^7.0.0-beta.40",
     "babel-eslint": "^8.2.1",
     "chai": "^4.1.0",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.17.0",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-plugin-import": "^2.8.0",
@@ -62,8 +64,13 @@
     "husky": "^0.15.0-rc.8",
     "mocha": "^5.0.1",
     "nyc": "^11.4.1",
-    "uglify-es": "^3.3.9",
+    "semantic-release": "^15.4.0",
     "travis-deploy-once": "^5.0.0",
-    "semantic-release": "^15.4.0"
+    "uglify-es": "^3.3.9"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
