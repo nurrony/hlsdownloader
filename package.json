@@ -1,6 +1,6 @@
 {
   "name": "hlsdownloader",
-  "version": "2.1.0",
+  "version": "0.0.0-semantic-release",
   "description": "Downloads HLS Playlist file and TS chunks",
   "main": "index.js",
   "engines": {
@@ -9,6 +9,7 @@
   "scripts": {
     "build": "npm run compile && npm run uglify && npm run clean",
     "clean": "rm -f hlsdownloader.es5.js",
+    "commit": "git-cz",
     "compile": "babel hlsdownloader.js --out-file hlsdownloader.es5.js",
     "example": "npm run build && node example",
     "lint": "eslint . && echo 'No linting error found'",
@@ -16,24 +17,16 @@
     "test": "mocha --require @babel/register --recursive",
     "code:quality": "npm run lint && npm run lint:fix && npm run test",
     "coverage": "NODE_ENV=test nyc -x .babelrc.js -x test --reporter=lcov --reporter=text npm test",
-    "uglify": "uglifyjs --compress --mangle -o index.js -- hlsdownloader.es5.js"
+    "uglify": "uglifyjs --compress --mangle -o index.js -- hlsdownloader.es5.js",
+    "travis-deploy-once": "travis-deploy-once",
+    "semantic-release": "semantic-release"
   },
-  "pre-commit": [
-    "lint",
-    "test"
-  ],
-  "keywords": [
-    "hlsdownloader",
-    "m3u8downloader",
-    "m3u8",
-    "HLS",
-    "playlist"
-  ],
+  "keywords": ["hlsdownloader", "m3u8downloader", "m3u8", "HLS", "playlist"],
   "author": "Nur Rony<pro.nmrony@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:nmrony/hlsdownloader.git"
+    "url": "https://github.com/nmrony/hlsdownloader.git"
   },
   "bugs": {
     "url": "https://github.com/nmrony/hlsdownloader/issues"
@@ -60,6 +53,8 @@
     "@babel/register": "^7.0.0-beta.40",
     "babel-eslint": "^8.2.1",
     "chai": "^4.1.0",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.17.0",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-plugin-import": "^2.8.0",
@@ -69,6 +64,13 @@
     "husky": "^0.15.0-rc.8",
     "mocha": "^5.0.1",
     "nyc": "^11.4.1",
+    "semantic-release": "^15.4.0",
+    "travis-deploy-once": "^5.0.0",
     "uglify-es": "^3.3.9"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
