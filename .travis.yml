@@ -9,7 +9,9 @@ node_js:
   - '8'
 before_install: yarn global add greenkeeper-lockfile@1
 before_script: greenkeeper-lockfile-update
-after_script: greenkeeper-lockfile-upload
+after_script:
+  - git diff --color | cat
+  - greenkeeper-lockfile-upload
 after_success:
   - yarn run travis-deploy-once "yarn run semantic-release"
 branches:
