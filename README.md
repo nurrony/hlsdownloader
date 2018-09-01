@@ -1,14 +1,12 @@
-HLSDownloader
-==============
+# HLSDownloader
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/nmrony/hlsdownloader.svg)](https://greenkeeper.io/)
-[![version][npm-version]][npm-url] [![coding style: standard][standard-svg]][standard-site]  [![dependencies][npm-dependencies]][dep-status] [![devDependencies][npm-dev-dependencies]][devdep-status] [![Downloads][npm-total-downloads]][npm-url] [![CircleCI][cci-image]][cci-url]
-
+[![version][npm-version]][npm-url] [![coding style: standard][standard-svg]][standard-site] [![dependencies][npm-dependencies]][dep-status] [![devDependencies][npm-dev-dependencies]][devdep-status] [![Downloads][npm-total-downloads]][npm-url] [![Travis branch][travis-badge]][travis-url] [![semantic-release][sembadge]][npm-url]
 
 Downloads `m3u8` playlist and `TS` chunks for a given playlist URL.
 
-Installation
-------------
+## Installation
+
 Install it via `npm` or `yarn`
 
 ```sh
@@ -17,11 +15,11 @@ Install it via `npm` or `yarn`
 [sudo] yarn add hlsdownloader
 ```
 
-Configuration
--------------
+## Configuration
+
 `destination` field is optional. If `destination` is not provided it just fetches the content from origin.
 It can also be useful if you want to do content pre-fetching from CDN for your end viewers. If any `TS` or `m3u8`
- variant download is failed it continues downloading others and reports after finishing.
+variant download is failed it continues downloading others and reports after finishing.
 
 It's simple as below.
 
@@ -31,11 +29,12 @@ import HLSDownloader from 'hlsdownloader'; //Using ES2015 module
 
 const params = {
   playlistURL: 'http://example.com/path/to/your/playlist.m3u8', // change it
-  destination:'/tmp' // change it (optional field)
+  destination: '/tmp' // change it (optional field)
 };
 const downloader = new HLSDownloader(params);
-downloader.startDownload((err, msg) => err ? console.log(err) : console.log(msg));
+downloader.startDownload((err, msg) => (err ? console.log(err) : console.log(msg)));
 ```
+
 `msg` is an object with following properties
 
 ```js
@@ -51,28 +50,26 @@ playlistURL: 'your playlist url',
 errors: [] // items url that is skipped or could not downloaded for error
 }
 ```
-Advance Usage
----------------
+
+## Advance Usage
 
 `HLSDownloader` accepts all parameters supported by [request-promise][request-promise] except these following **options**
 
-- method
-- uri
-- url
-- transform
-- resolveWithFullResponse
-- baseUrl
-- json
-- form
-- formData
-- preambleCRLF
-- postambleCRLF
-- jsonReviver
-- jsonReplacer
-
+* method
+* uri
+* url
+* transform
+* resolveWithFullResponse
+* baseUrl
+* json
+* form
+* formData
+* preambleCRLF
+* postambleCRLF
+* jsonReviver
+* jsonReplacer
 
 It helps you to do `Auth`, limit `concurrency` of download and other various tasks without changing your code and workflow.
-
 
 I will be grateful if you all help me to improve this package by giving your suggestions, feature request and
 pull requests. I am all ears!!
@@ -88,5 +85,6 @@ pull requests. I am all ears!!
 [standard-svg]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [standard-site]: http://standardjs.com
 [request-promise]: https://github.com/request/request-promise
-[cci-image]: https://circleci.com/gh/nmrony/hlsdownloader/tree/master.svg?style=svg
-[cci-url]: https://circleci.com/gh/nmrony/hlsdownloader/tree/master
+[travis-badge]: https://img.shields.io/travis/nmrony/hlsdownloader/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/nmrony/hlsdownloader
+[sembadge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
