@@ -10,3 +10,10 @@ coverage
 *.log
 .babelrc.js
 README.md
+test
+docs
+.github
+example.js
+.travis.yml
+AUTHORS
+.github

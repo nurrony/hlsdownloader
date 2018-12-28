@@ -7,13 +7,13 @@ notifications:
   email: false
 node_js:
   - '8'
-before_install: yarn global add greenkeeper-lockfile@1
+before_install: npm install --global greenkeeper-lockfile@1
 before_script: greenkeeper-lockfile-update
 after_script:
   - git diff --color | cat
   - greenkeeper-lockfile-upload
 after_success:
-  - yarn run travis-deploy-once "yarn run semantic-release"
+  - npm run travis-deploy-once "npm run semantic-release"
 branches:
   only:
     - master
