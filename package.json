@@ -7,6 +7,7 @@
     "node": ">=6.10"
   },
   "scripts": {
+    "prepublish": "npm run build",
     "build": "npm run compile && npm run uglify && npm run clean",
     "clean": "rm -f hlsdownloader.es5.js",
     "commit": "git-cz",
