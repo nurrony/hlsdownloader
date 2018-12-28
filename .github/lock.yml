@@ -7,7 +7,7 @@ daysUntilLock: 60
 exemptLabels: []
 
 # Label to add before locking, such as `outdated`. Set to `false` to disable
-lockLabel: true
+lockLabel: 'outdated'
 
 # Comment to post before locking. Set to `false` to disable
 lockComment: >
@@ -17,7 +17,6 @@ lockComment: >
 
 # Assign `resolved` as the reason for locking. Set to `false` to disable
 setLockReason: true
-
 # Limit to only `issues` or `pulls`
 # only: issues
 
