@@ -1,7 +1,7 @@
 # HLSDownloader
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/nmrony/hlsdownloader.svg)](https://greenkeeper.io/)
-[![version][npm-version]][npm-url] [![coding style: standard][standard-svg]][standard-site] [![dependencies][npm-dependencies]][dep-status] [![devDependencies][npm-dev-dependencies]][devdep-status] [![Downloads][npm-total-downloads]][npm-url] [![Travis branch][travis-badge]][travis-url] [![semantic-release][sembadge]][npm-url]
+[![version][npm-version]][npm-url] [![coding style: standard][standard-svg]][standard-site] [![dependencies][npm-dependencies]][dep-status] [![devDependencies][npm-dev-dependencies]][devdep-status] [![Downloads][npm-total-downloads]][npm-url] [![Travis branch][travis-badge]][travis-url] [![semantic-release][semvarbadge]][npm-url]
 
 Downloads `m3u8` playlist and `TS` chunks for a given playlist URL.
 
@@ -24,15 +24,15 @@ variant download is failed it continues downloading others and reports after fin
 It's simple as below.
 
 ```js
-import HLSDownloader from 'hlsdownloader'; //Using ES2015 module
+import HLSDownloader from 'hlsdownloader' //Using ES2015 module
 //var HLSDownloader = require('hlsdownloader').downloader; //using commonJS module
 
 const params = {
   playlistURL: 'http://example.com/path/to/your/playlist.m3u8', // change it
   destination: '/tmp' // change it (optional field)
-};
-const downloader = new HLSDownloader(params);
-downloader.startDownload((err, msg) => (err ? console.log(err) : console.log(msg)));
+}
+const downloader = new HLSDownloader(params)
+downloader.startDownload((err, msg) => (err ? console.log(err) : console.log(msg)))
 ```
 
 `msg` is an object with following properties
@@ -55,19 +55,19 @@ errors: [] // items url that is skipped or could not downloaded for error
 
 `HLSDownloader` accepts all parameters supported by [request-promise][request-promise] except these following **options**
 
-* method
-* uri
-* url
-* transform
-* resolveWithFullResponse
-* baseUrl
-* json
-* form
-* formData
-* preambleCRLF
-* postambleCRLF
-* jsonReviver
-* jsonReplacer
+- method
+- uri
+- url
+- transform
+- resolveWithFullResponse
+- baseUrl
+- json
+- form
+- formData
+- preambleCRLF
+- postambleCRLF
+- jsonReviver
+- jsonReplacer
 
 It helps you to do `Auth`, limit `concurrency` of download and other various tasks without changing your code and workflow.
 
@@ -87,4 +87,4 @@ pull requests. I am all ears!!
 [request-promise]: https://github.com/request/request-promise
 [travis-badge]: https://img.shields.io/travis/nmrony/hlsdownloader/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/nmrony/hlsdownloader
-[sembadge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+[semvarbadge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
