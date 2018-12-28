@@ -1,10 +1,10 @@
-/* eslint-disable standard/no-callback-literal */
-import fs from 'fs'
-import { parse, resolve } from 'url'
-import { dirname } from 'path'
+/* eslint-disable standard/no-callback-literal, node/no-deprecated-api */
 import each from 'async/each'
+import fs from 'fs'
 import mkdirp from 'mkdirp'
+import { dirname } from 'path'
 import request from 'request-promise'
+import { parse, resolve } from 'url'
 
 /**
  * @description Validate a Playlist
@@ -78,26 +78,24 @@ class HLSDownloader {
    * @param  {Object} playlistInfo playlist information to download
    * @return {Object} Error object if any required piece is missing
    */
-  constructor(
-    {
-      playlistURL = '',
-      destination = null,
-      method,
-      uri,
-      url,
-      transform,
-      resolveWithFullResponse,
-      baseUrl,
-      form,
-      formData,
-      preambleCRLF,
-      postambleCRLF,
-      json,
-      jsonReviver,
-      jsonReplacer,
-      ...options
-    } = {}
-  ) {
+  constructor({
+    playlistURL = '',
+    destination = null,
+    method,
+    uri,
+    url,
+    transform,
+    resolveWithFullResponse,
+    baseUrl,
+    form,
+    formData,
+    preambleCRLF,
+    postambleCRLF,
+    json,
+    jsonReviver,
+    jsonReplacer,
+    ...options
+  } = {}) {
     if (!validateURL(playlistURL)) {
       const error = new Error()
       error.message = 'playListURL is required ' + 'or check if your URL is valid or not!!'
@@ -232,9 +230,7 @@ class HLSDownloader {
         const options = { ...this.options, method: 'GET', uri: variantUrl }
         request(options)
           .then(downloadedItem => {
-            if (this.destination !== null &&
-              this.destination !== '' &&
-              this.destination !== 'undefined') {
+            if (this.destination !== null && this.destination !== '' && this.destination !== 'undefined') {
               return this.createItems(variantUrl, downloadedItem, cb)
             }
             downloadedItem = null

@@ -18,7 +18,7 @@ describe('HLSDownloader', () => {
       json: true,
       uri: '/hello-world',
       url: 'http://nmrony.local',
-      transform () {},
+      transform() {},
       baseUrl: 'http://blah.com',
       form: 'blah blah',
       formData: 'blah blah',
