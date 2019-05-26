@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
-    "async": "^2.6.2",
+    "async": "^3.0.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "request": "^2.88.0",
