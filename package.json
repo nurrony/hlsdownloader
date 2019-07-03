@@ -20,7 +20,9 @@
     "coverage": "NODE_ENV=test nyc -x .babelrc.js -x test --reporter=lcov --reporter=text npm test",
     "uglify": "uglifyjs --compress --mangle -o index.js -- hlsdownloader.es5.js",
     "travis-deploy-once": "travis-deploy-once",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "keywords": [
     "hlsdownloader",
@@ -50,7 +52,8 @@
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
@@ -79,5 +82,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "snyk": true
 }
