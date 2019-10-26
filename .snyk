@@ -8,3 +8,26 @@ patch:
         patched: '2019-07-03T23:05:13.467Z'
     - request-promise > request-promise-core > lodash:
         patched: '2019-07-03T23:05:13.467Z'
+    - snyk > lodash:
+        patched: '2019-10-26T22:55:18.122Z'
+    - snyk > snyk-config > lodash:
+        patched: '2019-10-26T22:55:18.122Z'
+    - snyk > inquirer > lodash:
+        patched: '2019-10-26T22:55:18.122Z'
+    - snyk > @snyk/dep-graph > graphlib > lodash:
+        patched: '2019-10-26T22:55:18.122Z'
+    - snyk > @snyk/dep-graph > lodash:
+        patched: '2019-10-26T22:55:18.122Z'
+    - snyk > snyk-nodejs-lockfile-parser > lodash:
+        patched: '2019-10-26T22:55:18.122Z'
+    - snyk > snyk-go-plugin > graphlib > lodash:
+        patched: '2019-10-26T22:55:18.122Z'
+    - snyk > snyk-nodejs-lockfile-parser > graphlib > lodash:
+        patched: '2019-10-26T22:55:18.122Z'
+    - snyk > snyk-nuget-plugin > lodash:
+        patched: '2019-10-26T22:55:18.122Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - snyk > proxy-agent > https-proxy-agent:
+        patched: '2019-10-26T22:55:18.122Z'
+    - snyk > proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-26T22:55:18.122Z'
