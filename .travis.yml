@@ -6,7 +6,7 @@ cache:
 notifications:
   email: false
 node_js:
-  - '8'
+  - '12'
 before_install: npm install --global greenkeeper-lockfile@1
 before_script: greenkeeper-lockfile-update
 after_script:
