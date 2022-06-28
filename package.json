@@ -75,7 +75,7 @@
     "husky": "^4.2.5",
     "mocha": "^8.1.1",
     "nyc": "^15.1.0",
-    "semantic-release": "^17.1.1",
+    "semantic-release": "^19.0.3",
     "travis-deploy-once": "^5.0.11",
     "uglify-es": "^3.3.9"
   },
