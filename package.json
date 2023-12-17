@@ -1,29 +1,13 @@
 {
-  "name": "hlsdownloader",
-  "version": "0.0.0-semantic-release",
+  "author": "Nur Rony<pro.nmrony@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/nurrony/hlsdownloader/issues"
+  },
   "description": "Downloads HLS Playlist file and TS chunks",
-  "main": "index.js",
   "engines": {
-    "node": ">=6.10"
+    "node": ">=14"
   },
-  "scripts": {
-    "prepublishOnly": "npm run build",
-    "build": "npm run compile && npm run uglify && npm run clean",
-    "clean": "rm -f hlsdownloader.es5.js",
-    "commit": "git-cz",
-    "compile": "babel hlsdownloader.js --out-file hlsdownloader.es5.js",
-    "example": "npm run build && node example",
-    "lint": "eslint . && echo 'No linting error has found cool all fine 😎'",
-    "lint:fix": "eslint 'hlsdownloader.js' --fix",
-    "test": "mocha --require @babel/register --recursive",
-    "code:quality": "npm run lint && npm run lint:fix && npm run test",
-    "coverage": "NODE_ENV=test nyc -x .babelrc.js -x test --reporter=lcov --reporter=text npm test",
-    "uglify": "uglifyjs --compress --mangle -o index.js -- hlsdownloader.es5.js",
-    "travis-deploy-once": "travis-deploy-once",
-    "semantic-release": "semantic-release",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
-  },
+  "homepage": "https://nurrony.github.io/hlsdownloader",
   "keywords": [
     "hlsdownloader",
     "m3u8downloader",
@@ -31,58 +15,15 @@
     "HLS",
     "playlist"
   ],
-  "author": "Nur Rony<pro.nmrony@gmail.com>",
   "license": "MIT",
+  "main": "index.js",
+  "name": "hlsdownloader",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nmrony/hlsdownloader.git"
+    "url": "https://github.com/nurrony/hlsdownloader.git"
   },
-  "bugs": {
-    "url": "https://github.com/nmrony/hlsdownloader/issues"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://nmrony.github.io/hlsdownloader",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run code:quality"
-    }
-  },
-  "dependencies": {
-    "@babel/polyfill": "^7.10.4",
-    "async": "^3.2.0",
-    "minimist": "^1.2.5",
-    "mkdirp": "^1.0.4",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6",
-    "snyk": "^1.382.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.4",
-    "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
-    "@babel/preset-env": "^7.11.0",
-    "@babel/register": "^7.10.5",
-    "babel-eslint": "^10.1.0",
-    "chai": "^4.2.0",
-    "commitizen": "^4.2.0",
-    "core-js": "^3.6.5",
-    "cz-conventional-changelog": "^3.2.1",
-    "eslint": "^7.7.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "husky": "^4.2.5",
-    "mocha": "^8.1.1",
-    "nyc": "^15.1.0",
-    "semantic-release": "^17.1.1",
-    "travis-deploy-once": "^5.0.11",
-    "uglify-es": "^3.3.9"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "snyk": true
+  "version": "1.0.0"
 }
