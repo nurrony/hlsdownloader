@@ -23,7 +23,21 @@
     "url": "https://github.com/nurrony/hlsdownloader.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
-  "version": "1.0.0"
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "version": "1.0.0",
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "esbuild": "^0.19.9",
+    "eslint": "^8.56.0",
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "prettier": "^3.1.1"
+  }
 }
