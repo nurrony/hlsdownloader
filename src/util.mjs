@@ -1,7 +1,17 @@
-import validUrl from 'valid-url';
+import { ProtocolNotSupported } from './exceptions/ProtocolNotSupported.mjs';
 
-function isValidUrl(uri) {
-  return !!validUrl.isUri(uri) && !!validUrl.isWebUri(uri);
-}
+const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
+  try {
+    const { protocol = '' } = new URL(url);
+    if (protocol && !protocols.includes(`${protocol}`)) {
+      throw new ProtocolNotSupported(`${protocol} not supported. Supported protocols are ${protocols.join(', ')}`);
+    }
+
+    return true;
+  } catch (error) {
+    console.log(error.message);
+    throw error;
+  }
+};
 
 export { isValidUrl };

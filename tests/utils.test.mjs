@@ -17,5 +17,9 @@ describe('Utils', () => {
     test('should be a valid https url with username and password', () => {
       expect(isValidUrl('https://hello:world@example.com')).toBeTruthy;
     });
+
+    // test('should be false if invalid url provided', () => {
+    //   expect(isValidUrl('htt//example.com')).toThrow();
+    // });
   });
 });
