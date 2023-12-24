@@ -1,21 +1,21 @@
 import { ProtocolNotSupported } from '../src/exceptions/ProtocolNotSupported.mjs';
-import { isValidUrl } from '../src/util.mjs';
+import { isValidPlaylist, isValidUrl } from '../src/utils.mjs';
 describe('Utils', () => {
-  describe('isValidUrl#', () => {
+  describe('#isValidUrl', () => {
     test('should be a valid http url', () => {
-      expect(isValidUrl('http://example.com')).toBeTruthy;
+      expect(isValidUrl('http://example.com')).toBeTruthy();
     });
 
     test('should be a valid https url', () => {
-      expect(isValidUrl('https://example.com')).toBeTruthy;
+      expect(isValidUrl('https://example.com')).toBeTruthy();
     });
 
     test('should be a valid https url with username and password', () => {
-      expect(isValidUrl('http://hello:world@example.com')).toBeTruthy;
+      expect(isValidUrl('http://hello:world@example.com')).toBeTruthy();
     });
 
     test('should be a valid https url with username and password', () => {
-      expect(isValidUrl('https://hello:world@example.com')).toBeTruthy;
+      expect(isValidUrl('https://hello:world@example.com')).toBeTruthy();
     });
 
     test('should throw error for invalid url', () => {
@@ -28,6 +28,20 @@ describe('Utils', () => {
       expect(() => {
         isValidUrl('abc://example.com');
       }).toThrow(ProtocolNotSupported);
+    });
+  });
+
+  describe('#isValidPlaylist', () => {
+    test('should be able to detect valid playlist content', () => {
+      const variantPlaylistContent = `#EXTM3U
+      #EXT-X-ENDLIST`;
+      expect(isValidPlaylist(variantPlaylistContent)).toBeTruthy();
+    });
+
+    test('should be able to detect invalid playlist content', () => {
+      const variantInvalidPlaylistContent = `#EXT
+      #EXT-X-ENDLIST`;
+      expect(isValidPlaylist(variantInvalidPlaylistContent)).toBeFalsy();
     });
   });
 });

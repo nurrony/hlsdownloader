@@ -1,3 +1,4 @@
+/** Class ProtocolNotFound. */
 export class ProtocolNotSupported extends Error {
   constructor(message) {
     super(message);
