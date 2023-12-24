@@ -1,5 +1,5 @@
+import { ProtocolNotSupported } from '../src/exceptions/ProtocolNotSupported.mjs';
 import { isValidUrl } from '../src/util.mjs';
-
 describe('Utils', () => {
   describe('isValidUrl#', () => {
     test('should be a valid http url', () => {
@@ -22,6 +22,12 @@ describe('Utils', () => {
       expect(() => {
         isValidUrl('htt//example.com');
       }).toThrow('Invalid URL');
+    });
+
+    test('should throw error for unsupported protocol', () => {
+      expect(() => {
+        isValidUrl('abc://example.com');
+      }).toThrow(ProtocolNotSupported);
     });
   });
 });
