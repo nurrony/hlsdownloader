@@ -18,8 +18,10 @@ describe('Utils', () => {
       expect(isValidUrl('https://hello:world@example.com')).toBeTruthy;
     });
 
-    // test('should be false if invalid url provided', () => {
-    //   expect(isValidUrl('htt//example.com')).toThrow();
-    // });
+    test('should throw error for invalid url', () => {
+      expect(() => {
+        isValidUrl('htt//example.com');
+      }).toThrow('Invalid URL');
+    });
   });
 });

@@ -9,7 +9,7 @@ const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
 
     return true;
   } catch (error) {
-    console.log(error.message);
+    console.log('h ', error.name);
     throw error;
   }
 };
