@@ -37,7 +37,8 @@
     "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All coverage reports has been cleaned.'",
     "test": " npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
-    "version": "echo $npm_package_version"
+    "version": "echo $npm_package_version",
+    "commitlint": "NODE_OPTIONS=--experimental-vm-modules npx commitlint --edit && echo '🏷 Commit message guidelines are followed properly.'"
   },
   "config": {
     "commitizen": {
@@ -46,6 +47,8 @@
   },
   "version": "1.0.0",
   "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "@types/jest": "^29.5.11",
     "esbuild": "^0.19.9",
     "eslint": "^8.56.0",
