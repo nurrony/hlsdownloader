@@ -38,7 +38,7 @@
     "test": " npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
     "version": "echo $npm_package_version",
-    "commitlint": "NODE_OPTIONS=--experimental-vm-modules npx commitlint --edit && echo '🏷 Commit message guidelines are followed properly.'"
+    "commitlint": "NODE_OPTIONS=--experimental-vm-modules npx commitlint --edit && echo '🔖 Commit message guidelines are followed properly.'"
   },
   "config": {
     "commitizen": {
