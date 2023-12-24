@@ -20,13 +20,17 @@ const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
 };
 
 /**
+ * Strip first slash from a url
+ * @param  {String} url URL to strip the slash
+ * @return {String} Stripped url
+ */
+const stripFirstSlash = url => url.substring(0, 1).replace('/', '') + url.substring(1);
+
+/**
  * @description Validate a Playlist
  * @param {string} playlistContent
  * @returns {boolean}
  */
-const isValidPlaylist = (playlistContent) => {
-  console.log('mes', playlistContent.match(/^#EXTM3U/im));
-  return playlistContent.match(/^#EXTM3U/im) !== null;
-};
+const isValidPlaylist = playlistContent => playlistContent.match(/^#EXTM3U/im) !== null;
 
-export { isValidPlaylist, isValidUrl };
+export { isValidPlaylist, isValidUrl, stripFirstSlash };

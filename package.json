@@ -23,9 +23,21 @@
     "url": "https://github.com/nurrony/hlsdownloader.git"
   },
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
     "coverage": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build:clean": "rimraf -fr dist/ && echo '🧹 Build artifacts has been cleaned.'",
+    "compile": "babel --minified --no-comments -d dist/ src/",
+    "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc && echo '📄 Docs has been generated successfully.'",
+    "docs:clean": "rimraf -fr ./docs && echo '🧹 All docs has been cleaned.'",
+    "lint": "eslint . --ext .mjs && echo '💄 Coding style guideline has been followed properly.'",
+    "lint:fix": "eslint . --ext .mjs --fix && echo '🔧 Coding style has been fixed as per guideline.'",
+    "prepublishOnly": "npm run build",
+    "prod:start": "node main.js",
+    "start": "nodemon --exec babel-node src/main.js",
+    "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All coverage reports has been cleaned.'",
+    "test": " npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
+    "version": "echo $npm_package_version"
   },
   "config": {
     "commitizen": {
@@ -38,18 +50,13 @@
     "esbuild": "^0.19.9",
     "eslint": "^8.56.0",
     "husky": "^8.0.3",
+    "ink-docstrap": "^1.3.2",
     "jest": "^29.7.0",
-    "prettier": "^3.1.1"
+    "jsdoc": "^4.0.2",
+    "prettier": "^3.1.1",
+    "rimraf": "^5.0.5"
   },
-  "jest": {
-    "transform": {},
-    "moduleFileExtensions": [
-      "js",
-      "mjs",
-      "json"
-    ],
-    "testMatch": [
-      "**/tests/**/*.mjs"
-    ]
+  "hooks": {
+    "pre-commit": "npm run lint:fix && npm run lint && npm test"
   }
 }
