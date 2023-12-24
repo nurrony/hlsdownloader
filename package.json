@@ -60,6 +60,6 @@
     "rimraf": "^5.0.5"
   },
   "hooks": {
-    "pre-commit": "npm run lint:fix && npm run lint && npm test"
+    "pre-commit": "npm run commitlint ${1} && npm run lint:fix && npm run lint && npm test"
   }
 }
