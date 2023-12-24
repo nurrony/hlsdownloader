@@ -1,5 +1,5 @@
 import { ProtocolNotSupported } from '../src/exceptions/ProtocolNotSupported.mjs';
-import { isValidPlaylist, isValidUrl } from '../src/utils.mjs';
+import { isValidPlaylist, isValidUrl, stripFirstSlash } from '../src/utils.mjs';
 describe('Utils', () => {
   describe('#isValidUrl', () => {
     test('should be a valid http url', () => {
@@ -42,6 +42,12 @@ describe('Utils', () => {
       const variantInvalidPlaylistContent = `#EXT
       #EXT-X-ENDLIST`;
       expect(isValidPlaylist(variantInvalidPlaylistContent)).toBeFalsy();
+    });
+  });
+
+  describe('#stripFirstSlash', () => {
+    test('should remove first slash from aboslute file path', () => {
+      expect(stripFirstSlash('/some/path/to/playlist.m3u8')).toStrictEqual('some/path/to/playlist.m3u8');
     });
   });
 });

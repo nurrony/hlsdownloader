@@ -20,7 +20,7 @@ const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
 };
 
 /**
- * Strip first slash from a url
+ * Strip first slash from a url / path
  * @param  {String} url URL to strip the slash
  * @return {String} Stripped url
  */
