@@ -34,7 +34,7 @@
     "prepublishOnly": "npm run build",
     "prod:start": "node main.js",
     "start": "nodemon --exec babel-node src/main.js",
-    "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All coverage reports has been cleaned.'",
+    "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.'",
     "test": " npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
     "version": "echo $npm_package_version",
