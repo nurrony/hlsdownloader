@@ -100,7 +100,7 @@ npm docs:gen
 
 ## Authors
 
-👤 **Nur Rony<pro.nmrony@gmail.com>**
+👤 **Nur Rony**
 
 - Website: [nurrony.github.io](https://nurrony.github.io)
 - Twitter: [@nmrony](https://twitter.com/nmrony)
@@ -117,5 +117,5 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2023 [Nur Rony<pro.nmrony@gmail.com>](https://github.com/nurrony).<br />
+Copyright © 2023 [Nur Rony](https://github.com/nurrony).<br />
 This project is [MIT](https://github.com/nurrony/hlsdownloader/blob/master/LICENSE) licensed.
