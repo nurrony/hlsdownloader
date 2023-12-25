@@ -12,7 +12,7 @@ const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
   try {
     const { protocol } = new URL(url);
     if (protocol && !protocols.includes(`${protocol}`))
-      throw new ProtocolNotSupported(`${protocol} not supported. Supported protocols are ${protocols.join(', ')}`);
+      throw new ProtocolNotSupported(`${protocol} is not supported. Supported protocols are ${protocols.join(', ')}`);
     return true;
   } catch (error) {
     throw error;

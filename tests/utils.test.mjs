@@ -10,7 +10,7 @@ describe('Utils', () => {
       expect(isValidUrl('https://example.com')).toBeTruthy();
     });
 
-    test('should be a valid https url with username and password', () => {
+    test('should be a valid http url with username and password', () => {
       expect(isValidUrl('http://hello:world@example.com')).toBeTruthy();
     });
 

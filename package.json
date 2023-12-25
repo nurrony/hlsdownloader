@@ -46,7 +46,7 @@
       "path": "cz-conventional-changelog"
     }
   },
-  "version": "1.0.0",
+  "version": "semantic-release-0.0.0",
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
