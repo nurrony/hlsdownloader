@@ -23,10 +23,11 @@
     "url": "https://github.com/nurrony/hlsdownloader.git"
   },
   "scripts": {
+    "build": "npm run lint:fix && npm run lint && npm test && npm run build:clean && npm run compile && echo '📦 Build artifact has been generated successfully.'",
     "coverage": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
     "prepare": "husky install",
     "build:clean": "rimraf -fr dist/ && echo '🧹 Build artifacts has been cleaned.'",
-    "compile": "babel --minified --no-comments -d dist/ src/",
+    "compile": "esbuild src/index.mjs --bundle --minify --keep-names --outfile=index.js --platform=node --target=node14 --packages=external",
     "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc && echo '📄 Docs has been generated successfully.'",
     "docs:clean": "rimraf -fr ./docs && echo '🧹 All docs has been cleaned.'",
     "lint": "eslint . --ext .mjs && echo '💄 Coding style guideline has been followed properly.'",
@@ -35,7 +36,7 @@
     "prod:start": "node main.js",
     "start": "nodemon --exec babel-node src/main.js",
     "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.'",
-    "test": " npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
     "version": "echo $npm_package_version",
     "commitlint": "NODE_OPTIONS=--experimental-vm-modules npx commitlint --edit && echo '🔖 Commit message guidelines are followed properly.'"
