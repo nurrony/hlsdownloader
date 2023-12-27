@@ -1,10 +1,12 @@
-<h1 align="center">Welcome to hlsdownloader 👋</h1>
+<h1 align="left">Welcome! 👋</h1>
 <p>
   <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/hlsdownloader.svg">
   </a>
-  <img src="https://img.shields.io/badge/node-%3E%3D14-blue.svg" />
-  <a href="https://github.com/nurrony/hlsdownloader#readme" target="_blank">
+  <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
+    <img src="https://img.shields.io/badge/node-%3E%3D14-blue.svg" />
+  </a>
+  <a href="https://nurrony.github.io/hlsdownloader" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
   <a href="https://github.com/nurrony/hlsdownloader/graphs/commit-activity" target="_blank">
@@ -22,21 +24,26 @@
 
 </p>
 
-Downloads HLS Playlist file and TS chunks
+Downloads HLS Playlist file and TS chunks. It is useful if you want to do content pre-fetching from CDN for your end viewers.
 
 ### 🏠 [Homepage](https://nurrony.github.io/hlsdownloader)
 
 ## Prerequisites
 
-- node >=14
+- node >=14.x.x
+- npm >= 6.x.x
 
-## Install
+## Installation
+
+It is pretty straight forward
 
 ```sh
+# using npm
 npm install hlsdownloader
-
 # or with yarn
 yarn add hlsdownloader
+# or pnpm
+pnpm install hlsdownloader
 ```
 
 ## Usage

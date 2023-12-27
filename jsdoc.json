@@ -13,7 +13,7 @@
       "default_theme": "dark",
       "displayModuleHeader": true,
       "exclude_inherited": false,
-      "footer": "<footer style=''><div style='margin-bottom: 0.5rem;font-size: 1.25rem; font-weight: bold;'>HLSDownloader</div> <p>Please Feel free to <a style='text-decoration: underline;' target='_blank' href='https://github.com/nurrony/hlsdownloader/fork'>fork on GitHub</a></p></footer>",
+      "footer": "<footer style='width: 100%;'><div style='margin-bottom: 0.5rem;font-size: 1.25rem; font-weight: bold;'>HLSDownloader</div> <p>Please Feel free to <a style='text-decoration: underline;' target='_blank' href='https://github.com/nurrony/hlsdownloader/fork'>fork on GitHub</a></p></footer>",
       "homepageTitle": "Documentation | HLSDownloader",
       "includeFilesListInHomepage": true,
       "menu": [
@@ -25,7 +25,7 @@
         {
           "id": "npm",
           "link": "https://www.npmjs.com/package/hlsdownloader",
-          "title": "npm"
+          "title": "NPM"
         }
       ],
       "meta": [
@@ -38,7 +38,7 @@
           "name": "Description"
         }
       ],
-      "prefixModuleToSidebarItems_experimental": true,
+      "prefixModuleToSidebarItems_experimental": false,
       "search": true,
       "title": "HLSDownloader"
     }

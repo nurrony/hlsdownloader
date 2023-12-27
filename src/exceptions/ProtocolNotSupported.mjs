@@ -22,7 +22,6 @@ class ProtocolNotSupported extends Error {
 }
 
 /**
- * @lends HLSDownloaderException
  * @memberof modules:HLSDownloaderException
  * @name ProtocolNotSupported
  */
