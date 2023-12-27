@@ -3,7 +3,15 @@ module.exports = {
   sourceType: 'module',
   source: {
     includePattern: '.+\\.(m?js(doc|x)?)$',
-    include: ['./src/index.mjs', 'package.json', 'README.md'],
+    include: [
+      './src/index.mjs',
+      './src/utils/index.mjs',
+      './src/utils/utils.mjs',
+      './src/exceptions/index.mjs',
+      './src/exceptions/ProtocolNotSupported.mjs',
+      'package.json',
+      'README.md',
+    ],
     exclude: ['node_modules', 'tests', 'docs'],
   },
   opts: {

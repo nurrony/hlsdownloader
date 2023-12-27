@@ -1,5 +1,15 @@
-/** Class ProtocolNotFound. */
-export class ProtocolNotSupported extends Error {
+/**
+ * @class
+ * @classdesc Protocol not supported class
+ * @extends Error
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ */
+class ProtocolNotSupported extends Error {
+  /**
+   * Constructor of ProtocolNotSupported
+   * @constructor
+   * @property {String} message message of exception
+   */
   constructor(message) {
     super(message);
 
@@ -10,3 +20,9 @@ export class ProtocolNotSupported extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 }
+
+/**
+ * @memberof modules:Exceptions
+ * @name ProtocolNotSupported
+ */
+export { ProtocolNotSupported };

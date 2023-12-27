@@ -1,5 +1,5 @@
 import { ProtocolNotSupported } from '../src/exceptions/ProtocolNotSupported.mjs';
-import { isValidPlaylist, isValidUrl, stripFirstSlash } from '../src/utils.mjs';
+import { isValidPlaylist, isValidUrl, stripFirstSlash } from './../src/utils/index.mjs';
 describe('Utils', () => {
   describe('#isValidUrl', () => {
     test('should be a valid http url', () => {

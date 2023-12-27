@@ -1,17 +1,8 @@
-/**
- * Util modules for HLSDownloader
- * @module utils
- * @file utils.mjs
- * @fileOverview ### Utility Module
- * @author Nur Rony<pro.nmrony@gmail.com>
- * @requires ./exceptions/ProtocolNotSupported.mjs
- */
-
-import { ProtocolNotSupported } from './exceptions/ProtocolNotSupported.mjs';
+import { ProtocolNotSupported } from './../exceptions/index.mjs';
 
 /**
  * @method
- * @memberof module:utils
+ * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Check if the url is valid
  * @param {string} url string to check
@@ -33,7 +24,7 @@ const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
 
 /**
  * @method
- * @memberof module:utils
+ * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Strip first slash from a url / path
  * @param  {String} url URL to strip the slash
@@ -43,7 +34,7 @@ const stripFirstSlash = url => url.substring(0, 1).replace('/', '') + url.substr
 
 /**
  * @method
- * @memberof module:utils
+ * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Validate a Playlist
  * @param {string} playlistContent
@@ -51,4 +42,12 @@ const stripFirstSlash = url => url.substring(0, 1).replace('/', '') + url.substr
  */
 const isValidPlaylist = playlistContent => playlistContent.match(/^#EXTM3U/im) !== null;
 
+/**
+ * Util modules for HLSDownloader
+ * @module Utils
+ * @file utils.mjs
+ * @fileOverview ### Utility Module ###
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ * @requires ./exceptions/ProtocolNotSupported.mjs
+ */
 export { isValidPlaylist, isValidUrl, stripFirstSlash };
