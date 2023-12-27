@@ -1,7 +1,6 @@
 import { ProtocolNotSupported } from './../exceptions/index.mjs';
 
 /**
- * @method
  * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Check if the url is valid
@@ -23,7 +22,6 @@ const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
 };
 
 /**
- * @method
  * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Strip first slash from a url / path
@@ -33,20 +31,17 @@ const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
 const stripFirstSlash = url => url.substring(0, 1).replace('/', '') + url.substring(1);
 
 /**
- * @method
  * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Validate a Playlist
- * @param {string} playlistContent
+ * @param {string} playlistContent Content of playlist file
  * @returns {boolean}
  */
 const isValidPlaylist = playlistContent => playlistContent.match(/^#EXTM3U/im) !== null;
 
 /**
- * Util modules for HLSDownloader
- * @module Utils
- * @file utils.mjs
- * @fileOverview ### Utility Module ###
+ * @lends HLSDownloaderUtils
+ * @memberof modules:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @requires ./exceptions/ProtocolNotSupported.mjs
  */

@@ -22,7 +22,7 @@
 
 </p>
 
-> Downloads HLS Playlist file and TS chunks
+Downloads HLS Playlist file and TS chunks
 
 ### 🏠 [Homepage](https://nurrony.github.io/hlsdownloader)
 

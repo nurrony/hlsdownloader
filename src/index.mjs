@@ -1,4 +1,4 @@
-import { isValidUrl as download } from './utils.mjs';
+import { isValidUrl as download } from './utils/index.mjs';
 
 /**
  * @module HLSDownloader
