@@ -40,9 +40,19 @@ const stripFirstSlash = url => url.substring(0, 1).replace('/', '') + url.substr
 const isValidPlaylist = playlistContent => playlistContent.match(/^#EXTM3U/im) !== null;
 
 /**
+ * @memberof module:HLSDownloaderUtils
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ * @description Validate a Playlist
+ * @param {string} url url to parse
+ * @returns {object}
+ * @throws TypeError
+ */
+const parseUrl = url => new URL(url);
+
+/**
  * @lends HLSDownloaderUtils
  * @memberof modules:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @requires ./exceptions/ProtocolNotSupported.mjs
  */
-export { isValidPlaylist, isValidUrl, stripFirstSlash };
+export { isValidPlaylist, isValidUrl, parseUrl, stripFirstSlash };

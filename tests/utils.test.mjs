@@ -1,5 +1,7 @@
+import { URL } from 'node:url';
 import { ProtocolNotSupported } from '../src/exceptions/ProtocolNotSupported.mjs';
-import { isValidPlaylist, isValidUrl, stripFirstSlash } from './../src/utils/index.mjs';
+import { isValidPlaylist, isValidUrl, parseUrl, stripFirstSlash } from './../src/utils/index.mjs';
+
 describe('Utils', () => {
   describe('#isValidUrl', () => {
     test('should be a valid http url', () => {
@@ -48,6 +50,24 @@ describe('Utils', () => {
   describe('#stripFirstSlash', () => {
     test('should remove first slash from aboslute file path', () => {
       expect(stripFirstSlash('/some/path/to/playlist.m3u8')).toStrictEqual('some/path/to/playlist.m3u8');
+    });
+  });
+
+  describe('#parseUrl', () => {
+    const aUrl = parseUrl('http://example.com') || {};
+    test('should return an instance of URL', () => {
+      expect(aUrl).toBeInstanceOf(URL);
+    });
+    test('should parse a valid url', () => {
+      const { protocol, hostname } = aUrl;
+      expect(protocol).toStrictEqual('http:');
+      expect(hostname).toStrictEqual('example.com');
+    });
+
+    test('should throw error for invalid url', () => {
+      expect(() => {
+        parseUrl('htt//example.com');
+      }).toThrow('Invalid URL');
     });
   });
 });
