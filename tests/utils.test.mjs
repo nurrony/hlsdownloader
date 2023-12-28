@@ -1,5 +1,5 @@
 import { URL } from 'node:url';
-import { ProtocolNotSupported } from '../src/exceptions/ProtocolNotSupported.mjs';
+import ProtocolNotSupported from '../src/exceptions/ProtocolNotSupported.mjs';
 import { isValidPlaylist, isValidUrl, parseUrl, stripFirstSlash } from './../src/utils/index.mjs';
 
 describe('Utils', () => {

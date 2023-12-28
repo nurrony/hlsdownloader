@@ -2,9 +2,9 @@
  * @class
  * @extends Error
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @classdesc Exception to throw if HLSDownloader does not support the given URI protocol
+ * @classdesc Exception to throw if no playlist is found.
  */
-class ProtocolNotSupported extends Error {
+class PlaylistNotFound extends Error {
   /**
    * @constructor
    * @property {String} message message of exception
@@ -23,6 +23,5 @@ class ProtocolNotSupported extends Error {
 /**
  * @memberof modules:HLSDownloaderException
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @classdesc Exception to throw if HLSDownloader does not support the given URI protocol
  */
-export default ProtocolNotSupported;
+export default PlaylistNotFound;

@@ -1,6 +1,8 @@
-import { isValidUrl as download } from './utils/index.mjs';
+import HLSDownloader from './Downloader.mjs';
 
 /**
  * @module HLSDownloader
  */
-export { download };
+export default HLSDownloader;
+
+export const downloader = HLSDownloader;

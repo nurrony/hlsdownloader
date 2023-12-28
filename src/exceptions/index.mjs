@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { ProtocolNotSupported } from './ProtocolNotSupported.mjs';
+import ProtocolNotSupported from './ProtocolNotSupported.mjs';
 
 /**
  * @fileoverview Modules for HLSDownloader Custom Exceptions

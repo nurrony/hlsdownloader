@@ -50,9 +50,12 @@
       "README.md",
       "package.json",
       "./src/index.mjs",
-      "./src/utils/utils.mjs",
+      "./src/Downloader.mjs",
       "./src/utils/index.mjs",
+      "./src/utils/utils.mjs",
       "./src/exceptions/index.mjs",
+      "./src/exceptions/InvalidPlaylist.mjs",
+      "./src/exceptions/PlaylistNotFound.mjs",
       "./src/exceptions/ProtocolNotSupported.mjs"
     ],
     "includePattern": ".+\\.(m?js(doc|x)?)$"
