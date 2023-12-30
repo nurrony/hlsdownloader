@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberof module:HLSDownloaderException
  * @extends Error
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @classdesc Exception to throw if HLSDownloader does not support the given URI protocol
@@ -21,7 +22,6 @@ class ProtocolNotSupported extends Error {
 }
 
 /**
- * @memberof modules:HLSDownloaderException
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @classdesc Exception to throw if HLSDownloader does not support the given URI protocol
  */

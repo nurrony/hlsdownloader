@@ -2,6 +2,7 @@
  * @class
  * @extends Error
  * @author Nur Rony<pro.nmrony@gmail.com>
+ * @memberof module:HLSDownloaderException
  * @classdesc Exception to throw if HLS playlist is invalid
  */
 class InvalidPlaylist extends Error {
@@ -21,7 +22,6 @@ class InvalidPlaylist extends Error {
 }
 
 /**
- * @memberof modules:HLSDownloaderException
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @classdesc Exception to throw if HLS playlist is invalid
  */
