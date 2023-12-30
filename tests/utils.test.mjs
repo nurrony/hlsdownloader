@@ -1,6 +1,6 @@
 import { URL } from 'node:url';
 import ProtocolNotSupported from '../src/exceptions/ProtocolNotSupported.mjs';
-import { isValidPlaylist, isValidUrl, parseUrl, stripFirstSlash } from './../src/utils/index.mjs';
+import { isValidPlaylist, isValidUrl, omit, parseUrl, stripFirstSlash } from './../src/utils/index.mjs';
 
 describe('Utils', () => {
   describe('#isValidUrl', () => {
@@ -68,6 +68,20 @@ describe('Utils', () => {
       expect(() => {
         parseUrl('htt//example.com');
       }).toThrow('Invalid URL');
+    });
+  });
+
+  describe('#omit', () => {
+    const subject = { a: 'a', b: 'b', c: 'c', d: 'd' };
+    test('should return a trimmed down object when remove array provided', () => {
+      expect(omit(subject, 'b', 'd')).toMatchObject({ a: 'a', c: 'c' });
+      expect(omit(subject, ['b', 'd'])).toMatchObject({ a: 'a', c: 'c' });
+      expect(omit(subject, 'b', ['d'])).toMatchObject({ a: 'a', c: 'c' });
+      expect(omit(subject, ['b', ['d']])).toMatchObject({ a: 'a', c: 'c' });
+    });
+
+    test('should return same object when no omit array provided', () => {
+      expect(omit(subject)).toMatchObject(subject);
     });
   });
 });
