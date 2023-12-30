@@ -27,8 +27,8 @@
     "build": "npm run lint:fix && npm run lint && npm test && npm run build:clean && npm run compile && echo '📦 Build artifact has been generated successfully.'",
     "coverage": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
     "prepare": "husky install",
-    "build:clean": "rimraf -fr dist/ && echo '🧹 Build artifacts has been cleaned.'",
-    "compile": "esbuild src/index.mjs --bundle --minify --keep-names --outfile=index.js --platform=node --target=node14 --packages=external",
+    "build:clean": "rimraf -fr index.js && echo '🧹 Build artifacts has been cleaned.'",
+    "compile": "esbuild src/index.mjs --bundle --minify --keep-names --outfile=index.js --platform=node --target=node16",
     "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc -c jsdoc.json && echo '📄 Docs has been generated successfully.'",
     "docs:clean": "rimraf -fr ./docs && echo '🧹 All docs has been cleaned.'",
     "lint": "eslint . --ext .mjs && echo '💄 Coding style guideline has been followed properly.'",
@@ -37,6 +37,7 @@
     "prod:start": "node index.js",
     "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.'",
     "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "example": "NODE_OPTIONS=--experimental-vm-modules node example.mjs",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
     "version": "echo $npm_package_version",
     "commitlint": "NODE_OPTIONS=--experimental-vm-modules npx commitlint --edit && echo '🔖 Commit message guidelines are followed properly.'"
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
+    "@types/got": "^9.6.12",
     "@types/jest": "^29.5.11",
     "clean-jsdoc-theme": "^4.2.17",
     "esbuild": "^0.19.9",
@@ -64,6 +66,8 @@
     "pre-commit": "npm run commitlint ${1} && npm run lint:fix && npm run lint && npm test"
   },
   "dependencies": {
-    "got": "^14.0.0"
+    "got": "^14.0.0",
+    "mkdirp": "^3.0.1",
+    "p-limit": "^5.0.0"
   }
 }
