@@ -1,6 +1,7 @@
-import { ProtocolNotSupported } from './../exceptions/index.mjs';
+import { ProtocolNotSupported } from './../exceptions';
 
 /**
+ * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Check if the url is valid
  * @param {string} url string to check
@@ -21,6 +22,7 @@ const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
 };
 
 /**
+ * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Strip first slash from a url / path
  * @param  {String} url URL to strip the slash
@@ -29,6 +31,7 @@ const isValidUrl = (url, protocols = ['http:', 'https:', 'ftp:', 'sftp:']) => {
 const stripFirstSlash = url => url.substring(0, 1).replace('/', '') + url.substring(1);
 
 /**
+ * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Validate a Playlist
  * @param {string} playlistContent Content of playlist file
@@ -37,6 +40,7 @@ const stripFirstSlash = url => url.substring(0, 1).replace('/', '') + url.substr
 const isValidPlaylist = playlistContent => playlistContent.match(/^#EXTM3U/im) !== null;
 
 /**
+ * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Validate a Playlist
  * @param {string} url url to parse
@@ -46,6 +50,7 @@ const isValidPlaylist = playlistContent => playlistContent.match(/^#EXTM3U/im) !
 const parseUrl = url => new URL(url);
 
 /**
+ * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description omit given keys from an object.
  * @param {any} keys keys to remove from the object
@@ -58,9 +63,8 @@ const omit = (subject, ...keys) => {
 };
 
 /**
- * @lends HLSDownloaderUtils
- * @memberof modules:HLSDownloaderUtils
+ * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @requires ./exceptions/ProtocolNotSupported.mjs
+ * @requires ./exceptions/ProtocolNotSupported.js
  */
 export { isValidPlaylist, isValidUrl, omit, parseUrl, stripFirstSlash };

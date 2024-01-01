@@ -10,7 +10,7 @@
     "recurse": true,
     "template": "./node_modules/clean-jsdoc-theme",
     "theme_opts": {
-      "default_theme": "dark",
+      "default_theme": "light",
       "displayModuleHeader": true,
       "exclude_inherited": false,
       "footer": "<footer style='width: 100%;'><div style='margin-bottom: 0.5rem;font-size: 1.25rem; font-weight: bold;'>HLSDownloader</div> <p>Please Feel free to <a style='text-decoration: underline;' target='_blank' href='https://github.com/nurrony/hlsdownloader/fork'>fork on GitHub</a></p></footer>",
@@ -46,17 +46,7 @@
   "plugins": ["plugins/markdown"],
   "source": {
     "exclude": ["node_modules", "tests", "docs"],
-    "include": [
-      "README.md",
-      "package.json",
-      "./src/index.mjs",
-      "./src/downloader.mjs",
-      "./src/utils/index.mjs",
-      "./src/utils/utils.mjs",
-      "./src/exceptions/index.mjs",
-      "./src/exceptions/InvalidPlaylist.mjs",
-      "./src/exceptions/ProtocolNotSupported.mjs"
-    ],
+    "include": ["README.md", "package.json", "./src/"],
     "includePattern": ".+\\.(m?js(doc|x)?)$"
   },
   "tags": {

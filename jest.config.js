@@ -19,6 +19,6 @@ export default {
   testEnvironment: 'node',
   transform: {},
   moduleFileExtensions: ['js', 'mjs', 'json'],
-  testMatch: ['**/tests/specs/**/*.spec.js', '**/tests/**/*.mjs'],
+  testMatch: ['**/tests/specs/**/*.spec.js', '**/tests/**/*.js'],
   verbose: true,
 };

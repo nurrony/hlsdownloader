@@ -6,4 +6,8 @@ src
 docs
 coverage
 AUTHORS
+CONTRIBUTING.md
 example.js
+tests/**
+jsdoc.json
+index.js

@@ -1,6 +1,7 @@
 /* istanbul ignore file */
-import InvalidPlayList from './InvalidPlaylist.mjs';
-import ProtocolNotSupported from './ProtocolNotSupported.mjs';
+
+import InvalidPlayList from './InvalidPlaylist';
+import ProtocolNotSupported from './ProtocolNotSupported';
 
 /**
  * @fileoverview Modules for HLSDownloader Custom Exceptions

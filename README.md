@@ -4,7 +4,7 @@
     <img alt="Version" src="https://img.shields.io/npm/v/hlsdownloader.svg">
   </a>
   <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
-    <img src="https://img.shields.io/badge/node-%3E%3D14-blue.svg" />
+    <img src="https://img.shields.io/badge/node-%3E%3D18-blue.svg" />
   </a>
   <a href="https://nurrony.github.io/hlsdownloader" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
@@ -26,12 +26,17 @@
 
 Downloads HLS Playlist file and TS chunks. It is useful if you want to do content pre-fetching from CDN for your end viewers.
 
+> ⚠️
+> <strong>This package is native [ESM]() and no longer provides a CommonJS export. If your project uses CommonJS, you will have to convert to ESM. Please don't open issues for questions regarding CommonJS / ESM.</strong>
+
+> ⚠️ HLSDownloader v2.x.x is no longer maintained and we will not accept any backport requests.
+
 ### 🏠 [Homepage](https://nurrony.github.io/hlsdownloader)
 
 ## Prerequisites
 
-- node >=14.x.x
-- npm >= 6.x.x
+- node >=18.x.x
+- npm >= 9.x.x
 
 ## Installation
 
@@ -55,22 +60,22 @@ variant download is failed it continues downloading others and reports after fin
 It's simple as below.
 
 ```js
-import HLSDownloader from 'hlsdownloader'; //Using ES2015 module
-//var HLSDownloader = require('hlsdownloader').downloader; //using commonJS module
+import HLSDownloader from 'hlsdownloader';
 
-const params = {
+const options = {
   playlistURL: 'http://example.com/path/to/your/playlist.m3u8', // change it
-  destination: '/tmp', // change it (optional field)
+  destination: '/tmp', // change it (optional: default '')
+  concurrency: 10, // change it (optional: default = 1),
+  overwrite: true, // change it (optional: default = false)
 };
-const downloader = new HLSDownloader(params);
-downloader.startDownload((err, msg) => (err ? console.log(err) : console.log(msg)));
+const downloader = new HLSDownloader(options);
+downloader.startDownload().then(response => console.log(response));
 ```
-
-`msg` is an object with following properties
 
 ```js
 //on success
 {
+  "total": <number>,
   message: 'Downloaded successfully',
   playlistURL: 'your playlist url'
 }
@@ -79,6 +84,7 @@ downloader.startDownload((err, msg) => (err ? console.log(err) : console.log(msg
 {
   message: 'Download done with some errors',
   playlistURL: 'your playlist url',
+  total: <number>,
   errors: [] // items url that is skipped or could not downloaded for error
 }
 ```
