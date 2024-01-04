@@ -22,6 +22,9 @@
     "hlsdownloader",
     "m3u8downloader"
   ],
+  "files": [
+    "build"
+  ],
   "exports": {
     "default": "./build/index.js"
   },
@@ -41,8 +44,8 @@
     "compile": "npx esbuild --outdir=build --platform=node --format=esm --target=node18 --packages=external --bundle --minify --tree-shaking=true --keep-names src/index.js",
     "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc -c jsdoc.json && echo '📄 Docs has been generated successfully.'",
     "docs:clean": "rimraf -fr ./docs && echo '🧹 All docs has been cleaned.'",
-    "lint": "eslint . --ext .mjs && echo '💄 Coding style guideline has been followed properly.'",
-    "lint:fix": "eslint . --ext .mjs --fix && echo '🔧 Coding style has been fixed as per guideline.'",
+    "lint": "eslint . --ext .js && echo '💄 Coding style guideline has been followed properly.'",
+    "lint:fix": "eslint . --ext .js --fix && echo '🔧 Coding style has been fixed as per guideline.'",
     "prod:start": "node index.js",
     "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.'",
     "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
