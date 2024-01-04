@@ -5,4 +5,4 @@ import { isValidPlaylist, isValidUrl, omit, parseUrl, stripFirstSlash } from './
  * Utility module for HLSDownloader
  * @module HLSDownloaderUtils
  */
-export { isValidPlaylist, isValidUrl, omit, parseUrl, stripFirstSlash };
+export default { isValidPlaylist, isValidUrl, omit, parseUrl, stripFirstSlash };

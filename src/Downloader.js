@@ -4,8 +4,9 @@ import ky from 'ky';
 import pLimit from 'p-limit';
 import { dirname, join } from 'path';
 import { Readable } from 'stream';
+import { URL } from 'url';
 import { InvalidPlayList } from './exceptions';
-import { isValidPlaylist, isValidUrl, omit, parseUrl, stripFirstSlash } from './utils';
+import Utils from './utils';
 
 /**
  * @class
@@ -142,7 +143,7 @@ class Downloader {
     }
   ) {
     try {
-      isValidUrl(playlistURL);
+      Utils.isValidUrl(playlistURL);
 
       this.items = [playlistURL];
       this.playlistURL = playlistURL;
@@ -175,7 +176,7 @@ class Downloader {
    * @description Start the downloading process
    */
   async startDownload() {
-    const { url, body: playlistContent } = (await this.fetchPlaylist(this.playlistURL)) || {};
+    const { url, body: playlistContent } = await this.fetchPlaylist(this.playlistURL);
     if (this.errors.length > 0) {
       return {
         errors: this.errors,
@@ -214,7 +215,7 @@ class Downloader {
    * @description merge options
    */
   mergeOptions(options) {
-    return Object.assign(Downloader.defaultKyOptions, omit(options, ...Downloader.unSupportedOptions));
+    return Object.assign(Downloader.defaultKyOptions, Utils.omit(options, ...Downloader.unSupportedOptions));
   }
 
   /**
@@ -228,37 +229,33 @@ class Downloader {
       .replace(/^#[\s\S].*/gim, '')
       .split(/\r?\n/)
       .reduce((result, item) => {
-        try {
-          if (item !== '') {
-            const url = new URL(item, playlistURL).href;
-            // @ts-ignore
-            result.push(url);
-          }
-          return result;
-        } catch ({ name, message }) {
-          this.errors.push({ name, message, url: item });
-          return result;
+        if (item !== '') {
+          const url = new URL(item, playlistURL).href;
+          //@ts-ignore
+          result.push(url);
         }
+        return result;
       }, []);
   }
 
   /**
    * @async
    * @method
-   * @returns {Promise<{url, body} | undefined>}
+   * @returns {Promise<{url, body}>}
    * @description fetch playlist content
    */
   async fetchPlaylist(url) {
     try {
       const body = await ky.get(url, { ...this.kyOptions }).text();
-      if (!isValidPlaylist(body)) {
+      if (!Utils.isValidPlaylist(body)) {
         const { name, message } = new InvalidPlayList('Invalid playlist');
         this.errors.push({ url, name, message });
-        return;
+        return { url: '', body: '' };
       }
       return { url, body };
     } catch ({ name, message }) {
       this.errors.push({ url, name, message });
+      return { url: '', body: '' };
     }
   }
 
@@ -269,7 +266,7 @@ class Downloader {
    * @returns {Array<{url: string, body: string}>} list of object containing url and its content
    */
   formatPlaylistContent(playlistContentResults) {
-    return playlistContentResults.reduce((contents, { status = '', value = undefined } = {}) => {
+    return playlistContentResults.reduce((contents, { status, value }) => {
       if (status.toLowerCase() === 'fulfilled' && !!value) {
         contents.push(value);
       }
@@ -374,10 +371,10 @@ class Downloader {
    * @param {string} url url to construct the path from
    */
   async createDirectory(url) {
-    const { pathname } = parseUrl(url);
+    const { pathname } = Utils.parseUrl(url);
     const destDirectory = join(this.destination, dirname(pathname));
     await mkdir(destDirectory, { recursive: true });
-    return join(this.destination, stripFirstSlash(pathname));
+    return join(this.destination, Utils.stripFirstSlash(pathname));
   }
 
   /**
@@ -388,7 +385,7 @@ class Downloader {
    */
   async shouldOverwrite(url) {
     try {
-      const { pathname } = parseUrl(url);
+      const { pathname } = Utils.parseUrl(url);
       const destDirectory = join(this.destination, dirname(pathname));
       await access(destDirectory, constants.F_OK);
       return this.overwrite;

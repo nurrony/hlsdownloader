@@ -1,6 +1,19 @@
+import { jest } from '@jest/globals';
+import Utils from '../src/utils';
 import HLSDownloader from './../src';
+jest.mock('fs');
+
+jest.mock('fs/promises');
+
+const fail = (reason = 'fail was called in a test.') => {
+  throw new Error(reason);
+};
 
 describe('Dowloader', () => {
+  let downloader;
+  let fetchSpy;
+  let isValidPlaylistSpy;
+
   const options = {
     playlistURL: 'http://nmrony.local/hls/example.m3u8',
     url: 'http://nmrony.local/hls/example.m3u8',
@@ -21,6 +34,48 @@ describe('Dowloader', () => {
     stringifyJson: true,
     methodRewriting: true,
   };
+
+  const validPlaylistContent = `#EXTM3U
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:3
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXTINF:9.00900,
+pure-relative.ts
+#EXTINF:9.00900,
+/other/root-relative.ts
+#EXTINF:9.00900,
+../third/relative.ts
+#EXTINF:9.00900,
+http://www.example.com/other-host.ts
+#EXTINF:9.00900,
+//www.example.com/things/protocol-relative.ts
+#EXT-X-ENDLIST
+  `;
+
+  const invalidPlaylistContent = `
+#EXT-X-TARGETDURATION:10
+#EXT-X-VERSION:3
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXTINF:9.00900,
+pure-relative.ts
+#EXT-X-ENDLIST
+  `;
+
+  beforeAll(() => {
+    isValidPlaylistSpy = jest.spyOn(Utils, 'isValidPlaylist');
+    fetchSpy = jest.spyOn(global, 'fetch');
+    jest.resetModules();
+  });
+
+  beforeEach(() => {
+    downloader = new HLSDownloader({ concurrency: 5, playlistURL: 'http://nmrony.local/hls/example.m3u8', options });
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   describe('#constructor', () => {
     it('should throw an error for empty call', () => {
       expect(() => {
@@ -112,33 +167,15 @@ describe('Dowloader', () => {
     });
   });
 
-  describe('#parseVariantPlaylist', () => {
+  describe('#parsePlaylist', () => {
     let items = [];
-    // do not indent it
-    const variantPlaylistContent = `#EXTM3U
-#EXT-X-TARGETDURATION:10
-#EXT-X-VERSION:3
-#EXT-X-MEDIA-SEQUENCE:0
-#EXT-X-PLAYLIST-TYPE:VOD
-#EXTINF:9.00900,
-pure-relative.ts
-#EXTINF:9.00900,
-/other/root-relative.ts
-#EXTINF:9.00900,
-../third/relative.ts
-#EXTINF:9.00900,
-http://www.example.com/other-host.ts
-#EXTINF:9.00900,
-//www.example.com/things/protocol-relative.ts
-#EXT-X-ENDLIST
-`;
-    beforeAll(() => {
-      const downloader = new HLSDownloader({ concurrency: 5, playlistURL: 'http://nmrony.local/hls/example.m3u8' });
-      items = downloader.parsePlaylist('http://nmrony.local/hls/example.m3u8', variantPlaylistContent);
+
+    beforeEach(() => {
+      items = downloader.parsePlaylist('http://nmrony.local/hls/example.m3u8', validPlaylistContent);
     });
 
     it('should parse the correct number of items', () => {
-      expect(items.length).toStrictEqual(5);
+      expect(items.length).toStrictEqual(6);
     });
 
     it('should handle urls with no pathing', () => {
@@ -162,11 +199,114 @@ http://www.example.com/other-host.ts
     });
   });
 
-  // describe('#startDwonload', () => {
-  //   let downloader;
-  //   beforeAll(() => {
-  //     downloader = new HLSDownloader({ playlistURL: 'http://nmrony.local/hls/example.m3u8' });
-  //     downloader.startDownload();
-  //   });
-  // });
+  describe('#fetchPlaylist', () => {
+    it('should fetch playlist fine with valid content', async () => {
+      fetchSpy.mockResolvedValue(Promise.resolve(new Response(validPlaylistContent)));
+      const { url, body } = await downloader.fetchPlaylist('http://nmrony.local/hls/playlist.m3u8');
+      expect(body).toStrictEqual(validPlaylistContent);
+      expect(Utils.isValidPlaylist).toHaveBeenCalled();
+      expect(isValidPlaylistSpy(validPlaylistContent)).toBeTruthy();
+      expect(url).toStrictEqual('http://nmrony.local/hls/playlist.m3u8');
+    });
+
+    it('should report error for invalid playlist content', async () => {
+      fetchSpy.mockResolvedValue(Promise.resolve(new Response(invalidPlaylistContent)));
+      await downloader.fetchPlaylist('http://nmrony.local/hls/playlist.m3u8');
+      expect(isValidPlaylistSpy).toHaveBeenCalled();
+      expect(isValidPlaylistSpy).toHaveBeenCalledTimes(1);
+      expect(downloader.errors.length).toStrictEqual(1);
+      expect(isValidPlaylistSpy(invalidPlaylistContent)).toBeFalsy();
+    });
+
+    it('should report error for http errors', async () => {
+      try {
+        await downloader.fetchPlaylist('http://nmrony.local/hls/playlist.m3u8');
+        fail('404');
+      } catch (error) {
+        expect(downloader.errors.length).toStrictEqual(1);
+        expect(error.message).toStrictEqual('404');
+      }
+    });
+  });
+
+  describe('#formatPlaylistContent', () => {
+    let result = [];
+    const fetchedData = [
+      { status: 'fulfilled', value: 'http://nmrony.local/hls/1.ts' },
+      { status: 'fulfilled', value: 'http://nmrony.local/hls/2.ts' },
+      { status: 'rejected', reason: 'http://nmrony.local/hls/3.ts' },
+    ];
+    beforeEach(() => {
+      result = downloader.formatPlaylistContent(fetchedData);
+    });
+
+    it('should process fulfilled items fine', () => {
+      expect(result.length).toEqual(2);
+    });
+  });
+
+  describe('#startDwonload', () => {
+    let fetchPlaylistSpy = null;
+    let parsePlaylistSpy = null;
+    let downloadItemSpy = null;
+    let downloadItemsSpy = null;
+    let processPlaylistItemsSpy = null;
+    beforeEach(() => {
+      fetchPlaylistSpy = jest.spyOn(downloader, 'fetchPlaylist');
+      downloadItemSpy = jest.spyOn(downloader, 'downloadItem');
+      downloadItemsSpy = jest.spyOn(downloader, 'downloadItems');
+      parsePlaylistSpy = jest.spyOn(downloader, 'parsePlaylist');
+      processPlaylistItemsSpy = jest.spyOn(downloader, 'processPlaylistItems');
+    });
+
+    afterEach(() => {
+      downloadItemSpy.mockReset();
+      downloadItemsSpy.mockReset();
+      fetchPlaylistSpy.mockReset();
+      parsePlaylistSpy.mockReset();
+      processPlaylistItemsSpy.mockReset();
+    });
+
+    it('should return empty error for http or invalid playlist', async () => {
+      let result = null;
+      fetchSpy.mockRejectedValueOnce(new Error('404'));
+      try {
+        result = await downloader.startDownload();
+        fail('Invalid Playlist');
+      } catch (error) {
+        expect(fetchPlaylistSpy).toHaveBeenCalled();
+        expect(fetchPlaylistSpy).toHaveBeenCalledTimes(1);
+        expect(fetchPlaylistSpy).toHaveReturnedTimes(1);
+        expect(downloader.errors.length).toBeGreaterThan(0);
+        expect(error.message).toStrictEqual('Invalid Playlist');
+      }
+    });
+
+    it('should fetch items for valid url', async () => {
+      fetchSpy.mockResolvedValue(Promise.resolve(new Response(validPlaylistContent)));
+      await downloader.startDownload();
+      expect(fetchPlaylistSpy).toHaveBeenCalled();
+      expect(parsePlaylistSpy).toHaveBeenCalled();
+      expect(processPlaylistItemsSpy).toHaveBeenCalled();
+      expect(fetchPlaylistSpy).toHaveBeenCalledTimes(2);
+      expect(parsePlaylistSpy).toHaveBeenCalledTimes(2);
+      expect(downloader.errors.length).toStrictEqual(0);
+    });
+
+    it('should report error with invalid content', async () => {
+      fetchSpy.mockResolvedValue(Promise.resolve(new Response(invalidPlaylistContent)));
+      await downloader.startDownload();
+      expect(fetchPlaylistSpy).toHaveBeenCalled();
+      expect(fetchPlaylistSpy).toHaveBeenCalledTimes(1);
+      expect(downloader.errors.length).toBeGreaterThan(0);
+    });
+
+    it('should report error with invalid content', async () => {
+      fetchSpy.mockResolvedValue(Promise.resolve(new Response(invalidPlaylistContent)));
+      await downloader.startDownload();
+      expect(fetchPlaylistSpy).toHaveBeenCalled();
+      expect(fetchPlaylistSpy).toHaveBeenCalledTimes(1);
+      expect(downloader.errors.length).toBeGreaterThan(0);
+    });
+  });
 });
