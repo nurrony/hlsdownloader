@@ -9,6 +9,9 @@
   <a href="https://nurrony.github.io/hlsdownloader" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
+  <a href="https://codecov.io/gh/nurrony/hlsdownloader" > 
+    <img src="https://codecov.io/gh/nurrony/hlsdownloader/graph/badge.svg?token=er50RqLH6T"/> 
+  </a>
   <a href="https://github.com/nurrony/hlsdownloader/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
