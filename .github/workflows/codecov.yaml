@@ -1,14 +1,15 @@
 name: Coverage Report
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
-      - main
-    types: [closed]
+      - master
 
 jobs:
   coverage:
-    if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
