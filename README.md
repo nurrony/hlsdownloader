@@ -1,21 +1,57 @@
-# HLSDownloader
+<h1 align="left">Welcome! 👋</h1>
+<p>
+  <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/hlsdownloader.svg">
+  </a>
+  <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
+    <img src="https://img.shields.io/badge/node-%3E%3D18-blue.svg" />
+  </a>
+  <a href="https://nurrony.github.io/hlsdownloader" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
+  <a href="https://github.com/nurrony/hlsdownloader/graphs/commit-activity" target="_blank">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
+  </a>
+  <a href="https://github.com/nurrony/hlsdownloader/blob/master/LICENSE" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/github/license/nurrony/hlsdownloader" />
+  </a>
+  <a href="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079" target="_blank">
+    <img alt="Semver: Badge" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079" />
+  </a>
+  <a href="https://twitter.com/nmrony" target="_blank">
+    <img alt="Twitter: nmrony" src="https://img.shields.io/twitter/follow/nmrony.svg?style=social" />
+  </a>
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/nmrony/hlsdownloader.svg)](https://greenkeeper.io/)
-[![version][npm-version]][npm-url] [![coding style: standard][standard-svg]][standard-site] [![dependencies][npm-dependencies]][dep-status] [![devDependencies][npm-dev-dependencies]][devdep-status] [![Downloads][npm-total-downloads]][npm-url] [![Travis branch][travis-badge]][travis-url] [![semantic-release][semvarbadge]][npm-url]
+</p>
 
-Downloads `m3u8` playlist and `TS` chunks for a given playlist URL.
+Downloads HLS Playlist file and TS chunks. It is useful if you want to do content pre-fetching from CDN for your end viewers.
+
+> ⚠️
+> <strong>This package is native [ESM]() and no longer provides a CommonJS export. If your project uses CommonJS, you will have to convert to ESM. Please don't open issues for questions regarding CommonJS / ESM.</strong>
+
+> ⚠️ HLSDownloader v2.x.x is no longer maintained and we will not accept any backport requests.
+
+### 🏠 [Homepage](https://nurrony.github.io/hlsdownloader)
+
+## Prerequisites
+
+- node >=18.x.x
+- npm >= 9.x.x
 
 ## Installation
 
-Install it via `npm` or `yarn`
+It is pretty straight forward
 
 ```sh
-[sudo] npm install hlsdownloader --save
-# Or
-[sudo] yarn add hlsdownloader
+# using npm
+npm install hlsdownloader
+# or with yarn
+yarn add hlsdownloader
+# or pnpm
+pnpm install hlsdownloader
 ```
 
-## Configuration
+## Usage
 
 `destination` field is optional. If `destination` is not provided it just fetches the content from origin.
 It can also be useful if you want to do content pre-fetching from CDN for your end viewers. If any `TS` or `m3u8`
@@ -24,67 +60,75 @@ variant download is failed it continues downloading others and reports after fin
 It's simple as below.
 
 ```js
-import HLSDownloader from 'hlsdownloader' //Using ES2015 module
-//var HLSDownloader = require('hlsdownloader').downloader; //using commonJS module
+import HLSDownloader from 'hlsdownloader';
 
-const params = {
+const options = {
   playlistURL: 'http://example.com/path/to/your/playlist.m3u8', // change it
-  destination: '/tmp' // change it (optional field)
-}
-const downloader = new HLSDownloader(params)
-downloader.startDownload((err, msg) => (err ? console.log(err) : console.log(msg)))
+  destination: '/tmp', // change it (optional: default '')
+  concurrency: 10, // change it (optional: default = 1),
+  overwrite: true, // change it (optional: default = false)
+};
+const downloader = new HLSDownloader(options);
+downloader.startDownload().then(response => console.log(response));
 ```
-
-`msg` is an object with following properties
 
 ```js
 //on success
 {
-message: 'Downloaded successfully',
-playlistURL: 'your playlist url'
+  "total": <number>,
+  message: 'Downloaded successfully',
+  playlistURL: 'your playlist url'
 }
+
 //on partial download
 {
-message: 'Download done with some errors',
-playlistURL: 'your playlist url',
-errors: [] // items url that is skipped or could not downloaded for error
+  message: 'Download done with some errors',
+  playlistURL: 'your playlist url',
+  total: <number>,
+  errors: [] // items url that is skipped or could not downloaded for error
 }
 ```
 
 ## Advance Usage
 
-`HLSDownloader` accepts all parameters supported by [request-promise][request-promise] except these following **options**
+TBD
 
-- method
-- uri
-- url
-- transform
-- resolveWithFullResponse
-- baseUrl
-- json
-- form
-- formData
-- preambleCRLF
-- postambleCRLF
-- jsonReviver
-- jsonReplacer
+## Run Tests
 
-It helps you to do `Auth`, limit `concurrency` of download and other various tasks without changing your code and workflow.
+```sh
+npm test
+```
 
-I will be grateful if you all help me to improve this package by giving your suggestions, feature request and
-pull requests. I am all ears!!
+To run it on watch mode
 
-[npm-badge]: https://nodei.co/npm/hlsdownloader.png?compact=true
-[npm-version]: https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square
-[npm-dependencies]: https://img.shields.io/david/nmrony/hlsdownloader.svg?style=flat-square
-[npm-dev-dependencies]: https://img.shields.io/david/dev/nmrony/hlsdownloader.svg?style=flat-square
-[npm-total-downloads]: https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/hlsdownloader
-[dep-status]: https://david-dm.org/nmrony/hlsdownloader#info=dependencies&view=table
-[devdep-status]: https://david-dm.org/nmrony/hlsdownloader#info=devDependencies&view=table
-[standard-svg]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
-[standard-site]: http://standardjs.com
-[request-promise]: https://github.com/request/request-promise
-[travis-badge]: https://img.shields.io/travis/nmrony/hlsdownloader/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/nmrony/hlsdownloader
-[semvarbadge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+```sh
+npm run test:watch
+```
+
+## Generate Documentations
+
+```sh
+npm docs:gen
+```
+
+## Authors
+
+👤 **Nur Rony**
+
+- Website: [nurrony.github.io](https://nurrony.github.io)
+- Twitter: [@nmrony](https://twitter.com/nmrony)
+- Github: [@nurrony](https://github.com/nurrony)
+- LinkedIn: [@nmrony](https://linkedin.com/in/nmrony)
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/nurrony/hlsdownloader/issues). You can also take a look at the [contributing guide](https://github.com/nurrony/hlsdownloader/blob/master/CONTRIBUTING.md).
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+## 📝 License
+
+Copyright © 2023 [Nur Rony](https://github.com/nurrony).<br />
+This project is [MIT](https://github.com/nurrony/hlsdownloader/blob/master/LICENSE) licensed.

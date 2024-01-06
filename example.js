@@ -1,9 +1,10 @@
-import HLSDownloader from 'hlsdownloader' // Using ES2015 module
-// var HLSDownloader = require('hlsdownloader').downloader // using commonJS module
+import HLSDownloader from './build/index';
 
-const params = {
-  playlistURL: 'http://example.com/url/to/your/hls.m3u8', // change it
-  destination: '/tmp' // change it
-}
-const downloader = new HLSDownloader(params)
-downloader.startDownload((err, msg) => err ? console.log(err) : console.log(msg))
+const downloader = new HLSDownloader({
+  playlistURL: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+  concurrency: 5,
+  destination: '/tmp/test',
+});
+
+const download = async () => downloader.startDownload();
+console.log(await downloader.startDownload());

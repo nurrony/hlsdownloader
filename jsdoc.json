@@ -1,0 +1,55 @@
+{
+  "markdown": {
+    "hardwrap": false,
+    "idInHeadings": true
+  },
+  "opts": {
+    "destination": "docs",
+    "encoding": "utf8",
+    "private": true,
+    "recurse": true,
+    "template": "./node_modules/clean-jsdoc-theme",
+    "theme_opts": {
+      "default_theme": "light",
+      "displayModuleHeader": true,
+      "exclude_inherited": false,
+      "footer": "<footer style='width: 100%;'><div style='margin-bottom: 0.5rem;font-size: 1.25rem; font-weight: bold;'>HLSDownloader</div> <p>Please Feel free to <a style='text-decoration: underline;' target='_blank' href='https://github.com/nurrony/hlsdownloader/fork'>fork on GitHub</a></p></footer>",
+      "homepageTitle": "Documentation | HLSDownloader",
+      "includeFilesListInHomepage": true,
+      "menu": [
+        {
+          "id": "github",
+          "link": "https://github.com/nurrony/hlsdownloader",
+          "title": "GitHub"
+        },
+        {
+          "id": "npm",
+          "link": "https://www.npmjs.com/package/hlsdownloader",
+          "title": "NPM"
+        }
+      ],
+      "meta": [
+        {
+          "content": "Nur Rony",
+          "name": "Author"
+        },
+        {
+          "content": "Downloads HLS Playlist file and TS chunks",
+          "name": "Description"
+        }
+      ],
+      "prefixModuleToSidebarItems_experimental": false,
+      "search": true,
+      "title": "HLSDownloader"
+    }
+  },
+  "plugins": ["plugins/markdown"],
+  "source": {
+    "exclude": ["node_modules", "tests", "docs"],
+    "include": ["README.md", "package.json", "./src/"],
+    "includePattern": ".+\\.(m?js(doc|x)?)$"
+  },
+  "tags": {
+    "allowUnknownTags": true
+  }
+}
