@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  ci:
+  unit_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
