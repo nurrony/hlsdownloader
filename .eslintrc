@@ -1,13 +1,10 @@
 {
   "env": {
     "node": true,
-    "mocha": true
+    "jest": true
   },
-  "extends": [
-    "standard"
-  ],
-  "rules": {
-    "space-before-function-paren": ["error", "never"]
-  },
-  "parser": "babel-eslint"
+  "parserOptions": {
+    "ecmaVersion": 2023,
+    "sourceType": "module"
+  }
 }
