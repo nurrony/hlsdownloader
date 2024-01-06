@@ -1,0 +1,50 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Publish Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["master"]
+
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job since we're just deploying
+  publish-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          cache: 'npm'
+      - name: Version Check
+        run: node -v && npm -v
+      - name: Install dependencies
+        run: npm ci
+      - name: 'Generate documents'
+        run: npm run docs:gen
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
