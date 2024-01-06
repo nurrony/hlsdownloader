@@ -4,8 +4,7 @@ name: Publish Documentation
 on:
   workflow_dispatch:
   push:
-    branches: ["master"]
-
+    branches: ['master']
 
 permissions:
   contents: read
@@ -13,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
@@ -44,7 +43,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs'
+          path: './docs/hlsdownloader/0.0.0-semantic-release'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
