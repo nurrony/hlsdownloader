@@ -30,11 +30,19 @@
 Downloads HLS Playlist file and TS chunks. It is useful if you want to do content pre-fetching from CDN for your end viewers.
 
 > ⚠️
-> <strong>This package is native [ESM]() and no longer provides a CommonJS export. If your project uses CommonJS, you will have to convert to ESM. Please don't open issues for questions regarding CommonJS / ESM.</strong>
+> <strong>This package is native [ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and no longer provides a CommonJS export. If your project uses CommonJS, you will have to [convert to ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c). Please don't open issues for questions regarding CommonJS / ESM.</strong>
 
 > ⚠️ HLSDownloader v2.x.x is no longer maintained and we will not accept any backport requests.
 
 ### 🏠 [Homepage](https://nurrony.github.io/hlsdownloader)
+
+### Features
+
+- Auto retry download
+- Support for progress bars
+- Support for custom HTTP Headers
+- Support for custom HTTP Client
+- Concurrent download segments with multiple http connections
 
 ## Prerequisites
 
