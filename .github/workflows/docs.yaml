@@ -22,19 +22,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: latest
-          cache: 'npm'
-      - name: Version Check
-        run: node -v && npm -v
-      - name: Install dependencies
-        run: npm ci
+      - name: Prepare Environment
+        uses: ./.github/workflows/prepare.yaml
       - name: 'Generate documents'
         run: npm run docs:gen
       - name: Setup Pages
