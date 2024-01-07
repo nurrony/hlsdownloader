@@ -1,4 +1,4 @@
-<h1 align="left">Welcome! 👋</h1>
+<h1 align="left">HLSDownloader 👋</h1>
 <p>
   <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/hlsdownloader.svg">
