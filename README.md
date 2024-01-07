@@ -47,7 +47,7 @@ It is pretty straight forward
 
 ```sh
 # using npm
-npm install hlsdownloader
+npm install --save hlsdownloader
 # or with yarn
 yarn add hlsdownloader
 # or pnpm
@@ -75,26 +75,47 @@ const downloader = new HLSDownloader(options);
 downloader.startDownload().then(response => console.log(response));
 ```
 
+> ℹ️ Check [example.js](example.js) for working example
+
 ```js
-//on success
+// on success
 {
-  "total": <number>,
-  message: 'Downloaded successfully',
+  total: <number>,
   playlistURL: 'your playlist url'
+  message: 'Downloaded successfully',
 }
 
-//on partial download
+// on partial download
 {
-  message: 'Download done with some errors',
-  playlistURL: 'your playlist url',
   total: <number>,
+  playlistURL: 'your playlist url',
+  message: 'Download done with some errors',
   errors: [] // items url that is skipped or could not downloaded for error
 }
 ```
 
 ## Advance Usage
 
-TBD
+HLSDownloader supports all [Ky API](https://github.com/sindresorhus/ky?tab=readme-ov-file#api) except these options given below
+
+- uri
+- url
+- json
+- form
+- body
+- method
+- setHost
+- isStream
+- parseJson
+- prefixUrl
+- cookieJar
+- playlistURL
+- concurrency
+- allowGetBody
+- stringifyJson
+- methodRewriting
+
+It also disable retry failed request that you can easily override
 
 ## Run Tests
 
@@ -129,7 +150,11 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 ## Show your support
 
-Give a ⭐️ if this project helped you!
+Give a ⭐️ if this project helped you!. I will be grateful if you all help me to improve this package by giving your suggestions, feature request and pull requests. I am all ears!!
+
+## Special Thanks to
+
+- [Ky Team](https://www.npmjs.com/package/ky)
 
 ## 📝 License
 
