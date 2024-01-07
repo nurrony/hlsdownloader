@@ -9,6 +9,13 @@ import { InvalidPlayList } from './exceptions';
 import Utils from './utils';
 
 /**
+ * HLS Playlist file extension
+ * @constant
+ * @type {string}
+ */
+const HLS_PLAYLIST_EXT = '.m3u8';
+
+/**
  * @class
  * @memberof module:HLSDownloader
  * @author Nur Rony<pro.nmrony@gmail.com>
@@ -186,7 +193,7 @@ class Downloader {
 
     let urls = this.parsePlaylist(url, playlistContent);
     this.items = [...this.items, ...urls];
-    const playlists = urls.filter(url => url.toLowerCase().endsWith('.m3u8'));
+    const playlists = urls.filter(url => url.toLowerCase().endsWith(HLS_PLAYLIST_EXT));
     const playlistContentPromiseResults = await Promise.allSettled(playlists.map(vUrl => this.fetchPlaylist(vUrl)));
     const playlistContents = this.formatPlaylistContent(playlistContentPromiseResults);
     urls = playlistContents.map(content => this.parsePlaylist(content?.url, content?.body)).flat();
