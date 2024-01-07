@@ -1,10 +1,10 @@
-# Simple workflow for deploying static content to GitHub Pages
 name: Publish Documentation
 
 on:
   workflow_dispatch:
   push:
-    branches: ['master']
+    branches:
+      - 'master'
 
 permissions:
   contents: read
@@ -16,10 +16,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
   publish-docs:
     environment:
-      name: github-pages
+      name: hlsdownloader_docs_url
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
