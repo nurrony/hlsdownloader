@@ -3,7 +3,7 @@
 </div>
 
 <p align="center" style="font-size: 18px;">
-  Downloads HLS Playlist file and TS chunks. It is useful if you want to do content pre-fetching from CDN for your end viewers.
+  Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetching from CDN to Edge Server for your end viewers.
 </p>
 
 <p align="center" style="font-size: 18px;">
