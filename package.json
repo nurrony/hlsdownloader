@@ -25,6 +25,7 @@
   "files": [
     "build"
   ],
+  "main": "./build/index.js",
   "exports": {
     "default": "./build/index.js"
   },
