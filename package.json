@@ -60,14 +60,12 @@
     }
   },
   "release": {
-    "dryRun": true,
     "debug": true,
     "branches": [
-      "master",
-      "next"
+      "master"
     ]
   },
-  "version": "3.0.0",
+  "version": "0.0.0-semantic-release",
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
