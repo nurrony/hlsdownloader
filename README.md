@@ -8,7 +8,7 @@
 
 <p align="center" style="font-size: 18px;">
   <a href="https://www.npmjs.com/package/hlsdownloader"><b>NPM</b></a> • <a href="https://nurrony.github.io/hlsdownloader/"><b>Documentation</b></a> •  <a href="https://github.com/nurrony/hlsdownloader"><b>GitHub</b></a>
-  </p>
+</p>
 
 <div align="center">
   <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
@@ -16,6 +16,9 @@
   </a>
   <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
     <img src="https://img.shields.io/badge/node-%3E%3D18-blue.svg?style=flat-square" />
+  </a>
+  <a href="https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml" target="_blank">
+    <img src=https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml/badge.svg?style=flat-square" />
   </a>
   <a href="https://nurrony.github.io/hlsdownloader" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square" />
