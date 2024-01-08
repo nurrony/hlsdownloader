@@ -2,36 +2,38 @@
    <a href="/" alt="HLSDownloader Logo"><img alt="HLSDownloader" style="height: 200px; width: 200px;border-radius: 5px;" src="./assets/logo.png" /></a><br />
 </div>
 
-<p align="center">
+<p align="center" style="font-size: 18px;">
   Downloads HLS Playlist file and TS chunks. It is useful if you want to do content pre-fetching from CDN for your end viewers.
 </p>
 
-<p align="center"><a href="https://nurrony.github.io/hlsdownloader/"><b>Documentation</b></a></p>
+<p align="center" style="font-size: 18px;">
+  <a href="https://www.npmjs.com/package/hlsdownloader"><b>NPM</b></a> • <a href="https://nurrony.github.io/hlsdownloader/"><b>Documentation</b></a> •  <a href="https://github.com/nurrony/hlsdownloader"><b>GitHub</b></a>
+  </p>
 
 <div align="center">
   <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/hlsdownloader.svg">
+    <img alt="Version" src="https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square">
   </a>
   <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
-    <img src="https://img.shields.io/badge/node-%3E%3D18-blue.svg" />
+    <img src="https://img.shields.io/badge/node-%3E%3D18-blue.svg?style=flat-square" />
   </a>
   <a href="https://nurrony.github.io/hlsdownloader" target="_blank">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square" />
   </a>
   <a href="https://codecov.io/gh/nurrony/hlsdownloader" > 
-    <img src="https://codecov.io/gh/nurrony/hlsdownloader/graph/badge.svg?token=er50RqLH6T"/> 
+    <img src="https://codecov.io/gh/nurrony/hlsdownloader/graph/badge.svg?token=er50RqLH6T?style=flat-square"/> 
   </a>
   <a href="https://github.com/nurrony/hlsdownloader/graphs/commit-activity" target="_blank">
-    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square" />
   </a>
   <a href="https://github.com/nurrony/hlsdownloader/blob/master/LICENSE" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/github/license/nurrony/hlsdownloader" />
+    <img alt="License: MIT" src="https://img.shields.io/github/license/nurrony/hlsdownloader?style=flat-square" />
   </a>
-  <a href="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079" target="_blank">
-    <img alt="Semver: Badge" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079" />
+  <a href="https://npmjs.com/package/hlsdownloader" target="_blank">
+    <img alt="Semver: Badge" src="https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079?style=flat-square" />
   </a>
-  <a href="https://twitter.com/nmrony" target="_blank">
-    <img alt="Twitter: nmrony" src="https://img.shields.io/twitter/follow/nmrony.svg?style=social" />
+  <a href="https://npm-stat.com/charts.html?package=hlsdownloader" target="_blank">
+    <img alt="Downloads: HLSDownloader" src="https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square" />
   </a>
   <br /> <br />
 </div>
@@ -39,22 +41,38 @@
 > ⚠️
 > <strong>This package is native [ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and no longer provides a CommonJS export. If your project uses CommonJS, you will have to [convert to ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c). Please don't open issues for questions regarding CommonJS / ESM.</strong>
 
-> ⚠️ HLSDownloader v2.x.x is no longer maintained and we will not accept any backport requests.
+> ⚠️
+> <strong>HLSDownloader `v2.x.x` is no longer maintained and we will not accept any backport requests.</strong>
+
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [How to use](#how-to-use)
+- [Advance Usage](#advance-usage)
+- [Running Tests](#running-tests)
+- [Generate Documentations](#generate-documentations)
+- [Authors](#authors)
+- [Contributing](#contributing)
+- [Show your support](#show-your-support)
+- [Special Thanks to](#special-thanks-to)
+- [License](#license)
 
 ## Features
 
 - Retryable
+- Promise Based
 - Support for HTTP/2
 - Overwrite protection
 - Support for custom HTTP Headers
 - Support for custom HTTP Client
-- Bring your own progress bar for download
+- Bring your own progress bar during download
 - Concurrent download segments with multiple http connections
 
 ## Prerequisites
 
 - node >=18.x.x
-- npm >= 9.x.x
 
 ## Installation
 
@@ -132,7 +150,7 @@ HLSDownloader supports all [Ky API](https://github.com/sindresorhus/ky?tab=readm
 
 It also disable retry failed request that you can easily override
 
-## 🧪 Running Tests
+## Running Tests
 
 ```sh
 npm test
@@ -159,7 +177,7 @@ npm docs:gen
 - Github: [@nurrony](https://github.com/nurrony)
 - LinkedIn: [@nmrony](https://linkedin.com/in/nmrony)
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/nurrony/hlsdownloader/issues). You can also take a look at the [contributing guide](https://github.com/nurrony/hlsdownloader/blob/master/CONTRIBUTING.md).
 
@@ -171,7 +189,7 @@ Give a ⭐️ if this project helped you!. I will be grateful if you all help me
 
 - [Ky Team](https://www.npmjs.com/package/ky)
 
-## 📝 License
+## License
 
 Copyright © 2023 [Nur Rony](https://github.com/nurrony).<br />
 This project is [MIT](https://github.com/nurrony/hlsdownloader/blob/master/LICENSE) licensed.
