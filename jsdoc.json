@@ -14,10 +14,7 @@
       "default_theme": "light",
       "displayModuleHeader": true,
       "exclude_inherited": false,
-<<<<<<< HEAD
       "favicon": "./assets/favicon.png",
-=======
->>>>>>> feature/automate-release-to-npm
       "footer": "<footer style='width: 100%;'><div style='margin-bottom: 0.5rem;font-size: 1.25rem; font-weight: bold;'>HLSDownloader</div> <p>Please Feel free to <a style='text-decoration: underline;' target='_blank' href='https://github.com/nurrony/hlsdownloader/fork'>fork on GitHub</a>. Give a ⭐️ if this project helped you!. I will be grateful if you all help me to improve this package by giving your suggestions, feature request and pull requests. I am all ears!!</p></footer>",
       "homepageTitle": "Documentation | HLSDownloader",
       "includeFilesListInHomepage": true,
