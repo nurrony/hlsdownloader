@@ -1,5 +1,14 @@
-<h1 align="left">HLSDownloader 👋</h1>
-<p>
+<div align="center">
+   <a href="/" alt="HLSDownloader Logo"><img alt="HLSDownloader" style="height: 200px; width: 200px;border-radius: 5px;" src="./assets/logo.png" /></a><br />
+</div>
+
+<p align="center">
+  Downloads HLS Playlist file and TS chunks. It is useful if you want to do content pre-fetching from CDN for your end viewers.
+</p>
+
+<p align="center"><a href="https://nurrony.github.io/hlsdownloader/"><b>Documentation</b></a></p>
+
+<div align="center">
   <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/hlsdownloader.svg">
   </a>
@@ -24,10 +33,8 @@
   <a href="https://twitter.com/nmrony" target="_blank">
     <img alt="Twitter: nmrony" src="https://img.shields.io/twitter/follow/nmrony.svg?style=social" />
   </a>
-
-</p>
-
-Downloads HLS Playlist file and TS chunks. It is useful if you want to do content pre-fetching from CDN for your end viewers.
+  <br /> <br />
+</div>
 
 > ⚠️
 > <strong>This package is native [ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and no longer provides a CommonJS export. If your project uses CommonJS, you will have to [convert to ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c). Please don't open issues for questions regarding CommonJS / ESM.</strong>
