@@ -4,7 +4,9 @@ import InvalidPlayList from './InvalidPlaylist';
 import ProtocolNotSupported from './ProtocolNotSupported';
 
 /**
- * @fileoverview Modules for HLSDownloader Custom Exceptions
+ * @description
+ * <header><h1>HLSDownloaderException</h1></header>
+ * <p>Modules for HLSDownloader Custom Exceptions</p>
  * @module HLSDownloaderException
  * @name HLSDownloaderException
  */
