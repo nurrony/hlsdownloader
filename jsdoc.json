@@ -17,23 +17,6 @@
       "footer": "<footer style='width: 100%;'><div style='margin-bottom: 0.5rem;font-size: 1.25rem; font-weight: bold;'>HLSDownloader</div> <p>Please Feel free to <a style='text-decoration: underline;' target='_blank' href='https://github.com/nurrony/hlsdownloader/fork'>fork on GitHub</a>. Give a ⭐️ if this project helped you!. I will be grateful if you all help me to improve this package by giving your suggestions, feature request and pull requests. I am all ears!!</p></footer>",
       "homepageTitle": "Documentation | HLSDownloader",
       "includeFilesListInHomepage": true,
-      "menu": [
-        {
-          "id": "HomePage",
-          "link": "https://nurrony.github.io/hlsdownloader",
-          "title": "🏠 Homepage"
-        },
-        {
-          "id": "github",
-          "link": "https://github.com/nurrony/hlsdownloader",
-          "title": "GitHub"
-        },
-        {
-          "id": "npm",
-          "link": "https://www.npmjs.com/package/hlsdownloader",
-          "title": "NPM"
-        }
-      ],
       "meta": [
         {
           "content": "Nur Rony",
@@ -47,7 +30,7 @@
       "prefixModuleToSidebarItems_experimental": false,
       "search": true,
       "static_dir": ["./assets"],
-      "title": "<div style=\"text-align: center;\"><a style=\"text-decoration: none;\" href=\"/\"><img src=\"assets/logo.png\" name='hlsdownloader' style=\"border-radius: 5px;\" height=\"130\" width=\"130\"/><h1 style=\"font-size: 2em;\">HLSDownloader</h1></a></div>"
+      "title": "<div style=\"text-align: center;\"><a style=\"text-decoration: none;\" href=\"https://nurrony.github.io/hlsdownloader\"><img src=\"assets/logo.png\" name='hlsdownloader' style=\"border-radius: 5px;\" height=\"130\" width=\"130\"/><h1 style=\"font-size: 2em;\">HLSDownloader</h1></a></div>"
     }
   },
   "plugins": ["plugins/markdown"],
