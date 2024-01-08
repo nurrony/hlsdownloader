@@ -30,7 +30,10 @@
   },
   "license": "MIT",
   "name": "hlsdownloader",
-  "repository": "git+https://github.com/nurrony/hlsdownloader.git",
+  "repository": {
+    "type": "git+https",
+    "url": "git+https://github.com/nurrony/hlsdownloader.git"
+  },
   "scripts": {
     "semantic-release": "semantic-release",
     "prepublishOnly": "npm run build",
