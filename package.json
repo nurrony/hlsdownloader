@@ -67,7 +67,7 @@
       "next"
     ]
   },
-  "version": "0.0.0-semantic-release",
+  "version": "3.0.0",
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
