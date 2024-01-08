@@ -10,6 +10,12 @@
     "recurse": true,
     "template": "./node_modules/clean-jsdoc-theme",
     "theme_opts": {
+      "add_script_path": [
+        {
+          "crossorigin": "anonymous",
+          "href": "https://kit.fontawesome.com/5701574a75.js"
+        }
+      ],
       "default_theme": "light",
       "displayModuleHeader": true,
       "exclude_inherited": false,
@@ -17,6 +23,11 @@
       "homepageTitle": "Documentation | HLSDownloader",
       "includeFilesListInHomepage": true,
       "menu": [
+        {
+          "id": "HomePage",
+          "link": "https://nurrony.github.io/hlsdownloader",
+          "title": "🏠 Homepage"
+        },
         {
           "id": "github",
           "link": "https://github.com/nurrony/hlsdownloader",

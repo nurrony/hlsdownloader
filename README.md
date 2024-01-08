@@ -34,14 +34,14 @@ Downloads HLS Playlist file and TS chunks. It is useful if you want to do conten
 
 > ⚠️ HLSDownloader v2.x.x is no longer maintained and we will not accept any backport requests.
 
-### 🏠 [Homepage](https://nurrony.github.io/hlsdownloader)
+## Features
 
-### Features
-
-- Auto retry download
-- Support for progress bars
+- Retryable
+- Support for HTTP/2
+- Overwrite protection
 - Support for custom HTTP Headers
 - Support for custom HTTP Client
+- Bring your own progress bar for download
 - Concurrent download segments with multiple http connections
 
 ## Prerequisites
@@ -62,7 +62,7 @@ yarn add hlsdownloader
 pnpm install hlsdownloader
 ```
 
-## Usage
+## How to use
 
 `destination` field is optional. If `destination` is not provided it just fetches the content from origin.
 It can also be useful if you want to do content pre-fetching from CDN for your end viewers. If any `TS` or `m3u8`
@@ -125,7 +125,7 @@ HLSDownloader supports all [Ky API](https://github.com/sindresorhus/ky?tab=readm
 
 It also disable retry failed request that you can easily override
 
-## Run Tests
+## 🧪 Running Tests
 
 ```sh
 npm test
