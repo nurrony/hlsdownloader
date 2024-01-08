@@ -30,10 +30,7 @@
   },
   "license": "MIT",
   "name": "hlsdownloader",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nurrony/hlsdownloader.git"
-  },
+  "repository": "git+https://github.com/nurrony/hlsdownloader.git",
   "scripts": {
     "semantic-release": "semantic-release",
     "prepublishOnly": "npm run build",
@@ -67,7 +64,7 @@
       "next"
     ]
   },
-  "version": "0.0.0-semantic-release",
+  "version": "3.0.0",
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
