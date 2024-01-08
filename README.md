@@ -1,5 +1,5 @@
 <div align="center">
-   <a href="/" alt="HLSDownloader Logo"><img alt="HLSDownloader" style="height: 200px; width: 200px;border-radius: 5px;" src="./assets/logo.png" /></a><br />
+   <a href="https://nurrony.github.io/hlsdownloader/" alt="HLSDownloader Logo"><img alt="HLSDownloader" style="height: 200px; width: 200px;border-radius: 5px;" src="./assets/logo.png" /></a><br />
 </div>
 
 <p align="center" style="font-size: 18px;">
