@@ -35,6 +35,12 @@
   <a href="https://npm-stat.com/charts.html?package=hlsdownloader" target="_blank">
     <img alt="Downloads: HLSDownloader" src="https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square" />
   </a>
+  <a href="https://bundlephobia.com/package/hlsdownloader@latest" target="_blank">
+    <img alt="Min Bundle Size: HLSDownloader" src="https://img.shields.io/bundlephobia/minzip/hlsdownloader?style=flat-square" />
+  </a>
+  <a href="https://bundlephobia.com/package/hlsdownloader@latest" target="_blank">
+    <img alt="Min Bundle Size: HLSDownloader" src="https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=hlsdownloader&query=$.install.pretty&label=install%20size&style=flat-square" />
+  </a>
   <br /> <br />
 </div>
 
