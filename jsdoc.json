@@ -10,12 +10,6 @@
     "recurse": true,
     "template": "./node_modules/clean-jsdoc-theme",
     "theme_opts": {
-      "add_script_path": [
-        {
-          "crossorigin": "anonymous",
-          "href": "https://kit.fontawesome.com/5701574a75.js"
-        }
-      ],
       "default_theme": "light",
       "displayModuleHeader": true,
       "exclude_inherited": false,
