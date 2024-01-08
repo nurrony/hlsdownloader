@@ -123,7 +123,13 @@ downloader.startDownload().then(response => console.log(response));
   total: <number>,
   playlistURL: 'your playlist url',
   message: 'Download done with some errors',
-  errors: [] // items url that is skipped or could not downloaded for error
+  errors: [
+    {
+      name: 'InvalidPlaylist',
+      message: 'Playlist parsing is not successful'
+      url: 'https://cnd.hls-server.test/playlist.m3u8'
+    }
+  ] // items url that is skipped or could not downloaded for error
 }
 ```
 
