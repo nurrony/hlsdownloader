@@ -1,5 +1,7 @@
 <div align="center">
-   <a href="https://nurrony.github.io/hlsdownloader/" alt="HLSDownloader Logo"><img alt="HLSDownloader" style="height: 200px; width: 200px;border-radius: 5px;" src="./assets/logo.png" /></a><br />
+
+[![HLSDownloader](./assets/logo.png)](https://nurrony.github.io/hlsdownloader/)<br />
+
 </div>
 
 <p align="center" style="font-size: 18px;">
@@ -11,40 +13,19 @@
 </p>
 
 <div align="center">
-  <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square">
-  </a>
-  <a href="https://www.npmjs.com/package/hlsdownloader" target="_blank">
-    <img src="https://img.shields.io/badge/node-%3E%3D18-blue.svg?style=flat-square" />
-  </a>
-  <a href="https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml" target="_blank">
-    <img src="https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml/badge.svg?style=flat-square" />
-  </a>
-  <a href="https://nurrony.github.io/hlsdownloader" target="_blank">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square" />
-  </a>
-  <a href="https://codecov.io/gh/nurrony/hlsdownloader" > 
-    <img src="https://codecov.io/gh/nurrony/hlsdownloader/graph/badge.svg?token=er50RqLH6T?style=flat-square"/> 
-  </a>
-  <a href="https://github.com/nurrony/hlsdownloader/graphs/commit-activity" target="_blank">
-    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square" />
-  </a>
-  <a href="https://github.com/nurrony/hlsdownloader/blob/master/LICENSE" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/github/license/nurrony/hlsdownloader?style=flat-square" />
-  </a>
-  <a href="https://npmjs.com/package/hlsdownloader" target="_blank">
-    <img alt="Semver: Badge" src="https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079?style=flat-square" />
-  </a>
-  <a href="https://npm-stat.com/charts.html?package=hlsdownloader" target="_blank">
-    <img alt="Downloads: HLSDownloader" src="https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square" />
-  </a>
-  <a href="https://bundlephobia.com/package/hlsdownloader@latest" target="_blank">
-    <img alt="Min Bundle Size: HLSDownloader" src="https://img.shields.io/bundlephobia/minzip/hlsdownloader?style=flat-square" />
-  </a>
-  <a href="https://bundlephobia.com/package/hlsdownloader@latest" target="_blank">
-    <img alt="Min Bundle Size: HLSDownloader" src="https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=hlsdownloader&query=$.install.pretty&label=install%20size&style=flat-square" />
-  </a>
-  <br /> <br />
+
+[![Version](https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
+[![Node](https://img.shields.io/badge/node-%3E%3D18-blue.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
+[![CI](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml/badge.svg?style=flat-square)](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml)
+[![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square)](https://nurrony.github.io/hlsdownloader)
+[![Coverage](https://codecov.io/gh/nurrony/hlsdownloader/graph/badge.svg?token=er50RqLH6T?style=flat-square)](https://codecov.io/gh/nurrony/hlsdownloader)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square) ](https://github.com/nurrony/hlsdownloader/graphs/commit-activity)
+[![License: MIT](https://img.shields.io/github/license/nurrony/hlsdownloader?style=flat-square) ](https://github.com/nurrony/hlsdownloader/blob/master/LICENSE)
+[![Semver: Badge](https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079?style=flat-square) ](https://npmjs.com/package/hlsdownloader)
+[![Downloads: HLSDownloader](https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square) ](https://npm-stat.com/charts.html?package=hlsdownloader)
+[![Min Bundle Size: HLSDownloader](https://img.shields.io/bundlephobia/minzip/hlsdownloader?style=flat-square) ](https://bundlephobia.com/package/hlsdownloader@latest)
+<br /> <br />
+
 </div>
 
 > ⚠️
