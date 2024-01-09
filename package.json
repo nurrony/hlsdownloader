@@ -17,10 +17,18 @@
   "keywords": [
     "HLS",
     "m3u8",
+    "live",
+    "chunk",
+    "download",
     "playlist",
+    "streaming",
+    "livestream",
     "downloader",
+    "cdn-priming",
     "hlsdownloader",
-    "m3u8downloader"
+    "m3u8downloader",
+    "streaming-video",
+    "download-playlists"
   ],
   "files": [
     "build"
@@ -36,24 +44,24 @@
     "url": "git+https://github.com/nurrony/hlsdownloader.git"
   },
   "scripts": {
-    "semantic-release": "semantic-release",
-    "prepublishOnly": "npm run build",
-    "build": "npm run lint:fix && npm run lint && npm test && npm run build:clean && npm run compile && echo '📦 Build artifact has been generated successfully.'",
-    "coverage": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
     "prepare": "husky install",
-    "build:clean": "rimraf -fr build && echo '🧹 Build artifacts has been cleaned.'",
-    "compile": "npx esbuild --outdir=build --platform=node --format=esm --target=node18 --packages=external --bundle --minify --tree-shaking=true --keep-names src/index.js",
-    "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc -c jsdoc.json && echo '📄 Docs has been generated successfully.'",
+    "prod:start": "node index.js",
+    "prepublishOnly": "npm run build",
+    "version": "echo $npm_package_version",
+    "semantic-release": "semantic-release",
+    "example": "NODE_OPTIONS=--experimental-vm-modules node example.mjs",
     "docs:clean": "rimraf -fr ./docs && echo '🧹 All docs has been cleaned.'",
+    "coverage": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
+    "build:clean": "rimraf -fr build && echo '🧹 Build artifacts has been cleaned.'",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
+    "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
     "lint": "eslint . --ext .js && echo '💄 Coding style guideline has been followed properly.'",
     "lint:fix": "eslint . --ext .js --fix && echo '🔧 Coding style has been fixed as per guideline.'",
-    "prod:start": "node index.js",
     "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.'",
-    "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "example": "NODE_OPTIONS=--experimental-vm-modules node example.mjs",
-    "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
-    "version": "echo $npm_package_version",
-    "commitlint": "NODE_OPTIONS=--experimental-vm-modules npx commitlint --edit && echo '🔖 Commit message guidelines are followed properly.'"
+    "commitlint": "NODE_OPTIONS=--experimental-vm-modules npx commitlint --edit && echo '🔖 Commit message guidelines are followed properly.'",
+    "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc -c jsdoc.json && echo '📄 Docs has been generated successfully.'",
+    "build": "npm run lint:fix && npm run lint && npm test && npm run build:clean && npm run compile && echo '📦 Build artifact has been generated successfully.'",
+    "compile": "npx esbuild --outdir=build --platform=node --format=esm --target=node18 --packages=external --bundle --minify --tree-shaking=true --keep-names src/index.js"
   },
   "config": {
     "commitizen": {
