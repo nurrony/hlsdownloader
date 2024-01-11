@@ -34,21 +34,6 @@
 > ⚠️
 > <strong>HLSDownloader `v2.x.x` is no longer maintained and we will not accept any backport requests.</strong>
 
-## Table of Contents
-
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [How to use](#how-to-use)
-- [Advance Usage](#advance-usage)
-- [Running Tests](#running-tests)
-- [Generate Documentations](#generate-documentations)
-- [Authors](#authors)
-- [Contributing](#contributing)
-- [Show your support](#show-your-support)
-- [Special Thanks to](#special-thanks-to)
-- [License](#license)
-
 ## Features
 
 - Retryable
