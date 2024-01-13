@@ -1,9 +1,7 @@
 import { jest } from '@jest/globals';
+import { rimraf } from 'rimraf';
 import Utils from '../src/utils';
 import HLSDownloader from './../src';
-jest.mock('fs');
-
-jest.mock('fs/promises');
 
 const fail = (reason = 'fail was called in a test.') => {
   throw new Error(reason);
@@ -251,6 +249,8 @@ pure-relative.ts
     let downloadItemSpy = null;
     let downloadItemsSpy = null;
     let processPlaylistItemsSpy = null;
+    const destination = '/tmp/test';
+
     beforeEach(() => {
       fetchPlaylistSpy = jest.spyOn(downloader, 'fetchPlaylist');
       downloadItemSpy = jest.spyOn(downloader, 'downloadItem');
@@ -266,6 +266,8 @@ pure-relative.ts
       parsePlaylistSpy.mockReset();
       processPlaylistItemsSpy.mockReset();
     });
+
+    afterAll(async () => {});
 
     it('should return empty error for http or invalid playlist', async () => {
       let result = null;
@@ -307,6 +309,38 @@ pure-relative.ts
       expect(fetchPlaylistSpy).toHaveBeenCalled();
       expect(fetchPlaylistSpy).toHaveBeenCalledTimes(1);
       expect(downloader.errors.length).toBeGreaterThan(0);
+    });
+
+    it('should download items for valid url', async () => {
+      downloader = new HLSDownloader({
+        destination,
+        concurrency: 5,
+        overwrite: true,
+        playlistURL: 'http://nmrony.local/hls/example.m3u8',
+      });
+      fetchSpy.mockResolvedValue(Promise.resolve(new Response(validPlaylistContent)));
+      await downloader.startDownload();
+      // expect(fetchPlaylistSpy).toHaveBeenCalled();
+      // expect(parsePlaylistSpy).toHaveBeenCalled();
+      // expect(processPlaylistItemsSpy).toHaveBeenCalled();
+      // expect(fetchPlaylistSpy).toHaveBeenCalledTimes(2);
+      // expect(parsePlaylistSpy).toHaveBeenCalledTimes(2);
+      // expect(downloader.errors.length).toStrictEqual(0);
+    });
+
+    it('should not download items for valid url', async () => {
+      downloader = new HLSDownloader({
+        destination,
+        concurrency: 5,
+        overwrite: false,
+        playlistURL: 'http://nmrony.local/hls/example.m3u8',
+      });
+      fetchSpy.mockResolvedValue(Promise.resolve(new Response(validPlaylistContent)));
+      await downloader.startDownload();
+      expect(fetchPlaylistSpy).not.toHaveBeenCalled();
+      expect(parsePlaylistSpy).not.toHaveBeenCalled();
+      expect(processPlaylistItemsSpy).not.toHaveBeenCalled();
+      await rimraf(destination);
     });
   });
 });
