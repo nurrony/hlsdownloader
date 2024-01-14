@@ -1,80 +1,22 @@
 {
   "author": {
-    "name": "Nur Rony",
     "email": "pro.nmrony@gmail.com",
+    "name": "Nur Rony",
     "url": "https://nurrony.github.io"
   },
   "bugs": {
     "url": "https://github.com/nurrony/hlsdownloader/issues"
-  },
-  "type": "module",
-  "description": "Downloads HLS Playlist file and TS chunks",
-  "engines": {
-    "node": ">=18",
-    "npm": ">=9"
-  },
-  "homepage": "https://nurrony.github.io/hlsdownloader",
-  "keywords": [
-    "HLS",
-    "m3u8",
-    "live",
-    "chunk",
-    "download",
-    "playlist",
-    "streaming",
-    "livestream",
-    "downloader",
-    "cdn-priming",
-    "hlsdownloader",
-    "m3u8downloader",
-    "streaming-video",
-    "download-playlists"
-  ],
-  "files": [
-    "build"
-  ],
-  "main": "./build/index.js",
-  "exports": {
-    "default": "./build/index.js"
-  },
-  "license": "MIT",
-  "name": "hlsdownloader",
-  "repository": {
-    "type": "git+https",
-    "url": "git+https://github.com/nurrony/hlsdownloader.git"
-  },
-  "scripts": {
-    "prepare": "husky install",
-    "prod:start": "node index.js",
-    "prepublishOnly": "npm run build",
-    "version": "echo $npm_package_version",
-    "semantic-release": "semantic-release",
-    "example": "NODE_OPTIONS=--experimental-vm-modules node example.mjs",
-    "docs:clean": "rimraf -fr ./docs && echo '🧹 All docs has been cleaned.'",
-    "coverage": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
-    "build:clean": "rimraf -fr build && echo '🧹 Build artifacts has been cleaned.'",
-    "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
-    "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "lint": "eslint . --ext .js && echo '💄 Coding style guideline has been followed properly.'",
-    "lint:fix": "eslint . --ext .js --fix && echo '🔧 Coding style has been fixed as per guideline.'",
-    "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.'",
-    "commitlint": "NODE_OPTIONS=--experimental-vm-modules npx commitlint --edit && echo '🔖 Commit message guidelines are followed properly.'",
-    "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc -c jsdoc.json && echo '📄 Docs has been generated successfully.'",
-    "build": "npm run lint:fix && npm run lint && npm test && npm run build:clean && npm run compile && echo '📦 Build artifact has been generated successfully.'",
-    "compile": "npx esbuild --outdir=build --platform=node --format=esm --target=node18 --packages=external --bundle --minify --tree-shaking=true --keep-names src/index.js"
   },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
   },
-  "release": {
-    "debug": true,
-    "branches": [
-      "master"
-    ]
+  "dependencies": {
+    "ky": "^1.1.3",
+    "p-limit": "^5.0.0"
   },
-  "version": "0.0.0-semantic-release",
+  "description": "Downloads HLS Playlist file and TS chunks",
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
@@ -89,11 +31,70 @@
     "rimraf": "^5.0.5",
     "semantic-release": "22.0.12"
   },
+  "engines": {
+    "node": ">=18",
+    "npm": ">=9"
+  },
+  "exports": {
+    "default": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "homepage": "https://nurrony.github.io/hlsdownloader",
   "hooks": {
     "pre-commit": "npm run commitlint ${1} && npm run lint:fix && npm run lint && npm test"
   },
-  "dependencies": {
-    "ky": "^1.1.3",
-    "p-limit": "^5.0.0"
-  }
+  "keywords": [
+    "cdn-priming",
+    "chunk",
+    "download",
+    "download-playlists",
+    "downloader",
+    "HLS",
+    "hlsdownloader",
+    "live",
+    "livestream",
+    "m3u8",
+    "m3u8downloader",
+    "playlist",
+    "streaming",
+    "streaming-video"
+  ],
+  "license": "MIT",
+  "main": "./build/index.js",
+  "name": "hlsdownloader",
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "debug": true
+  },
+  "repository": {
+    "type": "git+https",
+    "url": "git+https://github.com/nurrony/hlsdownloader.git"
+  },
+  "scripts": {
+    "build": "npm run lint:fix && npm run lint && npm test && npm run build:clean && npm run compile && echo '📦 Build artifact has been generated successfully.'",
+    "build:clean": "rimraf -fr build && echo '🧹 Build artifacts has been cleaned.'",
+    "commitlint": "NODE_OPTIONS=--experimental-vm-modules npx commitlint --edit && echo '🔖 Commit message guidelines are followed properly.'",
+    "compile": "npx esbuild --outdir=build --platform=node --format=esm --target=node18 --packages=external --bundle --minify --tree-shaking=true --keep-names src/index.js",
+    "coverage": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
+    "docs:clean": "rimraf -fr ./docs && echo '🧹 All docs has been cleaned.'",
+    "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc -c jsdoc.json && echo '📄 Docs has been generated successfully.'",
+    "example": "NODE_OPTIONS=--experimental-vm-modules node example.mjs",
+    "lint": "eslint . --ext .js && echo '💄 Coding style guideline has been followed properly.'",
+    "lint:fix": "eslint . --ext .js --fix && echo '🔧 Coding style has been fixed as per guideline.'",
+    "prepare": "husky install",
+    "prepublishOnly": "npm run build",
+    "prod:start": "node index.js",
+    "semantic-release": "semantic-release",
+    "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.'",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
+    "version": "echo $npm_package_version"
+  },
+  "snyk": true,
+  "type": "module",
+  "version": "0.0.0-semantic-release"
 }

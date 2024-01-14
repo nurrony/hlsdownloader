@@ -24,6 +24,7 @@
 [![Semver: Badge](https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079?style=flat-square) ](https://npmjs.com/package/hlsdownloader)
 [![Downloads: HLSDownloader](https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square) ](https://npm-stat.com/charts.html?package=hlsdownloader)
 [![Min Bundle Size: HLSDownloader](https://img.shields.io/bundlephobia/minzip/hlsdownloader?style=flat-square) ](https://bundlephobia.com/package/hlsdownloader@latest)
+[![Known Vulnerabilities](https://snyk.io/test/github/nurrony/hlsdownloader/badge.svg)](https://snyk.io/test/github/nurrony/hlsdownloader)
 <br /> <br />
 
 </div>
