@@ -5,7 +5,6 @@ let downloader = new HLSDownloader({
   playlistURL: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
 });
 
-const download = async () => downloader.startDownload();
 console.log(await downloader.startDownload());
 
 // download HLS resoruces
