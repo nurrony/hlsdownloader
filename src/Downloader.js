@@ -136,14 +136,13 @@ class Downloader {
 
   /**
    * @constructor
-   * @typedef {import('ky/distribution/types/options').KyOptions} KyOptions
    * @throws TypeError
    * @param {object} downloderOptions - Options to build downloader
    * @param {string} downloderOptions.playlistURL - Playlist URL to download
    * @param {number} [downloderOptions.concurrency = 1] - concurrency limit to download playlist chunk
    * @param {object} [downloderOptions.destination = ''] - Absolute path to download
    * @param {boolean} [downloderOptions.overwrite = false] - Overwrite files toggler
-   * @param {KyOptions} [downloderOptions.options] - Options to override from <a href="https://www.npmjs.com/package/ky" target="_blank">Ky</a>
+   * @param {object} [downloderOptions.options = {}] - Options to override from <a href="https://www.npmjs.com/package/ky" target="_blank">Ky</a>
    * @throws ProtocolNotSupported
    */
   constructor(
@@ -152,6 +151,7 @@ class Downloader {
       destination: '',
       playlistURL: '',
       overwrite: false,
+      options: {},
     }
   ) {
     try {
