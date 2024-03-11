@@ -63,8 +63,15 @@ const omit = (subject, ...keys) => {
 };
 
 /**
+ * Checks function validaty
+ * @param {Function} fn function to validate
+ * @returns {boolean}
+ */
+const isNotFunction = fn => typeof fn !== 'function';
+
+/**
  * @memberof module:HLSDownloaderUtils
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @requires ./exceptions/ProtocolNotSupported.js
  */
-export { isValidPlaylist, isValidUrl, omit, parseUrl, stripFirstSlash };
+export { isNotFunction, isValidPlaylist, isValidUrl, omit, parseUrl, stripFirstSlash };
