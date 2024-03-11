@@ -84,4 +84,16 @@ describe('Utils', () => {
       expect(Utils.omit(subject)).toMatchObject(subject);
     });
   });
+
+  describe('isNotFunction', () => {
+    test('should return falsy if function provided', () => {
+      const subject = () => {};
+      expect(Utils.isNotFunction(subject)).toBeFalsy();
+    });
+
+    // test('to be truthy if fuction not provided', () => {
+    //   const subject = 'NotAFunctionButString';
+    //   expect(Utils.isNotFunction(subject)).toBeTruthy();
+    // });
+  });
 });
