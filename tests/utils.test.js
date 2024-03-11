@@ -91,9 +91,9 @@ describe('Utils', () => {
       expect(Utils.isNotFunction(subject)).toBeFalsy();
     });
 
-    // test('to be truthy if fuction not provided', () => {
-    //   const subject = 'NotAFunctionButString';
-    //   expect(Utils.isNotFunction(subject)).toBeTruthy();
-    // });
+    test('to be truthy if fuction not provided', () => {
+      const subject = 'NotAFunctionButString';
+      expect(Utils.isNotFunction(subject)).toBeTruthy();
+    });
   });
 });
