@@ -135,28 +135,35 @@ class Downloader {
   destination = '';
 
   /**
+   * @default null
+   * @type {Function | null}
+   * @description Absolute path to download the TS files with corresponding playlist file
+   */
+  onData = null;
+
+  /**
    * @constructor
    * @throws TypeError
    * @param {object} downloderOptions - Options to build downloader
    * @param {string} downloderOptions.playlistURL - Playlist URL to download
    * @param {number} [downloderOptions.concurrency = 1] - concurrency limit to download playlist chunk
    * @param {object} [downloderOptions.destination = ''] - Absolute path to download
+   * @param {object | Function} [downloderOptions.onData = null] - onData hook
    * @param {boolean} [downloderOptions.overwrite = false] - Overwrite files toggler
    * @param {object} [downloderOptions.options = {}] - Options to override from <a href="https://www.npmjs.com/package/ky" target="_blank">Ky</a>
    * @throws ProtocolNotSupported
    */
   constructor(
-    { playlistURL, destination, concurrency = 1, overwrite = false, ...options } = {
+    { playlistURL, destination, concurrency = 1, overwrite = false, onData = null, ...options } = {
       concurrency: 1,
       destination: '',
       playlistURL: '',
+      onData: null,
       overwrite: false,
       options: {},
     }
   ) {
     try {
-      Utils.isValidUrl(playlistURL);
-
       this.items = [playlistURL];
       this.playlistURL = playlistURL;
       this.concurrency = concurrency;
@@ -164,7 +171,7 @@ class Downloader {
       this.destination = destination ?? '';
       this.pool = pLimit(concurrency ?? 1);
       this.kyOptions = this.mergeOptions(options);
-
+      this.onData = onData;
       // bind methods
       this.fetchItems = this.fetchItems.bind(this);
       this.downloadItem = this.downloadItem.bind(this);
@@ -177,6 +184,12 @@ class Downloader {
       this.parsePlaylist = this.parsePlaylist.bind(this);
       this.processPlaylistItems = this.processPlaylistItems.bind(this);
       this.formatPlaylistContent = this.formatPlaylistContent.bind(this);
+
+      Utils.isValidUrl(playlistURL);
+
+      if (this.onData !== null && Utils.isNotFunction(this.onData)) {
+        throw TypeError('The `onData` must be a function');
+      }
     } catch (error) {
       throw error;
     }
