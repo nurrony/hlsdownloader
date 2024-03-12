@@ -147,6 +147,24 @@ pure-relative.ts
       const downloader = new HLSDownloader(downloaderParams);
       expect(downloader.onData).toBeNull();
     });
+
+    it('should configure onData hook if provided', () => {
+      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onData: () => {} };
+      const downloader = new HLSDownloader(downloaderParams);
+      expect(downloader.onData).not.toBeNull();
+    });
+
+    it('should throw error onData hook is not function', () => {
+      const downloaderParams = {
+        ...options,
+        playlistURL: 'http://nmrony.local/hls/example.m3u8',
+        onData: 'NotAFunction',
+      };
+
+      expect(() => {
+        const downloader = new HLSDownloader(downloaderParams);
+      }).toThrow('The `onData` must be a function');
+    });
   });
 
   describe('#mergeOptions', () => {
