@@ -141,6 +141,12 @@ pure-relative.ts
       expect(downloader.kyOptions).toEqual(expect.not.arrayContaining(HLSDownloader.unSupportedOptions));
       expect(downloader.kyOptions).toMatchObject({ timeout: { request: 1000 }, retry: { limit: 10 } });
     });
+
+    it('should set onData hook to null if not provided', () => {
+      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8' };
+      const downloader = new HLSDownloader(downloaderParams);
+      expect(downloader.onData).toBeNull();
+    });
   });
 
   describe('#mergeOptions', () => {
