@@ -137,7 +137,7 @@ class Downloader {
   /**
    * @default null
    * @type {Function | null}
-   * @description Absolute path to download the TS files with corresponding playlist file
+   * @description Function to track downloaded data
    */
   onData = null;
 
@@ -335,6 +335,9 @@ class Downloader {
 
         writeStream.on('finish', () => {
           writeStream.close();
+          if (this.onData) {
+            this.onData(item, this.items.length, filePath);
+          }
           resolve('success');
         });
 
