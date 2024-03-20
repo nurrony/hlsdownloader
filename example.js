@@ -36,3 +36,22 @@ downloader = new HLSDownloader({
   playlistURL: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
   retry: { limit: 0 },
 });
+
+// passing onData hook
+downloader = new HLSDownloader({
+  concurrency: 5,
+  overwrite: true,
+  destination: '/tmp/tests',
+  playlistURL: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+  retry: { limit: 0 },
+  onData: function (data) {
+    console.log(
+      'downloaded item = ',
+      data.item,
+      ', total items to download',
+      data.total,
+      ', downloaded path =',
+      data.path
+    );
+  },
+});
