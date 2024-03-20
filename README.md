@@ -69,7 +69,7 @@ pnpm install hlsdownloader
 It can also be useful if you want to do content pre-fetching from CDN for your end viewers. If any `TS` or `m3u8`
 variant download is failed it continues downloading others and reports after finishing.
 
-It's simple as below.
+It's simple as below with.
 
 ```js
 import HLSDownloader from 'hlsdownloader';
@@ -79,6 +79,9 @@ const options = {
   destination: '/tmp', // change it (optional: default '')
   concurrency: 10, // change it (optional: default = 1),
   overwrite: true, // change it (optional: default = false)
+  onData: function (data) {
+    console.log(data); // {item: "<url-just-downloaded>", total: "<total-items-to-download>", path: "<absolute-path-of-download-loation>"}
+  },
 };
 const downloader = new HLSDownloader(options);
 downloader.startDownload().then(response => console.log(response));
