@@ -142,6 +142,13 @@ class Downloader {
   onData = null;
 
   /**
+   * @default null
+   * @type {Function | null}
+   * @description Function to track error
+   */
+  onError = null;
+
+  /**
    * @constructor
    * @throws TypeError
    * @param {object} downloderOptions - Options to build downloader
@@ -149,16 +156,18 @@ class Downloader {
    * @param {number} [downloderOptions.concurrency = 1] - concurrency limit to download playlist chunk
    * @param {object} [downloderOptions.destination = ''] - Absolute path to download
    * @param {object | Function} [downloderOptions.onData = null] - onData hook
+   * @param {object | Function} [downloderOptions.onError = null] - onError hook
    * @param {boolean} [downloderOptions.overwrite = false] - Overwrite files toggler
    * @param {object} [downloderOptions.options = {}] - Options to override from <a href="https://www.npmjs.com/package/ky" target="_blank">Ky</a>
    * @throws ProtocolNotSupported
    */
   constructor(
-    { playlistURL, destination, concurrency = 1, overwrite = false, onData = null, ...options } = {
+    { playlistURL, destination, concurrency = 1, overwrite = false, onData = null, onError = null, ...options } = {
       concurrency: 1,
       destination: '',
       playlistURL: '',
       onData: null,
+      onError: null,
       overwrite: false,
       options: {},
     }
@@ -172,7 +181,9 @@ class Downloader {
       this.pool = pLimit(concurrency ?? 1);
       this.kyOptions = this.mergeOptions(options);
       this.onData = onData;
-      // bind methods
+      this.onError = onError;
+
+      // method binding
       this.fetchItems = this.fetchItems.bind(this);
       this.downloadItem = this.downloadItem.bind(this);
       this.mergeOptions = this.mergeOptions.bind(this);
@@ -189,6 +200,10 @@ class Downloader {
 
       if (this.onData !== null && Utils.isNotFunction(this.onData)) {
         throw TypeError('The `onData` must be a function');
+      }
+
+      if (this.onError !== null && Utils.isNotFunction(this.onError)) {
+        throw TypeError('The `onError` must be a function');
       }
     } catch (error) {
       throw error;
@@ -280,6 +295,9 @@ class Downloader {
       return { url, body };
     } catch ({ name, message }) {
       this.errors.push({ url, name, message });
+      if (this.onError) {
+        this.onError({ name, message, url });
+      }
       return { url: '', body: '' };
     }
   }
@@ -330,6 +348,15 @@ class Downloader {
           readStream.destroy();
           writeStream.destroy();
           unlink(filePath);
+
+          if (this.onError) {
+            this.onError({
+              url: item,
+              name: error.name,
+              message: error.message,
+            });
+          }
+
           reject(error);
         });
 
@@ -344,11 +371,21 @@ class Downloader {
         writeStream.on('error', error => {
           writeStream.destroy();
           readStream.destroy();
+          if (this.onError) {
+            this.onError({
+              url: item,
+              name: error.name,
+              message: error.message,
+            });
+          }
           reject(error);
         });
       });
     } catch ({ name, message }) {
       this.errors.push({ name, message, url: item });
+      if (this.onError) {
+        this.onError({ name, message, url: item });
+      }
     }
   }
 
@@ -370,6 +407,9 @@ class Downloader {
       return Promise.allSettled(downloaderPromises);
     } catch (error) {
       this.errors.push({ url: this.playlistURL, name: error.name, message: error.message });
+      if (this.onError) {
+        this.onError({ url: this.playlistURL, name: error.name, message: error.message });
+      }
     }
   }
 
