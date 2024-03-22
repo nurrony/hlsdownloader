@@ -55,3 +55,15 @@ downloader = new HLSDownloader({
     );
   },
 });
+
+// passing onError hook
+downloader = new HLSDownloader({
+  concurrency: 5,
+  overwrite: true,
+  destination: '/tmp/tests',
+  playlistURL: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+  retry: { limit: 0 },
+  onError: function (error) {
+    console.log({ ...error });
+  },
+});
