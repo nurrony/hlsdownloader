@@ -363,7 +363,7 @@ class Downloader {
         writeStream.on('finish', () => {
           writeStream.close();
           if (this.onData) {
-            this.onData({ item: item, total: this.items.length, path: filePath });
+            this.onData({ url: item, totalItems: this.items.length, path: filePath });
           }
           resolve('success');
         });
