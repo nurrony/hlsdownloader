@@ -80,10 +80,10 @@ const options = {
   concurrency: 10, // change it (optional: default = 1),
   overwrite: true, // change it (optional: default = false)
   onData: function (data) {
-    console.log(data); // {item: "<url-just-downloaded>", total: "<total-items-to-download>", path: "<absolute-path-of-download-loation>"}
+    console.log(data); // {url: "<url-just-downloaded>", totalItems: "<total-items-to-download>", path: "<absolute-path-of-download-loation>"}
   },
-  onError: function (data) {
-    console.log(data); // { url: "<URLofItem>", name: "<nameOfError>", message: "human readable message of error" }
+  onError: function (error) {
+    console.log(error); // { url: "<URLofItem>", name: "<nameOfError>", message: "human readable message of error" }
   },
 };
 const downloader = new HLSDownloader(options);

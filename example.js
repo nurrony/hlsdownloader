@@ -47,9 +47,9 @@ downloader = new HLSDownloader({
   onData: function (data) {
     console.log(
       'downloaded item = ',
-      data.item,
+      data.url,
       ', total items to download',
-      data.total,
+      data.totalItems,
       ', downloaded path =',
       data.path
     );
