@@ -82,6 +82,9 @@ const options = {
   onData: function (data) {
     console.log(data); // {item: "<url-just-downloaded>", total: "<total-items-to-download>", path: "<absolute-path-of-download-loation>"}
   },
+  onError: function (data) {
+    console.log(data); // { url: "<URLofItem>", name: "<nameOfError>", message: "human readable message of error" }
+  },
 };
 const downloader = new HLSDownloader(options);
 downloader.startDownload().then(response => console.log(response));
