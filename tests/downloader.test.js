@@ -165,6 +165,30 @@ pure-relative.ts
         const downloader = new HLSDownloader(downloaderParams);
       }).toThrow('The `onData` must be a function');
     });
+
+    it('should set onError hook to null if not provided', () => {
+      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8' };
+      const downloader = new HLSDownloader(downloaderParams);
+      expect(downloader.onError).toBeNull();
+    });
+
+    it('should configure onError hook if provided', () => {
+      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onError: () => {} };
+      const downloader = new HLSDownloader(downloaderParams);
+      expect(downloader.onError).not.toBeNull();
+    });
+
+    it('should throw error onError hook is not function', () => {
+      const downloaderParams = {
+        ...options,
+        playlistURL: 'http://nmrony.local/hls/example.m3u8',
+        onError: 'NotAFunction',
+      };
+
+      expect(() => {
+        const downloader = new HLSDownloader(downloaderParams);
+      }).toThrow('The `onError` must be a function');
+    });
   });
 
   describe('#mergeOptions', () => {
