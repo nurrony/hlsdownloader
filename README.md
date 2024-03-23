@@ -78,9 +78,11 @@ const options = {
   destination: '/tmp', // change it (optional: default '')
   concurrency: 10, // change it (optional: default = 1),
   overwrite: true, // change it (optional: default = false)
+  // (optional: default = null
   onData: function (data) {
     console.log(data); // {url: "<url-just-downloaded>", totalItems: "<total-items-to-download>", path: "<absolute-path-of-download-loation>"}
   },
+  // (optional: default = null
   onError: function (error) {
     console.log(error); // { url: "<URLofItem>", name: "<nameOfError>", message: "human readable message of error" }
   },
