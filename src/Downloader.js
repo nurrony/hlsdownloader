@@ -424,7 +424,11 @@ class Downloader {
       this.items.map(item =>
         this.pool(async () => {
           try {
-            return await ky.get(item, { ...this.kyOptions });
+            const item$ = await ky.get(item, { ...this.kyOptions });
+            if (this.onData) {
+              this.onData({ url: item, totalItems: this.items.length, path: null });
+            }
+            return item$;
           } catch ({ name, message }) {
             this.errors.push({ url: item, name, message });
           }
