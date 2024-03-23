@@ -431,6 +431,9 @@ class Downloader {
             return item$;
           } catch ({ name, message }) {
             this.errors.push({ url: item, name, message });
+            if (this.onError) {
+              this.onError({ url: item, name, message });
+            }
           }
         })
       )
