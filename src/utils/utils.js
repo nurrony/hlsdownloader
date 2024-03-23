@@ -63,7 +63,9 @@ const omit = (subject, ...keys) => {
 };
 
 /**
- * Checks function validaty
+ *  @memberof module:HLSDownloaderUtils
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ * Checks parameter is a function or not
  * @param {Function} fn function to validate
  * @returns {boolean}
  */
