@@ -18,7 +18,6 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D18-blue.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
 [![CI](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml/badge.svg?style=flat-square)](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml)
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square)](https://nurrony.github.io/hlsdownloader)
-[![Coverage](https://codecov.io/gh/nurrony/hlsdownloader/graph/badge.svg?token=er50RqLH6T?style=flat-square)](https://codecov.io/gh/nurrony/hlsdownloader)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square) ](https://github.com/nurrony/hlsdownloader/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/github/license/nurrony/hlsdownloader?style=flat-square) ](https://github.com/nurrony/hlsdownloader/blob/master/LICENSE)
 [![Semver: Badge](https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079?style=flat-square) ](https://npmjs.com/package/hlsdownloader)
