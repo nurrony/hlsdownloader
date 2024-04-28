@@ -1,6 +1,0 @@
-index.js
-node_modules
-extras/**
-test/**
-coverage
-.nyc-output
