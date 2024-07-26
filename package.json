@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "ky": "^1.4.0",
-    "p-limit": "^5.0.0"
+    "p-limit": "^6.0.0"
   },
   "description": "Downloads HLS Playlist file and TS chunks",
   "devDependencies": {
