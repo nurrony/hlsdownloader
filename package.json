@@ -85,7 +85,7 @@
     "example": "NODE_OPTIONS=--experimental-vm-modules node example.mjs",
     "lint": "eslint .  && echo '💄 Coding style guideline has been followed properly.'",
     "lint:fix": "eslint . --fix && echo '🔧 Coding style has been fixed as per guideline.'",
-    "prepare": "husky install",
+    "prepare": "husky",
     "prepublishOnly": "npm run build",
     "prod:start": "node index.js",
     "semantic-release": "semantic-release",
