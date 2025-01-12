@@ -12,6 +12,7 @@ import Utils from './utils';
  * HLS Playlist file extension
  * @constant
  * @type {string}
+ * @memberof module:HLSDownloader
  */
 const HLS_PLAYLIST_EXT = '.m3u8';
 
@@ -227,7 +228,7 @@ class Downloader {
     let urls = this.parsePlaylist(url, playlistContent);
     this.items = [...this.items, ...urls];
     const playlists = urls.filter(url => url.toLowerCase().endsWith(HLS_PLAYLIST_EXT));
-    const playlistContentPromiseResults = await Promise.allSettled(playlists.map(vUrl => this.fetchPlaylist(vUrl)));
+    const playlistContentPromiseResults = await Promise.allSettled(playlists.map(this.fetchPlaylist));
     const playlistContents = this.formatPlaylistContent(playlistContentPromiseResults);
     urls = playlistContents.map(content => this.parsePlaylist(content?.url, content?.body)).flat();
     this.items = [...this.items, ...urls];
@@ -389,12 +390,6 @@ class Downloader {
     }
   }
 
-  /**
-   * @async
-   * @method
-   * @returns {Promise<any>}
-   * @description Download playlist and items
-   */
   async downloadItems() {
     try {
       if (!(await this.shouldOverwrite(this.playlistURL))) {

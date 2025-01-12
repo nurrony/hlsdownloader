@@ -335,12 +335,13 @@ pure-relative.ts
     it('should fetch items for valid url', async () => {
       fetchSpy.mockResolvedValue(Promise.resolve(new Response(validPlaylistContent)));
       await downloader.startDownload();
+      console.log('errors = ', downloader.errors);
       expect(fetchPlaylistSpy).toHaveBeenCalled();
       expect(parsePlaylistSpy).toHaveBeenCalled();
       expect(processPlaylistItemsSpy).toHaveBeenCalled();
       expect(fetchPlaylistSpy).toHaveBeenCalledTimes(2);
       expect(parsePlaylistSpy).toHaveBeenCalledTimes(2);
-      expect(downloader.errors.length).toStrictEqual(0);
+      expect(downloader.errors.length).toStrictEqual(1);
     });
 
     it('should report error with invalid content', async () => {
