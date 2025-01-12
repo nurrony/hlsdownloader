@@ -149,7 +149,7 @@ pure-relative.ts
     });
 
     it('should configure onData hook if provided', () => {
-      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onData: () => {} };
+      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onData: () => { } };
       const downloader = new HLSDownloader(downloaderParams);
       expect(downloader.onData).not.toBeNull();
     });
@@ -173,7 +173,7 @@ pure-relative.ts
     });
 
     it('should configure onError hook if provided', () => {
-      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onError: () => {} };
+      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onError: () => { } };
       const downloader = new HLSDownloader(downloaderParams);
       expect(downloader.onError).not.toBeNull();
     });
@@ -315,7 +315,7 @@ pure-relative.ts
       processPlaylistItemsSpy.mockReset();
     });
 
-    afterAll(async () => {});
+    afterAll(async () => { });
 
     it('should return empty error for http or invalid playlist', async () => {
       let result = null;
@@ -335,7 +335,6 @@ pure-relative.ts
     it('should fetch items for valid url', async () => {
       fetchSpy.mockResolvedValue(Promise.resolve(new Response(validPlaylistContent)));
       await downloader.startDownload();
-      console.log('errors = ', downloader.errors);
       expect(fetchPlaylistSpy).toHaveBeenCalled();
       expect(parsePlaylistSpy).toHaveBeenCalled();
       expect(processPlaylistItemsSpy).toHaveBeenCalled();
