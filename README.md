@@ -180,5 +180,5 @@ Give a ⭐️ if this project helped you!. I will be grateful if you all help me
 
 ## License
 
-Copyright © 2024 [Nur Rony](https://github.com/nurrony).<br />
+Copyright © 2025 [Nur Rony](https://github.com/nurrony).<br />
 This project is [MIT](https://github.com/nurrony/hlsdownloader/blob/master/LICENSE) licensed.
