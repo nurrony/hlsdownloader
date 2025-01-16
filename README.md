@@ -17,6 +17,7 @@
 [![Version](https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-blue.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
 [![CI](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml/badge.svg?style=flat-square)](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml)
+[![Coverage Status](https://coveralls.io/repos/github/nurrony/hlsdownloader/badge.svg?branch=master)](https://coveralls.io/github/nurrony/hlsdownloader?branch=master)
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square)](https://nurrony.github.io/hlsdownloader)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square) ](https://github.com/nurrony/hlsdownloader/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/github/license/nurrony/hlsdownloader?style=flat-square) ](https://github.com/nurrony/hlsdownloader/blob/master/LICENSE)
