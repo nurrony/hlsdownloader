@@ -76,14 +76,14 @@ import HLSDownloader from 'hlsdownloader';
 
 const options = {
   playlistURL: 'http://example.com/path/to/your/playlist.m3u8', // change it
-  destination: '/tmp', // change it (optional: default '')
-  concurrency: 10, // change it (optional: default = 1),
-  overwrite: true, // change it (optional: default = false)
-  // (optional: default = null
+  destination: '/tmp', // (optional: default '')
+  concurrency: 10, // (optional: default = 1),
+  overwrite: true, // (optional: default = false)
+  // (optional: default = null)
   onData: function (data) {
     console.log(data); // {url: "<url-just-downloaded>", totalItems: "<total-items-to-download>", path: "<absolute-path-of-download-loation>"}
   },
-  // (optional: default = null
+  // (optional: default = null)
   onError: function (error) {
     console.log(error); // { url: "<URLofItem>", name: "<nameOfError>", message: "human readable message of error" }
   },
