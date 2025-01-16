@@ -28,7 +28,7 @@ jobs:
         run: npm ci
       - name: Run Test
         run: npm test
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Upload coverage reports to Coveralls
+        uses: coverallsapp/github-action@v2
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
