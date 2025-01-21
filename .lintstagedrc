@@ -1,0 +1,5 @@
+---
+'src/*.js|eslint.config.js|*.json':
+  - npm run lint:fix
+  - npm run lint
+  - prettier --write
