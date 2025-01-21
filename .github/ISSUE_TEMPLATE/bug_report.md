@@ -1,10 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[BUG]: Please bug in single line"
+title: '[BUG]: Please add title for the bug'
 labels: bug
 assignees: nurrony
-
 ---
 
 ## Prerequisites
