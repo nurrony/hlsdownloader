@@ -17,10 +17,10 @@
 [![Version](https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-blue.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
 [![CI](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml/badge.svg?style=flat-square)](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml)
-[![Coverage Status](https://coveralls.io/repos/github/nurrony/hlsdownloader/badge.svg?branch=master)](https://coveralls.io/github/nurrony/hlsdownloader?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/nurrony/hlsdownloader/badge.svg?branch=main)](https://coveralls.io/github/nurrony/hlsdownloader?branch=main)
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square)](https://nurrony.github.io/hlsdownloader)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square) ](https://github.com/nurrony/hlsdownloader/graphs/commit-activity)
-[![License: MIT](https://img.shields.io/github/license/nurrony/hlsdownloader?style=flat-square) ](https://github.com/nurrony/hlsdownloader/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/github/license/nurrony/hlsdownloader?style=flat-square) ](https://github.com/nurrony/hlsdownloader/blob/main/LICENSE)
 [![Semver: Badge](https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079?style=flat-square) ](https://npmjs.com/package/hlsdownloader)
 [![Downloads: HLSDownloader](https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square) ](https://npm-stat.com/charts.html?package=hlsdownloader)
 [![Min Bundle Size: HLSDownloader](https://img.shields.io/bundlephobia/minzip/hlsdownloader?style=flat-square) ](https://bundlephobia.com/package/hlsdownloader@latest)
@@ -169,7 +169,7 @@ npm docs:gen
 
 ## Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/nurrony/hlsdownloader/issues). You can also take a look at the [contributing guide](https://github.com/nurrony/hlsdownloader/blob/master/CONTRIBUTING.md).
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/nurrony/hlsdownloader/issues). You can also take a look at the [contributing guide](https://github.com/nurrony/hlsdownloader/blob/main/CONTRIBUTING.md).
 
 ## Show your support
 
@@ -182,4 +182,4 @@ Give a ⭐️ if this project helped you!. I will be grateful if you all help me
 ## License
 
 Copyright © 2025 [Nur Rony](https://github.com/nurrony).<br />
-This project is [MIT](https://github.com/nurrony/hlsdownloader/blob/master/LICENSE) licensed.
+This project is [MIT](https://github.com/nurrony/hlsdownloader/blob/main/LICENSE) licensed.
