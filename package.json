@@ -67,7 +67,7 @@
   "name": "hlsdownloader",
   "release": {
     "branches": [
-      "master"
+      "main"
     ],
     "debug": true
   },
