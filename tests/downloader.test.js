@@ -118,12 +118,12 @@ pure-relative.ts
 
     it('should not contain request url key in options', () => {
       const downloader = new HLSDownloader({ options, playlistURL: 'http://nmrony.local/hls/example.m3u8' });
-      expect(downloader.kyOptions).not.toContain('url');
+      expect(downloader.kyOptions).not.toHaveProperty('url');
     });
 
     it('should not contain request method key in options', () => {
       const downloader = new HLSDownloader({ options, playlistURL: 'http://nmrony.local/hls/example.m3u8' });
-      expect(downloader.kyOptions).not.toContain('method');
+      expect(downloader.kyOptions).not.toHaveProperty('method');
     });
 
     it('should contains default options', () => {
@@ -149,7 +149,7 @@ pure-relative.ts
     });
 
     it('should configure onData hook if provided', () => {
-      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onData: () => { } };
+      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onData: () => {} };
       const downloader = new HLSDownloader(downloaderParams);
       expect(downloader.onData).not.toBeNull();
     });
@@ -173,7 +173,7 @@ pure-relative.ts
     });
 
     it('should configure onError hook if provided', () => {
-      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onError: () => { } };
+      const downloaderParams = { ...options, playlistURL: 'http://nmrony.local/hls/example.m3u8', onError: () => {} };
       const downloader = new HLSDownloader(downloaderParams);
       expect(downloader.onError).not.toBeNull();
     });
@@ -315,7 +315,7 @@ pure-relative.ts
       processPlaylistItemsSpy.mockReset();
     });
 
-    afterAll(async () => { });
+    afterAll(async () => {});
 
     it('should return empty error for http or invalid playlist', async () => {
       let result = null;
