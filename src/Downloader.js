@@ -256,7 +256,6 @@ class Downloader {
    * @description merge options
    */
   mergeOptions(options) {
-    // return Object.assign(Downloader.defaultKyOptions, Utils.omit(options, ...Downloader.unSupportedOptions));
     return Object.assign({}, Downloader.defaultKyOptions, Utils.omit(options, ...Downloader.unSupportedOptions));
   }
 
