@@ -48,7 +48,7 @@
 
 ## Prerequisites
 
-- node >=18.x.x
+- node >=20.x.x
 
 ## Installation
 
