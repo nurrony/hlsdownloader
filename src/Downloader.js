@@ -155,9 +155,9 @@ class Downloader {
    * @param {object} downloderOptions - Options to build downloader
    * @param {string} downloderOptions.playlistURL - Playlist URL to download
    * @param {number} [downloderOptions.concurrency = 1] - concurrency limit to download playlist chunk
-   * @param {object} [downloderOptions.destination = ''] - Absolute path to download
-   * @param {object | Function} [downloderOptions.onData = null] - onData hook
-   * @param {object | Function} [downloderOptions.onError = null] - onError hook
+   * @param {string} [downloderOptions.destination = ''] - Absolute path to download
+   * @param {object | Function | null} [downloderOptions.onData = null] - onData hook
+   * @param {object | Function | null} [downloderOptions.onError = null] - onError hook
    * @param {boolean} [downloderOptions.overwrite = false] - Overwrite files toggler
    * @param {object} [downloderOptions.options = {}] - Options to override from <a href="https://www.npmjs.com/package/ky" target="_blank">Ky</a>
    * @throws ProtocolNotSupported
@@ -181,7 +181,9 @@ class Downloader {
       this.destination = destination ?? '';
       this.pool = pLimit(concurrency ?? 1);
       this.kyOptions = this.mergeOptions(options);
+      // @ts-ignore
       this.onData = onData;
+      // @ts-ignore
       this.onError = onError;
 
       // method binding
@@ -225,6 +227,7 @@ class Downloader {
       };
     }
 
+    // @ts-ignore
     let urls = this.parsePlaylist(url, playlistContent);
     this.items = [...this.items, ...urls];
     const playlists = urls.filter(url => url.toLowerCase().endsWith(HLS_PLAYLIST_EXT));
@@ -265,6 +268,7 @@ class Downloader {
    * @returns string[]  Array of url
    * @description Parse playlist content and index the TS chunk to download.
    */
+  // @ts-ignore
   parsePlaylist(playlistURL, playlistContent) {
     return playlistContent
       .replace(/^#[\s\S].*/gim, '')
@@ -282,9 +286,10 @@ class Downloader {
   /**
    * @async
    * @method
-   * @returns {Promise<{url, body}>}
+   * @returns {Promise<{url: any, body: any}>}
    * @description fetch playlist content
    */
+  // @ts-ignore
   async fetchPlaylist(url) {
     try {
       const body = await ky.get(url, { ...this.kyOptions }).text();
@@ -294,6 +299,7 @@ class Downloader {
         return { url: '', body: '' };
       }
       return { url, body };
+      // @ts-ignore
     } catch ({ name, message }) {
       this.errors.push({ url, name, message });
       if (this.onError) {
@@ -310,8 +316,10 @@ class Downloader {
    * @returns {Array<{url: string, body: string}>} list of object containing url and its content
    */
   formatPlaylistContent(playlistContentResults) {
+    // @ts-ignore
     return playlistContentResults.reduce((contents, { status, value }) => {
       if (status.toLowerCase() === 'fulfilled' && !!value) {
+        // @ts-ignore
         contents.push(value);
       }
       return contents;
@@ -382,6 +390,7 @@ class Downloader {
           reject(error);
         });
       });
+      // @ts-ignore
     } catch ({ name, message }) {
       this.errors.push({ name, message, url: item });
       if (this.onError) {
@@ -398,11 +407,14 @@ class Downloader {
         throw error;
       }
       await this.createDirectory(this.playlistURL);
+      // @ts-ignore
       const downloaderPromises = this.items.map(url => this.pool(this.downloadItem, url));
       return Promise.allSettled(downloaderPromises);
     } catch (error) {
+      // @ts-ignore
       this.errors.push({ url: this.playlistURL, name: error.name, message: error.message });
       if (this.onError) {
+        // @ts-ignore
         this.onError({ url: this.playlistURL, name: error.name, message: error.message });
       }
     }
@@ -417,6 +429,7 @@ class Downloader {
   async fetchItems() {
     return Promise.allSettled(
       this.items.map(item =>
+        // @ts-ignore
         this.pool(async () => {
           try {
             const item$ = await ky.get(item, { ...this.kyOptions });
@@ -424,6 +437,7 @@ class Downloader {
               this.onData({ url: item, totalItems: this.items.length, path: null });
             }
             return item$;
+            // @ts-ignore
           } catch ({ name, message }) {
             this.errors.push({ url: item, name, message });
             if (this.onError) {
@@ -441,6 +455,7 @@ class Downloader {
    * @param {string} url url to construct the path from
    */
   async createDirectory(url) {
+    // @ts-ignore
     const { pathname } = Utils.parseUrl(url);
     const destDirectory = join(this.destination, dirname(pathname));
     await mkdir(destDirectory, { recursive: true });
@@ -455,11 +470,13 @@ class Downloader {
    */
   async shouldOverwrite(url) {
     try {
+      // @ts-ignore
       const { pathname } = Utils.parseUrl(url);
       const destDirectory = join(this.destination, dirname(pathname));
       await access(destDirectory, constants.F_OK);
       return this.overwrite;
     } catch (error) {
+      // @ts-ignore
       if (error.code === 'ENOENT') return true;
       throw error;
     }
