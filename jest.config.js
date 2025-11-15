@@ -15,6 +15,7 @@ export default {
   },
   errorOnDeprecated: true,
   testEnvironment: 'node',
+  setupFiles: ['<rootDir>/jest.setup.js'],
   transform: {},
   testMatch: ['**/tests/specs/**/*.spec.js', '**/tests/**/*.js'],
   verbose: true,
