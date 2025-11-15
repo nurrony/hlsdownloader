@@ -13,8 +13,8 @@
     }
   },
   "dependencies": {
-    "ky": "^1.11.0",
-    "p-limit": "^7.1.1"
+    "ky": "^1.14.0",
+    "p-limit": "^7.2.0"
   },
   "description": "Downloads HLS Playlist file and TS chunks",
   "devDependencies": {
@@ -22,15 +22,15 @@
     "@commitlint/config-conventional": "^20.0.0",
     "@types/jest": "^30.0.0",
     "clean-jsdoc-theme": "^4.3.0",
-    "esbuild": "^0.25.10",
-    "eslint": "^9.37.0",
+    "esbuild": "^0.27.0",
+    "eslint": "^9.39.1",
     "husky": "^9.1.7",
     "jest": "^30.2.0",
-    "jsdoc": "^4.0.4",
-    "lint-staged": "^16.2.3",
+    "jsdoc": "^4.0.5",
+    "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
-    "rimraf": "^6.0.1",
-    "semantic-release": "24.2.9"
+    "rimraf": "^6.1.0",
+    "semantic-release": "25.0.2"
   },
   "engines": {
     "node": ">=20",
