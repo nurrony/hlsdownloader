@@ -9,7 +9,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "dependencies": {
@@ -22,12 +22,12 @@
     "@commitlint/config-conventional": "^20.0.0",
     "@types/jest": "^30.0.0",
     "clean-jsdoc-theme": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "esbuild": "^0.25.10",
     "eslint": "^9.37.0",
-    "husky": "^9.1.7",
     "jest": "^30.2.0",
     "jsdoc": "^4.0.4",
-    "lint-staged": "^16.2.3",
+    "lefthook": "^2.0.4",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "semantic-release": "24.2.9"
@@ -43,9 +43,6 @@
     "build"
   ],
   "homepage": "https://nurrony.github.io/hlsdownloader",
-  "hooks": {
-    "pre-commit": "npm run commitlint ${1} && npm run lint:fix && npm run lint && npm test"
-  },
   "keywords": [
     "cdn-priming",
     "chunk",
@@ -86,7 +83,9 @@
     "example": "NODE_OPTIONS=--experimental-vm-modules node example.mjs",
     "lint": "eslint .  && echo '💄 Coding style guideline has been followed properly.'",
     "lint:fix": "eslint . --fix && echo '🔧 Coding style has been fixed as per guideline.'",
-    "prepare": "husky",
+    "prepare": "lefthook install",
+    "hooks:install": "lefthook install",
+    "hooks:uninstall": "lefthook uninstall",
     "prepublishOnly": "npm run build",
     "prod:start": "node index.js",
     "semantic-release": "semantic-release",
