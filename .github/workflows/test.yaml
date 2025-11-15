@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+env:
+  CI: true
+
 jobs:
   unit_test:
     runs-on: ubuntu-latest
@@ -21,7 +24,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: latest
-          cache: 'npm'
+          cache: "npm"
       - name: Version Check
         run: node -v && npm -v
       - name: Install Dependencies

@@ -12,8 +12,11 @@ permissions:
   id-token: write
 
 concurrency:
-  group: 'pages'
+  group: "pages"
   cancel-in-progress: false
+
+env:
+  CI: true
 
 jobs:
   publish-docs:
@@ -30,19 +33,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: latest
-          cache: 'npm'
+          cache: "npm"
       - name: Version Check
         run: node -v && npm -v
       - name: Install dependencies
         run: npm ci
-      - name: 'Generate documents'
+      - name: "Generate documents"
         run: npm run docs:gen
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs'
+          path: "./docs"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
