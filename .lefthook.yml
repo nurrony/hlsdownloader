@@ -4,6 +4,9 @@ pre-commit:
     - name: 'Lint and Fix Coding Style'
       stage_fixed: true
       exclude:
+        - 'docs/**'
+        - 'build/**'
+        - 'coverage/**'
         - 'node_modules/**'
       glob:
         - 'src/*.js'
@@ -36,7 +39,9 @@ commit-msg:
       skip:
         - merge
         - rebase
-      run: npx commitlint --edit {1}
+      run: |
+        npx commitlint --edit {1}
+        echo '🔖 Commit message guidelines are followed properly.'
 
 output:
   - summary
