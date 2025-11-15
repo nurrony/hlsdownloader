@@ -4,10 +4,10 @@ pre-commit:
     - name: 'Lint and Fix Coding Style'
       stage_fixed: true
       exclude:
-        - 'docs/**'
-        - 'build/**'
-        - 'coverage/**'
-        - 'node_modules/**'
+        - 'docs/**/*'
+        - 'build/**/*'
+        - 'coverage/**/*'
+        - 'node_modules/**/*'
       glob:
         - 'src/*.js'
         - 'eslint.config.js'
