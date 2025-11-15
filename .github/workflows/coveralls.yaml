@@ -31,6 +31,9 @@ jobs:
         run: npm ci
       - name: Run Test
         run: npm test
+        env:
+          CI: true
+          NODE_ENV: test
       - name: Upload coverage reports to Coveralls
         uses: coverallsapp/github-action@v2
         env:
