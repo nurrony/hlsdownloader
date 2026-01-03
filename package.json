@@ -82,7 +82,7 @@
     "docs:clean": "rimraf -fr ./docs && echo '🧹 All docs has been cleaned.'",
     "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc -c jsdoc.json && echo '📄 Docs has been generated successfully.'",
     "example": "NODE_OPTIONS=--experimental-vm-modules node example.mjs",
-    "lint": "eslint .  && echo '💄 Coding style guideline has been followed properly.'",
+    "lint": "eslint . && echo '💄 Coding style guideline has been followed properly.'",
     "lint:fix": "eslint . --fix && echo '🔧 Coding style has been fixed as per guideline.'",
     "prepare": "lefthook install",
     "hooks:install": "lefthook install",

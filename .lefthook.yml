@@ -6,6 +6,7 @@ pre-commit:
       exclude:
         - 'docs/**/*'
         - 'build/**/*'
+        - 'coverage/*.js'
         - 'coverage/**/*'
         - 'node_modules/**/*'
       glob:
