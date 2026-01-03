@@ -9,7 +9,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "dependencies": {
@@ -22,12 +22,13 @@
     "@commitlint/config-conventional": "^20.0.0",
     "@types/jest": "^30.0.0",
     "clean-jsdoc-theme": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "esbuild": "^0.27.0",
     "eslint": "^9.39.1",
-    "husky": "^9.1.7",
     "jest": "^30.2.0",
     "jsdoc": "^4.0.5",
-    "lint-staged": "^16.2.6",
+    "lefthook": "^2.0.4",
+    "node-localstorage": "^3.0.5",
     "prettier": "^3.6.2",
     "rimraf": "^6.1.0",
     "semantic-release": "25.0.2"
@@ -43,9 +44,6 @@
     "build"
   ],
   "homepage": "https://nurrony.github.io/hlsdownloader",
-  "hooks": {
-    "pre-commit": "npm run commitlint ${1} && npm run lint:fix && npm run lint && npm test"
-  },
   "keywords": [
     "cdn-priming",
     "chunk",
@@ -84,13 +82,15 @@
     "docs:clean": "rimraf -fr ./docs && echo '🧹 All docs has been cleaned.'",
     "docs:gen": "npm run docs:clean && NODE_OPTIONS=--experimental-vm-modules jsdoc -c jsdoc.json && echo '📄 Docs has been generated successfully.'",
     "example": "NODE_OPTIONS=--experimental-vm-modules node example.mjs",
-    "lint": "eslint .  && echo '💄 Coding style guideline has been followed properly.'",
+    "lint": "eslint . && echo '💄 Coding style guideline has been followed properly.'",
     "lint:fix": "eslint . --fix && echo '🔧 Coding style has been fixed as per guideline.'",
-    "prepare": "husky",
+    "prepare": "lefthook install",
+    "hooks:install": "lefthook install",
+    "hooks:uninstall": "lefthook uninstall",
     "prepublishOnly": "npm run build",
     "prod:start": "node index.js",
     "semantic-release": "semantic-release",
-    "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules node --localstorage-file=.jest-localstorage node_modules/.bin/jest",
     "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.'",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
     "version": "echo $npm_package_version"

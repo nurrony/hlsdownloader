@@ -2,7 +2,7 @@ name: Release to NPM
 
 on:
   workflow_run:
-    workflows: ['CI']
+    workflows: ["CI"]
     types:
       - completed
     branches:
@@ -10,6 +10,9 @@ on:
 
 permissions:
   contents: read
+
+env:
+  CI: true
 
 jobs:
   release:
@@ -32,14 +35,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-      - name: 'Node and NPM version'
+          node-version: "lts/*"
+      - name: "Node and NPM version"
         run: node -v && npm -v
       - name: Install dependencies
         run: npm clean-install
       - name: Verify the integrity of installed dependencies
         run: npm audit signatures
-      - name: 'Build package'
+      - name: "Build package"
         run: npm run build
       - name: Release
         run: npx semantic-release
