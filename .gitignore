@@ -30,3 +30,4 @@ build
 node_modules
 extras/**
 docs
+.jest-localstorage
