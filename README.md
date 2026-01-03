@@ -15,7 +15,7 @@
 <div align="center">
 
 [![Version](https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
-[![Node](https://img.shields.io/badge/node-%3E%3D18-blue.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
+[![Node](https://img.shields.io/badge/node-%3E%3D20-blue.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
 [![CI](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml/badge.svg?style=flat-square)](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/nurrony/hlsdownloader/badge.svg?branch=main)](https://coveralls.io/github/nurrony/hlsdownloader?branch=main)
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square)](https://nurrony.github.io/hlsdownloader)
