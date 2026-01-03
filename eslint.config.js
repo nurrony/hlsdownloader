@@ -2,7 +2,7 @@ import globals from 'globals';
 export default [
   {
     files: ['**/*.js'],
-    ignores: ['index.js', 'node_modules', 'extras/**', 'test/**', 'coverage', '.nyc-output'],
+    ignores: ['index.js', 'node_modules/*', 'extras/**', 'test/**', 'coverage/*', '.nyc-output'],
     languageOptions: {
       parserOptions: {
         ecmaFeatures: {
