@@ -159,18 +159,18 @@ class Downloader {
    * @param {object | Function | null} [downloderOptions.onData = null] - onData hook
    * @param {object | Function | null} [downloderOptions.onError = null] - onError hook
    * @param {boolean} [downloderOptions.overwrite = false] - Overwrite files toggler
-   * @param {object} [downloderOptions.options = {}] - Options to override from <a href="https://www.npmjs.com/package/ky" target="_blank">Ky</a>
+   * @param {object} [downloderOptions.kyOptions = {}] - Options to override from <a href="https://www.npmjs.com/package/ky" target="_blank">Ky</a>
    * @throws ProtocolNotSupported
    */
   constructor(
-    { playlistURL, destination, concurrency = 1, overwrite = false, onData = null, onError = null, ...options } = {
+    { playlistURL, destination, concurrency = 1, overwrite = false, onData = null, onError = null, ...kyOptions } = {
       concurrency: 1,
       destination: '',
       playlistURL: '',
       onData: null,
       onError: null,
       overwrite: false,
-      options: {},
+      kyOptions: {},
     }
   ) {
     try {
@@ -180,7 +180,7 @@ class Downloader {
       this.overwrite = overwrite ?? false;
       this.destination = destination ?? '';
       this.pool = pLimit(concurrency ?? 1);
-      this.kyOptions = this.mergeOptions(options);
+      this.kyOptions = this.mergeKyOptions(kyOptions);
       // @ts-ignore
       this.onData = onData;
       // @ts-ignore
@@ -189,7 +189,7 @@ class Downloader {
       // method binding
       this.fetchItems = this.fetchItems.bind(this);
       this.downloadItem = this.downloadItem.bind(this);
-      this.mergeOptions = this.mergeOptions.bind(this);
+      this.mergeKyOptions = this.mergeKyOptions.bind(this);
       this.fetchPlaylist = this.fetchPlaylist.bind(this);
       this.startDownload = this.startDownload.bind(this);
       this.downloadItems = this.downloadItems.bind(this);
@@ -258,7 +258,7 @@ class Downloader {
    * @param {object} options
    * @description merge options
    */
-  mergeOptions(options) {
+  mergeKyOptions(options) {
     return Object.assign({}, Downloader.defaultKyOptions, Utils.omit(options, ...Downloader.unSupportedOptions));
   }
 
