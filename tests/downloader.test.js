@@ -191,14 +191,14 @@ pure-relative.ts
     });
   });
 
-  describe('#mergeOptions', () => {
+  describe('#mergeKyOptions', () => {
     let downloader = null;
     beforeAll(() => {
       downloader = new HLSDownloader({ playlistURL: 'http://nmrony.local/hls/example.m3u8', options });
     });
 
     it('should return only default options for no override', () => {
-      expect(downloader.mergeOptions(options)).toMatchObject(HLSDownloader.defaultKyOptions);
+      expect(downloader.mergeKyOptions(options)).toMatchObject(HLSDownloader.defaultKyOptions);
     });
 
     it('should return options with provided override', () => {
@@ -206,7 +206,7 @@ pure-relative.ts
         retry: { limit: 10 },
         timeout: { request: 1000 },
       });
-      expect(downloader.mergeOptions(newOptions)).toMatchObject({
+      expect(downloader.mergeKyOptions(newOptions)).toMatchObject({
         retry: { limit: 10 },
         timeout: { request: 1000 },
       });
