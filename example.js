@@ -1,6 +1,6 @@
 import HLSDownloader from './build/index';
 
-// for fetching
+// for fetching only
 let downloader = new HLSDownloader({
   playlistURL: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
 });
