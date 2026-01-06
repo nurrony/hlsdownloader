@@ -31,10 +31,15 @@ downloader = new HLSDownloader({
 // passing ky option
 downloader = new HLSDownloader({
   concurrency: 5,
-  overwrite: true,
+  overwrite: false,
   destination: '/tmp/tests',
   playlistURL: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
-  retry: { limit: 0 },
+  retry: {
+    limit: 10,
+    methods: ['get'],
+    statusCodes: [413],
+    backoffLimit: 3000,
+  },
 });
 
 // passing onData hook
