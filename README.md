@@ -65,9 +65,7 @@ pnpm install hlsdownloader
 
 ## How to use
 
-`destination` field is optional. If `destination` is not provided it just fetches the content from origin.
-It can also be useful if you want to do content pre-fetching from CDN for your end viewers. If any `TS` or `m3u8`
-variant download is failed it continues downloading others and reports after finishing.
+The `destination` field is optional. If a destination is not specified, the content is retrieved directly from the origin. This functionality may also be used to pre-fetch content from the CDN for end viewers. If the download of any `TS` or `M3U8` variant fails, the process continues with the remaining downloads and provides a consolidated report upon completion.
 
 It's simple as below with.
 
@@ -87,6 +85,7 @@ const options = {
   onError: function (error) {
     console.log(error); // { url: "<URLofItem>", name: "<nameOfError>", message: "human readable message of error" }
   },
+  // you can supported ky options (optional) (see [example](example.js))
 };
 const downloader = new HLSDownloader(options);
 downloader.startDownload().then(response => console.log(response));
