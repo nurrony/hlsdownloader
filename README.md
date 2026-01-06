@@ -85,7 +85,7 @@ const options = {
   onError: function (error) {
     console.log(error); // { url: "<URLofItem>", name: "<nameOfError>", message: "human readable message of error" }
   },
-  // you can supported ky options (optional) (see [example](example.js))
+  // you can pass supported ky options (optional) (see example.js)
 };
 const downloader = new HLSDownloader(options);
 downloader.startDownload().then(response => console.log(response));
@@ -180,5 +180,5 @@ Give a ⭐️ if this project helped you!. I will be grateful if you all help me
 
 ## License
 
-Copyright © 2025 [Nur Rony](https://github.com/nurrony).<br />
+Copyright © 2026 [Nur Rony](https://github.com/nurrony).<br />
 This project is [MIT](https://github.com/nurrony/hlsdownloader/blob/main/LICENSE) licensed.
