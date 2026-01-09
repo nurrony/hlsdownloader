@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { jest } from '@jest/globals';
+import { cpus } from 'node:os';
 import { rimraf } from 'rimraf';
 import Utils from '../src/utils';
 import HLSDownloader from './../src';
@@ -88,7 +89,7 @@ pure-relative.ts
       expect(downloader).toBeInstanceOf(HLSDownloader);
       expect(downloader.kyOptions).not.toBeUndefined();
       expect(downloader).toHaveProperty('errors', []);
-      expect(downloader).toHaveProperty('concurrency', 1);
+      expect(downloader).toHaveProperty('concurrency', Math.max(1, cpus().length - 1));
       expect(downloader).toHaveProperty('items', ['http://nmrony.local/hls/example.m3u8']);
       expect(downloader).toHaveProperty('playlistURL', 'http://nmrony.local/hls/example.m3u8');
     });
