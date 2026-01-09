@@ -1,5 +1,4 @@
 export default {
-  runInBand: true,
   clearMocks: true,
   collectCoverage: true,
   coverageDirectory: 'coverage',
@@ -8,10 +7,10 @@ export default {
 
   coverageThreshold: {
     global: {
-      branches: 60,
-      functions: 60,
-      lines: 60,
-      statements: 60,
+      lines: 65,
+      branches: 65,
+      functions: 65,
+      statements: 65,
     },
   },
   errorOnDeprecated: true,

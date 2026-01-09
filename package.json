@@ -89,7 +89,7 @@
     "prepublishOnly": "npm run build",
     "prod:start": "node index.js",
     "semantic-release": "semantic-release",
-    "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules node --localstorage-file=.jest-localstorage node_modules/.bin/jest",
+    "test": "npm run test:coverage:clean && NODE_OPTIONS=--experimental-vm-modules node --localstorage-file=.jest-localstorage node_modules/.bin/jest --runInBand",
     "test:coverage:clean": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.'",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --watch",
     "version": "echo $npm_package_version"

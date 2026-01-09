@@ -1,6 +1,7 @@
 import ky from 'ky';
 import { createWriteStream } from 'node:fs';
 import { access, constants, mkdir, unlink } from 'node:fs/promises';
+import { cpus } from 'node:os';
 import { dirname, join } from 'node:path';
 import { Readable } from 'node:stream';
 import { URL } from 'node:url';
@@ -154,23 +155,31 @@ class Downloader {
    * @throws TypeError
    * @param {object} downloderOptions - Options to build downloader
    * @param {string} downloderOptions.playlistURL - Playlist URL to download
-   * @param {number} [downloderOptions.concurrency = 1] - concurrency limit to download playlist chunk
+   * @param {boolean} [downloderOptions.overwrite = false] - Overwrite files toggler
    * @param {string} [downloderOptions.destination = ''] - Absolute path to download
    * @param {object | Function | null} [downloderOptions.onData = null] - onData hook
    * @param {object | Function | null} [downloderOptions.onError = null] - onError hook
-   * @param {boolean} [downloderOptions.overwrite = false] - Overwrite files toggler
+   * @param {number} [downloderOptions.concurrency = noOfCPUs - 1] - concurrency limit to download playlist chunk
    * @param {object} [downloderOptions.kyOptions = {}] - Options to override from <a href="https://www.npmjs.com/package/ky" target="_blank">Ky</a>
    * @throws ProtocolNotSupported
    */
   constructor(
-    { playlistURL, destination, concurrency = 1, overwrite = false, onData = null, onError = null, ...kyOptions } = {
-      concurrency: 1,
-      destination: '',
-      playlistURL: '',
+    {
+      onData = null,
+      onError = null,
+      destination = '',
+      playlistURL = '',
+      overwrite = false,
+      concurrency = Math.max(1, cpus().length - 1),
+      ...kyOptions
+    } = {
       onData: null,
       onError: null,
-      overwrite: false,
       kyOptions: {},
+      destination: '',
+      playlistURL: '',
+      overwrite: false,
+      concurrency: Math.max(1, cpus().length - 1),
     }
   ) {
     try {
