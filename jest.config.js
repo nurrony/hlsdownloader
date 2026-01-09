@@ -1,4 +1,5 @@
 export default {
+  runInBand: true,
   clearMocks: true,
   collectCoverage: true,
   coverageDirectory: 'coverage',
