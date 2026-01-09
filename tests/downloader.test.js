@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { jest } from '@jest/globals';
 import { rimraf } from 'rimraf';
 import Utils from '../src/utils';
