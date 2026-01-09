@@ -1,4 +1,5 @@
-import { URL } from 'url';
+// @ts-nocheck
+import { URL } from 'node:url';
 import { ProtocolNotSupported } from '../src/exceptions';
 import Utils from './../src/utils';
 

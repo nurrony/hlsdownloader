@@ -1,10 +1,10 @@
-import { createWriteStream } from 'fs';
-import { access, constants, mkdir, unlink } from 'fs/promises';
 import ky from 'ky';
+import { createWriteStream } from 'node:fs';
+import { access, constants, mkdir, unlink } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { Readable } from 'node:stream';
+import { URL } from 'node:url';
 import pLimit from 'p-limit';
-import { dirname, join } from 'path';
-import { Readable } from 'stream';
-import { URL } from 'url';
 import { InvalidPlayList } from './exceptions';
 import Utils from './utils';
 
