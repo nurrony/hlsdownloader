@@ -1,17 +1,20 @@
 {
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
-    "strict": true,
-    "types": ["node"],
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "target": "ES2022",
-    "declaration": true,
-    "skipLibCheck": true,
+    "target": "ESNext",
     "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ESNext"],
+    "types": ["node", "@types/web"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "declaration": true,
+    "sourceMap": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "NodeNext"
-  }
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "tests"]
 }
