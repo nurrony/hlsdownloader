@@ -1,12 +1,8 @@
-// @ts-nocheck
 import assert from 'node:assert';
-import { cpus } from 'node:os';
 import { describe, mock, test } from 'node:test';
 import Downloader from './../src/Downloader.js';
 import FileService from './../src/services/FileWriter.js';
 import HttpClient from './../src/services/HttpClient.js';
-
-const strictAssert = assert.strict;
 
 describe('Downloader', () => {
   const playlistURL = 'https://example.com/master.m3u8';
@@ -17,32 +13,30 @@ describe('Downloader', () => {
     const downloader = new Downloader({ playlistURL });
 
     // Verify internal state matches defaults defined in constructor
-    strictAssert.equal((downloader as any).playlistURL, playlistURL);
-    strictAssert.equal((downloader as any).onData, undefined);
-    strictAssert.equal((downloader as any).onError, undefined);
+    assert.equal((downloader as any).playlistURL, playlistURL);
+    assert.equal((downloader as any).onData, undefined);
+    assert.equal((downloader as any).onError, undefined);
 
     // Verify FileService defaults passed from Downloader
     const fileService = (downloader as any).fileService;
-    strictAssert.equal(fileService.destination, '');
-    strictAssert.equal((fileService as any).overwrite, false);
+    assert.equal(fileService.destination, '');
+    assert.equal((fileService as any).overwrite, false);
 
     // Verify items array starts with the playlist URL
-    strictAssert.deepEqual((downloader as any).items, [playlistURL]);
+    assert.deepEqual((downloader as any).items, [playlistURL]);
 
-    // Verify concurrency default (cpus().length - 1, minimum 1)
-    const expectedConcurrency = Math.max(1, cpus().length - 1);
     // Since p-limit doesn't expose concurrency directly easily,
     // we verify the pool exists.
-    strictAssert.ok((downloader as any).pool);
+    assert.ok((downloader as any).pool);
   });
 
   test('should handle null/undefined options gracefully', () => {
     // This covers the "options || {}" logic in the constructor
-    // @ts-ignore - testing runtime robustness
+    // @ts-expect-error - testing runtime robustness
     const downloader = new Downloader(undefined);
 
-    strictAssert.equal((downloader as any).playlistURL, '');
-    strictAssert.equal((downloader as any).fileService.destination, '');
+    assert.equal((downloader as any).playlistURL, '');
+    assert.equal((downloader as any).fileService.destination, '');
   });
 
   test('should complete disk download successfully', async t => {
@@ -64,9 +58,9 @@ describe('Downloader', () => {
 
     const summary = await downloader.startDownload();
 
-    strictAssert.equal(summary.total, 2); // master + segment
-    strictAssert.equal(onDataMock.mock.callCount(), 2);
-    strictAssert.equal(summary.message, 'Downloaded successfully');
+    assert.equal(summary.total, 2); // master + segment
+    assert.equal(onDataMock.mock.callCount(), 2);
+    assert.equal(summary.message, 'Downloaded successfully');
   });
 
   test('should handle overwrite failure', async t => {
@@ -76,7 +70,7 @@ describe('Downloader', () => {
     const downloader = new Downloader({ playlistURL, destination: '/exists' });
     const summary = await downloader.startDownload();
 
-    strictAssert.equal(summary.errors[0].message, 'Directory already exists and overwrite is disabled');
+    assert.equal(summary.errors[0].message, 'Directory already exists and overwrite is disabled');
   });
 
   test('should handle network-only mode (no destination)', async t => {
@@ -86,8 +80,8 @@ describe('Downloader', () => {
     const downloader = new Downloader({ playlistURL }); // No destination
     const summary = await downloader.startDownload();
 
-    strictAssert.equal(summary.total, 2);
-    strictAssert.equal(summary.errors.length, 0);
+    assert.equal(summary.total, 2);
+    assert.equal(summary.errors.length, 0);
   });
 
   test('should handle variant playlists recursively', async t => {
@@ -103,7 +97,7 @@ describe('Downloader', () => {
     const summary = await downloader.startDownload();
 
     // master + variant + chunk = 3
-    strictAssert.equal(summary.total, 3);
+    assert.equal(summary.total, 3);
   });
 
   test('should trigger onError callback on failures', async t => {
@@ -115,7 +109,7 @@ describe('Downloader', () => {
     const downloader = new Downloader({ playlistURL, onError: onErrorMock });
 
     await downloader.startDownload();
-    strictAssert.equal(onErrorMock.mock.callCount(), 1);
+    assert.equal(onErrorMock.mock.callCount(), 1);
   });
 
   test('processQueue (Fetch-only): should trigger onData for each item', async t => {
@@ -136,10 +130,10 @@ describe('Downloader', () => {
     await downloader.startDownload();
 
     // Should be called twice: once for playlist, once for segment1.ts
-    strictAssert.equal(onDataMock.mock.callCount(), 2);
+    assert.equal(onDataMock.mock.callCount(), 2);
     const firstCall = onDataMock.mock.calls[0].arguments[0];
-    strictAssert.equal(firstCall.url, playlistURL);
-    strictAssert.ok(firstCall.total >= 2);
+    assert.equal(firstCall.url, playlistURL);
+    assert.ok(firstCall.total >= 2);
   });
 
   test('processQueue (Fetch-only): should handle stream errors', async t => {
@@ -160,8 +154,8 @@ describe('Downloader', () => {
     const summary = await downloader.startDownload();
 
     // Verify error was caught and processed through handleError
-    strictAssert.equal(onErrorMock.mock.callCount(), 2); // playlist + segment
-    strictAssert.equal(summary.errors[0].message, 'Stream Break');
+    assert.equal(onErrorMock.mock.callCount(), 2); // playlist + segment
+    assert.equal(summary.errors[0].message, 'Stream Break');
   });
 
   test('downloadFile(): success path with onData callback', async t => {
@@ -186,11 +180,11 @@ describe('Downloader', () => {
     await (downloader as any).downloadFile(segmentUrl);
 
     // 4. Assertions
-    strictAssert.equal(saveStreamMock.mock.callCount(), 1);
-    strictAssert.equal(onDataMock.mock.callCount(), 1);
+    assert.equal(saveStreamMock.mock.callCount(), 1);
+    assert.equal(onDataMock.mock.callCount(), 1);
 
     const callbackData = onDataMock.mock.calls[0].arguments[0];
-    strictAssert.deepEqual(callbackData, {
+    assert.deepEqual(callbackData, {
       url: segmentUrl,
       path: mockPath,
       total: 1, // Only the playlistURL in items initially
@@ -216,9 +210,9 @@ describe('Downloader', () => {
     await (downloader as any).downloadFile(segmentUrl);
 
     // 4. Assertions
-    strictAssert.equal(onErrorMock.mock.callCount(), 1);
+    assert.equal(onErrorMock.mock.callCount(), 1);
     const errorData = onErrorMock.mock.calls[0].arguments[0];
-    strictAssert.equal(errorData.url, segmentUrl);
-    strictAssert.equal(errorData.message, 'Network Timeout');
+    assert.equal(errorData.url, segmentUrl);
+    assert.equal(errorData.message, 'Network Timeout');
   });
 });

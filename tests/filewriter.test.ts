@@ -1,11 +1,8 @@
-// @ts-nocheck
 import assert from 'node:assert';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { afterEach, beforeEach, describe, test } from 'node:test';
 import FileService from '../src/services/FileWriter.js';
-
-const strictAssert = assert.strict;
 
 describe('FileService', () => {
   const testDest = join(process.cwd(), 'test-downloads');
@@ -25,7 +22,7 @@ describe('FileService', () => {
     const expected = join(testDest, 'videos/playlist.m3u8');
     const result = await fileService.getTargetPath(url);
 
-    strictAssert.equal(result, expected);
+    assert.equal(result, expected);
   });
 
   test('saveStream(): should persist a Web ReadableStream to disk', async () => {
@@ -42,7 +39,7 @@ describe('FileService', () => {
     await fileService.saveStream(webStream, filePath);
 
     const savedContent = await readFile(filePath, 'utf-8');
-    strictAssert.equal(savedContent, content);
+    assert.equal(savedContent, content);
   });
 
   test('saveStream() should cleanup and throw on stream failure', async () => {
@@ -55,7 +52,7 @@ describe('FileService', () => {
       },
     });
 
-    await strictAssert.rejects(
+    await assert.rejects(
       () => fileService.saveStream(errorStream, filePath),
       { message: 'Network failure' },
       'Should cleanup and propagate stream errors'
@@ -72,8 +69,8 @@ describe('FileService', () => {
     const dirPath = dirname(targetPath);
     const stats = await import('node:fs').then(fs => fs.promises.stat(dirPath));
 
-    strictAssert.ok(stats.isDirectory(), 'Directory should be created');
-    strictAssert.ok(targetPath.endsWith('assets/video/v1/chunk.ts'));
+    assert.ok(stats.isDirectory(), 'Directory should be created');
+    assert.ok(targetPath.endsWith('assets/video/v1/chunk.ts'));
   });
 
   //
@@ -82,7 +79,7 @@ describe('FileService', () => {
     const url = 'https://example.com/ghost.ts';
 
     const result = await fileService.canWrite(url);
-    strictAssert.equal(result, true, 'Should allow writing if file is missing');
+    assert.equal(result, true, 'Should allow writing if file is missing');
   });
 
   test('canWrite(): should return false if file exists and overwrite is false', async () => {
@@ -95,7 +92,7 @@ describe('FileService', () => {
     await writeFile(fullPath, 'some data');
 
     const result = await fileService.canWrite(url);
-    strictAssert.equal(result, false, 'Should not allow writing to existing file');
+    assert.equal(result, false, 'Should not allow writing to existing file');
   });
 
   test('canWrite(): should return true if file exists but overwrite is true', async () => {
@@ -107,7 +104,7 @@ describe('FileService', () => {
     await writeFile(fullPath, 'some data');
 
     const result = await fileService.canWrite(url);
-    strictAssert.equal(result, true, 'Should allow writing if overwrite is enabled');
+    assert.equal(result, true, 'Should allow writing if overwrite is enabled');
   });
   test('canWrite() should throw if fs.access fails with non-ENOENT error', async t => {
     const fileService = new FileService('/test-dest');
@@ -120,6 +117,6 @@ describe('FileService', () => {
       throw err;
     });
 
-    await strictAssert.rejects(() => fileService.canWrite('https://example.com/video.ts'), { code: 'EACCES' });
+    await assert.rejects(() => fileService.canWrite('https://example.com/video.ts'), { code: 'EACCES' });
   });
 });

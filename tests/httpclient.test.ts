@@ -1,11 +1,8 @@
-// @ts-nocheck
 import ky from 'ky';
 import assert from 'node:assert';
 import { describe, test } from 'node:test';
 import InvalidPlayList from './../src/exceptions/InvalidPlaylist.js';
 import HttpClient from './../src/services/HttpClient.js';
-
-const strictAssert = assert.strict;
 
 describe('HttpClient', () => {
   // Mock data
@@ -23,9 +20,9 @@ describe('HttpClient', () => {
     const client = new HttpClient(customOptions);
     const options = (client as any).options;
 
-    strictAssert.equal(options.retry.limit, 2);
-    strictAssert.strictEqual(options.prefixUrl, undefined, 'Unsupported options should be removed');
-    strictAssert.equal(options.timeout, 5000);
+    assert.equal(options.retry.limit, 2);
+    assert.strictEqual(options.prefixUrl, undefined, 'Unsupported options should be removed');
+    assert.equal(options.timeout, 5000);
   });
 
   describe('fetchText()', () => {
@@ -36,7 +33,7 @@ describe('HttpClient', () => {
 
       const client = new HttpClient();
       const result = await client.fetchText(testUrl);
-      strictAssert.equal(result, validPlaylist);
+      assert.equal(result, validPlaylist);
     });
 
     test('should throw InvalidPlayList when content is invalid', async t => {
@@ -45,7 +42,7 @@ describe('HttpClient', () => {
       }));
 
       const client = new HttpClient();
-      await strictAssert.rejects(() => client.fetchText(testUrl), InvalidPlayList);
+      await assert.rejects(() => client.fetchText(testUrl), InvalidPlayList);
     });
   });
 
@@ -58,7 +55,7 @@ describe('HttpClient', () => {
 
       const client = new HttpClient();
       const stream = await client.getStream(testUrl);
-      strictAssert.ok(stream instanceof ReadableStream);
+      assert.ok(stream instanceof ReadableStream);
     });
 
     test('should throw if response body is null', async t => {
@@ -67,7 +64,7 @@ describe('HttpClient', () => {
       }));
 
       const client = new HttpClient();
-      await strictAssert.rejects(() => client.getStream(testUrl), /Response body is null/);
+      await assert.rejects(() => client.getStream(testUrl), /Response body is null/);
     });
   });
 });

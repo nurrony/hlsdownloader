@@ -46,9 +46,9 @@ class Downloader {
       ...kyOptions
     } = options || {};
 
-    this.playlistURL = playlistURL;
     this.onData = onData;
     this.onError = onError;
+    this.playlistURL = playlistURL;
     this.pool = pLimit(concurrency);
 
     this.http = new HttpClient(kyOptions);
