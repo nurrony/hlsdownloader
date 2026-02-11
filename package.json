@@ -4,7 +4,13 @@
   "description": "Downloads HLS Playlist file and TS chunks",
   "snyk": true,
   "main": "./dist/index.js",
-  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "type": "module",
   "license": "MIT",
   "scripts": {
@@ -13,13 +19,13 @@
     "hooks:install": "lefthook install",
     "version": "echo $npm_package_version",
     "hooks:uninstall": "lefthook uninstall",
-    "build:types": "tsc --emitDeclarationOnly --outDir dist",
     "prepublishOnly": "npm run test:coverage && npm run build",
+    "build:types": "dts-bundle-generator -o dist/index.d.ts src/index.ts --no-check",
     "lint": "eslint . && echo '💄 Coding style guideline has been followed properly.'",
     "lint:fix": "eslint . --fix && echo '🔧 Coding style has been fixed as per guideline.'",
-    "build": "npm run lint:fix && npm run lint && rimraf -fr ./dist && npm run build:bundle",
+    "build": "npm run lint:fix && npm run lint && rimraf -fr ./dist && npm run build:types && npm run build:bundle",
     "test:coverage": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.' && c8 npm test",
-    "test:pure": "node --import tsx --test --experimental-test-coverage --test-coverage-exclude='tests/**'  tests/*.test.ts",
+    "test:pure": "node --import tsx --test --experimental-test-coverage --test-coverage-exclude='tests/**' tests/*.test.ts",
     "build:bundle": "esbuild src/index.ts --bundle --packages=external --platform=node --format=esm --target=node20 --minify --tree-shaking=true --outfile=dist/index.js"
   },
   "dependencies": {
@@ -34,6 +40,7 @@
     "@types/web": "^0.0.331",
     "c8": "^10.1.3",
     "cz-conventional-changelog": "^3.3.0",
+    "dts-bundle-generator": "^9.5.1",
     "eslint": "^9.39.2",
     "lefthook": "^2.1.0",
     "rimraf": "^6.1.2",

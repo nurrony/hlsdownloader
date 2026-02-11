@@ -3,10 +3,15 @@ import { Utils } from '../Utils.js';
 import InvalidPlayList from './../exceptions/InvalidPlaylist.js';
 
 /**
+ * @module HLSDownloader
+ */
+
+/**
  * @class HttpClient
- * @memberof module:HLSDownloader
+ * @memberof HLSDownloader
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @classdesc Manages file system operations including directory creation, path resolution, and stream persistence.
+ * @category Services
+ * @description Internal service wrapper for handling specialized HLS network requests via `ky`.
  */
 class HttpClient {
   /** @type {Options} Stores the sanitized ky options. */

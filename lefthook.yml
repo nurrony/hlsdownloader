@@ -15,8 +15,8 @@ pre-commit:
         - '*.json'
       run: npm run lint:fix
 
-    - name: 'test'
-      run: npm test
+    - name: 'Running Unit Tests'
+      run: npm run test:coverage
       stage_fixed: true
 
 # Build commit messages

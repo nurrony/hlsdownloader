@@ -25,8 +25,7 @@ describe('Downloader', () => {
     // Verify items array starts with the playlist URL
     assert.deepEqual((downloader as any).items, [playlistURL]);
 
-    // Since p-limit doesn't expose concurrency directly easily,
-    // we verify the pool exists.
+    assert.ok((downloader as any).concurrency > 0);
     assert.ok((downloader as any).pool);
   });
 

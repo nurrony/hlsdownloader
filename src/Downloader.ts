@@ -5,6 +5,7 @@ import HttpClient from './services/HttpClient.js';
 import PlaylistParser from './services/PlaylistParser.js';
 import { Utils } from './Utils.js';
 
+/** @memberof HLSDownloader */
 export interface DownloaderOptions {
   playlistURL: string;
   destination?: string;
@@ -17,6 +18,7 @@ export interface DownloaderOptions {
   [key: string]: any; // For kyOptions
 }
 
+/** @memberof HLSDownloader */
 export interface DownloadSummary {
   total: number;
   errors: Array<{ url: string; name: string; message: string }>;
@@ -25,7 +27,8 @@ export interface DownloadSummary {
 
 /**
  * @class Downloader
- * @description Main orchestrator that coordinates fetching, parsing, and downloading HLS content.
+ * @memberof HLSDownloader
+ * @description The main orchestrator service for managing HLS stream acquisition.
  */
 class Downloader {
   private playlistURL: string;
@@ -36,7 +39,11 @@ class Downloader {
   private fileService: FileService;
   private items: string[];
   private errors: DownloadSummary['errors'] = [];
+  private concurrency = 1;
 
+  /**
+   * @param {DownloaderOptions} options - Configuration for the download process.
+   */
   constructor(options: DownloaderOptions) {
     const {
       onData,
@@ -52,6 +59,7 @@ class Downloader {
     this.onError = onError;
     this.playlistURL = playlistURL;
     this.pool = pLimit(concurrency);
+    this.concurrency = concurrency;
 
     this.http = new HttpClient(kyOptions);
     this.fileService = new FileService(destination, overwrite);
@@ -59,6 +67,11 @@ class Downloader {
     this.items = [playlistURL];
   }
 
+  /**
+   * @memberof Downloader
+   * Initiates the download lifecycle.
+   * @returns {Promise<DownloadSummary>}
+   */
   async startDownload(): Promise<DownloadSummary> {
     try {
       Utils.isValidUrl(this.playlistURL);
