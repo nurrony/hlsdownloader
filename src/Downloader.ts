@@ -10,7 +10,9 @@ export interface DownloaderOptions {
   destination?: string;
   overwrite?: boolean;
   concurrency?: number;
+  // eslint-disable-next-line no-unused-vars
   onData?: (data: { url: string; path?: string; total: number }) => void;
+  // eslint-disable-next-line no-unused-vars
   onError?: (error: { url: string; name: string; message: string }) => void;
   [key: string]: any; // For kyOptions
 }
