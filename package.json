@@ -1,0 +1,70 @@
+{
+  "name": "hlsdownloader",
+  "version": "0.0.0-semantic-release",
+  "description": "Downloads HLS Playlist file and TS chunks",
+  "snyk": true,
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test:pure": "node --import tsx --test --experimental-test-coverage --test-coverage-exclude='tests/**'  tests/*.test.ts",
+    "test": "node --import tsx --test",
+    "test:cov": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.' && c8 npm test"
+  },
+  "dependencies": {
+    "ky": "^1.14.3",
+    "p-limit": "^7.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "c8": "^10.1.3",
+    "rimraf": "^6.1.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "cdn-priming",
+    "chunk",
+    "download",
+    "download-playlists",
+    "downloader",
+    "HLS",
+    "hlsdownloader",
+    "live",
+    "livestream",
+    "m3u8",
+    "m3u8downloader",
+    "playlist",
+    "streaming",
+    "streaming-video"
+  ],
+  "homepage": "https://nurrony.github.io/hlsdownloader",
+  "repository": {
+    "type": "git+https",
+    "url": "git+https://github.com/nurrony/hlsdownloader.git"
+  },
+  "author": {
+    "email": "pro.nmrony@gmail.com",
+    "name": "Nur Rony",
+    "url": "https://nurrony.github.io"
+  },
+  "bugs": {
+    "url": "https://github.com/nurrony/hlsdownloader/issues"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
