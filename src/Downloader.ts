@@ -3,15 +3,29 @@ import pLimit, { LimitFunction } from 'p-limit';
 import FileService from './services/FileWriter.js';
 import HttpClient from './services/HttpClient.js';
 import PlaylistParser from './services/PlaylistParser.js';
-import { DownloaderOptions } from './types/DownloaderOptions.js';
-import { DownloadSummary } from './types/DownloadSummary.js';
-import { Utils } from './utils.js';
+import { Utils } from './Utils.js';
+
+export interface DownloaderOptions {
+  playlistURL: string;
+  destination?: string;
+  overwrite?: boolean;
+  concurrency?: number;
+  onData?: (data: { url: string; path?: string; total: number }) => void;
+  onError?: (error: { url: string; name: string; message: string }) => void;
+  [key: string]: any; // For kyOptions
+}
+
+export interface DownloadSummary {
+  total: number;
+  errors: Array<{ url: string; name: string; message: string }>;
+  message: string;
+}
 
 /**
  * @class Downloader
  * @description Main orchestrator that coordinates fetching, parsing, and downloading HLS content.
  */
-export default class Downloader {
+class Downloader {
   private playlistURL: string;
   private onData: DownloaderOptions['onData'];
   private onError: DownloaderOptions['onError'];
@@ -73,7 +87,7 @@ export default class Downloader {
   private async processQueue(): Promise<any> {
     if (this.fileService['destination']) {
       if (!(await this.fileService.canWrite(this.playlistURL))) {
-        throw new Error('Directory already exists and overwrite is false');
+        throw new Error('Directory already exists and overwrite is disabled');
       }
       const tasks = this.items.map(url => this.pool(() => this.downloadFile(url)));
       return Promise.allSettled(tasks);
@@ -125,3 +139,5 @@ export default class Downloader {
     };
   }
 }
+
+export default Downloader;

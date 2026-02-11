@@ -76,7 +76,7 @@ describe('Downloader', () => {
     const downloader = new Downloader({ playlistURL, destination: '/exists' });
     const summary = await downloader.startDownload();
 
-    strictAssert.equal(summary.errors[0].message, 'Directory already exists and overwrite is false');
+    strictAssert.equal(summary.errors[0].message, 'Directory already exists and overwrite is disabled');
   });
 
   test('should handle network-only mode (no destination)', async t => {

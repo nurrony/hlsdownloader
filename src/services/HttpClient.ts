@@ -1,6 +1,6 @@
 import ky, { Options } from 'ky';
+import { Utils } from '../Utils.js';
 import InvalidPlayList from './../exceptions/InvalidPlaylist.js';
-import { Utils } from './../utils.js';
 
 /**
  * @class HttpClient

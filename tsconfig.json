@@ -8,12 +8,14 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "declaration": true,
     "sourceMap": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist", "tests"]

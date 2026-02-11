@@ -2,15 +2,18 @@
 import assert from 'node:assert';
 import { describe, test } from 'node:test';
 import UnsupportedProtocol from '../src/exceptions/UnsupportedProtocol.js';
-import { Utils } from '../src/utils.js';
+import { Utils } from '../src/Utils.js';
 
 const strictAssert = assert.strict;
 
-describe('HLSUtils', () => {
+describe('Utils', () => {
   describe('isValidUrl()', () => {
-    test('should return true for supported protocols', () => {
+    test('should return true for each supported protocols', () => {
       strictAssert.ok(Utils.isValidUrl('https://example.com/playlist.m3u8'));
       strictAssert.ok(Utils.isValidUrl('ftp://example.com/file.ts', ['ftp:']));
+      strictAssert.ok(Utils.isValidUrl('sftp://example.com/file.ts', ['sftp:']));
+      strictAssert.ok(Utils.isValidUrl('http://example.com/file.ts', ['http:']));
+      strictAssert.ok(Utils.isValidUrl('https://example.com/file.ts', ['https:']));
     });
 
     test('should throw UnsupportedProtocol for disallowed protocols', () => {

@@ -5,17 +5,16 @@
   "snyk": true,
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "npm run build:bundle",
-    "build:types": "tsc --emitDeclarationOnly",
-    "prepublishOnly": "npm run test:coverage && npm run build",
-    "test:pure": "node --import tsx --test --experimental-test-coverage --test-coverage-exclude='tests/**'  tests/*.test.ts",
     "test": "node --import tsx --test",
+    "build": "rimraf -fr ./dist && npm run build:bundle",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist",
+    "prepublishOnly": "npm run test:coverage && npm run build",
     "test:coverage": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.' && c8 npm test",
-    "build:bundle": "rimraf -fr ./dist && esbuild src/index.ts --bundle --platform=node --format=esm --target=node20 --minify --tree-shaking=true --outfile=dist/index.js"
+    "test:pure": "node --import tsx --test --experimental-test-coverage --test-coverage-exclude='tests/**'  tests/*.test.ts",
+    "build:bundle": "esbuild src/index.ts --bundle --packages=external --platform=node --format=esm --target=node20 --minify --tree-shaking=true --outfile=dist/index.js"
   },
   "dependencies": {
     "ky": "^1.14.3",
@@ -34,23 +33,25 @@
     "npm": ">=9"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
-    "cdn-priming",
+    "HLS",
+    "live",
+    "m3u8",
     "chunk",
     "download",
-    "download-playlists",
-    "downloader",
-    "HLS",
-    "hlsdownloader",
-    "live",
-    "livestream",
-    "m3u8",
-    "m3u8downloader",
     "playlist",
     "streaming",
-    "streaming-video"
+    "livestream",
+    "downloader",
+    "cdn-priming",
+    "hlsdownloader",
+    "m3u8downloader",
+    "streaming-video",
+    "download-playlists"
   ],
   "homepage": "https://nurrony.github.io/hlsdownloader",
   "repository": {

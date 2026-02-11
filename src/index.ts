@@ -3,11 +3,7 @@
  * @module HLSDownloader
  */
 
-import * as HLSDownloader from './Downloader.js';
-
-// Export types for consumers
-export type { DownloaderOptions } from './types/DownloaderOptions.js';
-export type { DownloadSummary } from './types/DownloadSummary.js';
+import HLSDownloader from './Downloader.js';
 
 // Export core classes and singletons
 export { HLSDownloader };
