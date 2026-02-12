@@ -1,0 +1,18 @@
+# Global owners (Fallback for everything)
+
+- @nurrony
+
+# Core Logic & Downloads
+
+/src/ @nurrony
+
+# CI/CD & Automation
+
+/.github/workflows/ @nurrony
+/package.json @nurrony
+/jsdoc.json @nurrony
+
+# Documentation
+
+/docs/ @nurrony
+/README.md @nurrony

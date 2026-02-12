@@ -1,28 +1,27 @@
 name: Publish Documentation
 
 on:
-  workflow_dispatch:
-  push:
+  workflow_run:
+    workflows: ["Release to NPM"]
+    types:
+      - completed
     branches:
       - main
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   CI: true
 
 jobs:
   publish-docs:
-    environment:
-      name: hlsdownloader_docs_url
-      url: ${{ steps.deployment.outputs.page_url }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,7 +38,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: "Generate documents"
-        run: npm run docs:gen
+        run: npm run docs
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

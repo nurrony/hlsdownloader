@@ -1,0 +1,12 @@
+{
+  "all": true,
+  "branches": 100,
+  "check-coverage": true,
+  "exclude": ["tests/**/*.ts", "src/types/**", "**/*.d.ts"],
+  "extension": [".ts"],
+  "functions": 100,
+  "include": ["src/**/*.ts"],
+  "lines": 100,
+  "reporter": ["text", "html", "lcov"],
+  "statements": 100
+}
