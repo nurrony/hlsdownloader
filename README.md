@@ -5,27 +5,27 @@
 </div>
 
 <p align="center" style="font-size: 18px;">
-  Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetching from CDN to Edge Server for your end viewers.
+Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetching from CDN to Edge Server for your end viewers. A high-performance, tree-shaken HLS (HTTP Live Streaming) downloader engine. Built with modern ESM architecture, providing 100% type safety and zero-waste bundling. 
 </p>
 
 <p align="center" style="font-size: 18px;">
-  <a href="https://www.npmjs.com/package/hlsdownloader"><b>NPM</b></a> • <a href="https://nurrony.github.io/hlsdownloader/"><b>Documentation</b></a> •  <a href="https://github.com/nurrony/hlsdownloader"><b>GitHub</b></a>
+<a href="https://www.npmjs.com/package/hlsdownloader"><b>NPM</b></a> • <a href="https://nurrony.github.io/hlsdownloader/"><b>Documentation</b></a> •  <a href="https://github.com/nurrony/hlsdownloader"><b>GitHub</b></a>
 </p>
 
 <div align="center">
 
-[![Version](https://img.shields.io/npm/v/hlsdownloader.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
-[![Node](https://img.shields.io/badge/node-%3E%3D20-blue.svg?style=flat-square)](https://www.npmjs.com/package/hlsdownloader)
+[![NPM Version](https://img.shields.io/npm/v/hlsdownloader-ts?color=blue)](https://www.npmjs.com/package/hlsdownloader)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3%2B-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml/badge.svg?style=flat-square)](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/nurrony/hlsdownloader/badge.svg?branch=main)](https://coveralls.io/github/nurrony/hlsdownloader?branch=main)
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square)](https://nurrony.github.io/hlsdownloader)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square) ](https://github.com/nurrony/hlsdownloader/graphs/commit-activity)
-[![License: MIT](https://img.shields.io/github/license/nurrony/hlsdownloader?style=flat-square) ](https://github.com/nurrony/hlsdownloader/blob/main/LICENSE)
 [![Semver: Badge](https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079?style=flat-square) ](https://npmjs.com/package/hlsdownloader)
 [![Downloads: HLSDownloader](https://img.shields.io/npm/dm/hlsdownloader.svg?style=flat-square) ](https://npm-stat.com/charts.html?package=hlsdownloader)
 [![Min Bundle Size: HLSDownloader](https://img.shields.io/bundlephobia/minzip/hlsdownloader?style=flat-square) ](https://bundlephobia.com/package/hlsdownloader@latest)
 [![Known Vulnerabilities](https://snyk.io/test/github/nurrony/hlsdownloader/badge.svg)](https://snyk.io/test/github/nurrony/hlsdownloader)
-<br /> <br />
 
 </div>
 
@@ -35,88 +35,63 @@
 > ⚠️
 > <strong>HLSDownloader `v2.x.x` is no longer maintained and we will not accept any backport requests.</strong>
 
+---
+
 ## Features
 
-- Retryable
-- Promise Based
-- Support for HTTP/2
-- Overwrite protection
-- Support for custom HTTP Headers
-- Support for custom HTTP Client
-- Bring your own progress bar during download
-- Concurrent download segments with multiple http connections
+- **Modern ESM**: Optimized for Node.js 20+ environments using native modules.
+- **Retryable**: Built-in resilience that automatically retries failed segment requests to ensure download completion.
+- **Promise Based**: Fully asynchronous API designed for seamless integration with `async/await` and modern control flows.
+- **Support for HTTP/2**: Leverages multiplexing to download multiple segments over a single connection for reduced overhead.
+- **Overwrite Protection**: Safeguards your local data by preventing accidental overwriting of existing files unless explicitly enabled.
+- **Support for Custom HTTP Headers**: Allows injection of custom headers for handling authentication, user-agents, or session tokens.
+- **Support for Custom HTTP Client**: Modular architecture that lets you swap the default engine for any custom client implementation.
+- **Bring Your Own Progress Bar**: Exposed event hooks and lifecycle data allow you to hook in any CLI or GUI progress visualization.
+- **Concurrent Downloads**: Maximizes bandwidth by fetching multiple HLS segments simultaneously through parallel HTTP connections.
+- **Professional Docs**: Integrated JSDoc-to-HTML pipeline using TypeDoc and the Fresh theme.
 
-## Prerequisites
-
-- node >=20.x.x
+---
 
 ## Installation
 
-It is pretty straight forward
-
-```sh
-# using npm
-npm install --save hlsdownloader
-# or with yarn
-yarn add hlsdownloader
-# or pnpm
-pnpm install hlsdownloader
+```bash
+npm install hlsdownloader
 ```
 
-## How to use
+## Examples
 
-The `destination` field is optional. If a destination is not specified, the content is retrieved directly from the origin. This functionality may also be used to pre-fetch content from the CDN for end viewers. If the download of any `TS` or `M3U8` variant fails, the process continues with the remaining downloads and provides a consolidated report upon completion.
+### Basic Usage
 
-It's simple as below with.
+```ts
+import HLSDowloader from 'hlsdownloader';
 
-```js
-import HLSDownloader from 'hlsdownloader';
+const downloader = new HLSDownloader({
+  playlistURL: '[https://example.com/stream/master.m3u8](https://example.com/stream/master.m3u8)',
+  destination: './downloads/my-video',
+});
 
-const options = {
-  playlistURL: 'http://example.com/path/to/your/playlist.m3u8', // change it
-  destination: '/tmp', // (optional: default '')
-  concurrency: 10, // (optional: default = 1),
-  overwrite: true, // (optional: default = false)
-  // (optional: default = null)
-  onData: function (data) {
-    console.log(data); // {url: "<url-just-downloaded>", totalItems: "<total-items-to-download>", path: "<absolute-path-of-download-loation>"}
-  },
-  // (optional: default = null)
-  onError: function (error) {
-    console.log(error); // { url: "<URLofItem>", name: "<nameOfError>", message: "human readable message of error" }
-  },
-  // you can pass supported ky options (optional) (see example.js)
-};
-const downloader = new HLSDownloader(options);
-downloader.startDownload().then(response => console.log(response));
+const summary = await downloader.startDownload();
+console.log(`Downloaded ${summary.total} segments to ${summary.path}`);
 ```
 
-> ℹ️ Check [example.js](example.js) for working example
+### Advanced Usage
 
-```js
-// on success
-{
-  total: <number>,
-  playlistURL: 'your playlist url'
-  message: 'Downloaded successfully',
-}
+```ts
+import { HLSDownloader } from 'hlsdownloader-ts';
 
-// on partial download
-{
-  total: <number>,
-  playlistURL: 'your playlist url',
-  message: 'Download done with some errors',
-  errors: [
-    {
-      name: 'InvalidPlaylist',
-      message: 'Playlist parsing is not successful'
-      url: 'https://cnd.hls-server.test/playlist.m3u8'
-    }
-  ] // items url that is skipped or could not downloaded for error
+const downloader = new HLSDownloader({
+  playlistURL: 'https://example.com/video.m3u8',
+  destination: './output',
+  concurrency: 10, // 10 simultaneous downloads
+  overwrite: true, // Overwrite existing files
+});
+
+const { total, errors } = await downloader.startDownload();
+
+if (errors.length > 0) {
+  console.error(`${errors.length} segments failed.`, errors);
 }
 ```
-
-## Advance Usage
 
 HLSDownloader supports all [Ky API](https://github.com/sindresorhus/ky?tab=readme-ov-file#api) except these options given below
 
@@ -137,36 +112,61 @@ HLSDownloader supports all [Ky API](https://github.com/sindresorhus/ky?tab=readm
 - stringifyJson
 - methodRewriting
 
-It also disable retry failed request that you can easily override
+## API Documentation
 
-## Running Tests
+The library is organized under the `HLSDownloader` module. For full interactive documentation, visit our [Documentation](https://nurrony.github.io/hlsdownloader) site.
 
-```sh
-npm test
-```
+### HLSDownloader (Class)
 
-To run it on watch mode
+The main service orchestrator for fetching HLS content.
 
-```sh
-npm run test:watch
-```
+| Method            | Returns                    | Description                           |
+| ----------------- | -------------------------- | ------------------------------------- |
+| `startDownload()` | `Promise<DownloadSummary>` | Begins parsing and fetching segments. |
 
-## Generate Documentations
+### DownloaderOptions (Interface)
 
-```sh
-npm docs:gen
-```
+| Property    | Type       | Default       | Description                                             |
+| ----------- | ---------- | ------------- | ------------------------------------------------------- |
+| playlistURL | `string`   | **Required**  | The absolute URL to the M3U8 file.                      |
+| destination | `string`   | `''`          | Local path to save files.                               |
+| concurrency | `number`   | `os.cpus - 1` | Max parallel network requests.                          |
+| overwrite   | `boolean`  | `false`       | Indicates whether existing files should be overwritten. |
+| onData      | `callback` | `null`        | The local directory where files will be saved.          |
+| onError     | `callback` | `null`        | The local directory where files will be saved.          |
 
-## Authors
+### DownloadSummary (Interface)
 
-👤 **Nur Rony**
+| Property | Type              | Description                           | Description                        |
+| -------- | ----------------- | ------------------------------------- | ---------------------------------- |
+| `total`  | `number`          | Count of successfully saved segments. | The absolute URL to the M3U8 file. |
+| `path`   | `string`          | The final output directory.           | Local path to save files.          |
+| `errors` | `DownloadError[]` | Array of detailed failure objects.    | Max parallel network requests.     |
 
-- Website: [nurrony.github.io](https://nurrony.github.io)
-- Twitter: [@nmrony](https://twitter.com/nmrony)
-- Github: [@nurrony](https://github.com/nurrony)
-- LinkedIn: [@nmrony](https://linkedin.com/in/nmrony)
+## Development & Contributing
 
-## Contributing
+Contributions are welcome! This project enforces strict quality standards to maintain 100% coverage.
+
+### Prerequisites
+
+- Node.js >= 20.0.0
+- npm >= 10.0.0
+
+### Workflow
+
+Fork & Clone: Get the repo locally.
+
+- Install: `npm install`
+- Lint: `npm run lint` (Must pass without warnings)
+- Test: `npm run test:cov` (Must maintain 100% coverage)
+- Build: `npm run build` (Generates `./dist` and bundled types)
+- Docs: `npm run docs` (Generates TypeDoc HTML)
+
+### Guidelines
+
+- Follow the JSDoc hierarchy: Use `@module HLSDownloader` and `@category Services/Types`.
+- All new features must include unit tests.
+- Maintain ESM compatibility (always use file extensions in imports).
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/nurrony/hlsdownloader/issues). You can also take a look at the [contributing guide](https://github.com/nurrony/hlsdownloader/blob/main/CONTRIBUTING.md).
 
@@ -181,4 +181,3 @@ Give a ⭐️ if this project helped you!. I will be grateful if you all help me
 ## License
 
 Copyright © 2026 [Nur Rony](https://github.com/nurrony).<br />
-This project is [MIT](https://github.com/nurrony/hlsdownloader/blob/main/LICENSE) licensed.

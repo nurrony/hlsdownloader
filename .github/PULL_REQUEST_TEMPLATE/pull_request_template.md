@@ -2,7 +2,7 @@
 name: Pull Request
 about: Create a report to help us improve
 title: 'Please add title for this PR'
-assignees: nurrony
+reviewers: nurrony
 ---
 
 ## What does this PR do?

@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Local (Regular)",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/src/index.ts", // or index.js
+      "preLaunchTask": "tsc: build", // Optional: runs build before debugging
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+    }
+  ]
+}

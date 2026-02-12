@@ -1,14 +1,11 @@
 /**
- * @class
- * @memberof module:HLSDownloaderException
- * @extends Error
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @classdesc Exception to throw if HLSDownloader does not support the given URI protocol
  */
 class ProtocolNotSupported extends Error {
   /**
-   * @constructor
-   * @property {String} message message of exception
+   * @param message
+   * message message of exception
    */
   constructor(message) {
     super(message);

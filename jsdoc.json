@@ -1,4 +1,8 @@
 {
+  "babel": {
+    "extensions": ["ts"],
+    "presets": ["@babel/preset-typescript"]
+  },
   "markdown": {
     "hardwrap": false,
     "idInHeadings": true
@@ -12,6 +16,7 @@
     "theme_opts": {
       "create_style": "article ul { list-style: disc; }",
       "default_theme": "light",
+      "display_reports": true,
       "displayModuleHeader": true,
       "exclude_inherited": false,
       "favicon": "./assets/favicon.png",
@@ -28,17 +33,23 @@
           "name": "Description"
         }
       ],
+      "minify_html": false,
       "prefixModuleToSidebarItems_experimental": false,
+      "readme": "README.md",
       "search": true,
+      "search_options": {
+        "show_score": true
+      },
       "static_dir": ["./assets"],
       "title": "<div style=\"text-align: center;\"><a style=\"text-decoration: none;\" href=\"https://nurrony.github.io/hlsdownloader\"><img src=\"assets/logo.png\" name='hlsdownloader' style=\"border-radius: 5px;\" height=\"130\" width=\"130\"/><h1 style=\"font-size: 2em;\">HLSDownloader</h1></a></div>"
     }
   },
-  "plugins": ["plugins/markdown"],
+  "plugins": ["plugins/markdown", "node_modules/jsdoc-babel"],
   "source": {
     "exclude": ["node_modules", "tests", "docs"],
+    "excludePattern": "(^|\\/|\\\\)_",
     "include": ["README.md", "./src/"],
-    "includePattern": ".+\\.(m?js(doc|x)?)$"
+    "includePattern": ".+\\.ts$"
   },
   "tags": {
     "allowUnknownTags": true

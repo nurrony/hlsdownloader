@@ -1,14 +1,11 @@
 /**
- * @class
- * @extends Error
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @memberof module:HLSDownloaderException
  * @classdesc Exception to throw if HLS playlist is invalid
  */
 class InvalidPlaylist extends Error {
   /**
-   * @constructor
-   * @property {String} message message of exception
+   * @param message
+   * message message of exception
    */
   constructor(message) {
     super(message);
