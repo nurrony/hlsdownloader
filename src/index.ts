@@ -1,19 +1,19 @@
 /**
- * @module HLSDownloader
- * @description The primary entry point for the HLS Downloader library.
- * Provides access to the core Downloader and supporting service classes.
+ * Namespace containing all core classes and services.
  */
+import HLSDownloader, { DownloaderOptions, DownloadError, DownloadSummary } from './Downloader.js';
 
-import HLSDownloader, { DownloaderOptions, DownloadSummary } from './Downloader.js';
-
-export type { DownloaderOptions, DownloadSummary };
+export type { DownloaderOptions, DownloadError, DownloadSummary };
 
 /**
- * @namespace HLSDownloader
- * @description Namespace containing all core classes and services.
+ * The primary entry point for the HLS Downloader library.
+ * Provides access to the core Downloader and supporting service classes.
  */
 // Export core classes and singletons
 export { HLSDownloader };
 
-// Default export for the main orchestrator
+/**
+ * The primary entry point for the HLS Downloader library.
+ * Provides access to the core Downloader and supporting service classes.
+ */
 export default HLSDownloader;

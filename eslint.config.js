@@ -1,16 +1,20 @@
-// eslint.config.js
 import js from '@eslint/js';
+import jsdoc from 'eslint-plugin-jsdoc';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
   js.configs.recommended,
   ...tseslint.configs.recommended,
+  jsdoc.configs['flat/recommended-typescript'],
   {
     rules: {
-      'no-unused-vars': 'error', // Use the TS version instead
+      'no-unused-vars': 'off',
+      'jsdoc/check-tag-names': 'error',
+      'jsdoc/require-description': 'warn',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': ['error'],
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
   {

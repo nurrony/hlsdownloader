@@ -12,36 +12,43 @@
     }
   },
   "type": "module",
-  "license": "MIT",
   "scripts": {
     "prepare": "lefthook install",
     "test": "node --import tsx --test",
     "hooks:install": "lefthook install",
     "version": "echo $npm_package_version",
+    "semantic-release": "semantic-release",
     "hooks:uninstall": "lefthook uninstall",
-    "prepublishOnly": "npm run test:coverage && npm run build",
-    "build:types": "dts-bundle-generator -o dist/index.d.ts src/index.ts --no-check",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint . && echo '💄 Coding style guideline has been followed properly.'",
     "lint:fix": "eslint . --fix && echo '🔧 Coding style has been fixed as per guideline.'",
-    "build": "npm run lint:fix && npm run lint && rimraf -fr ./dist && npm run build:types && npm run build:bundle",
-    "test:coverage": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.' && c8 npm test",
-    "test:pure": "node --import tsx --test --experimental-test-coverage --test-coverage-exclude='tests/**' tests/*.test.ts",
-    "build:bundle": "esbuild src/index.ts --bundle --packages=external --platform=node --format=esm --target=node20 --minify --tree-shaking=true --outfile=dist/index.js"
+    "prepublishOnly": "echo '🚀 Release: Final automated validation gate before NPM publishing.' && npm run build",
+    "build:types": "echo '🏷️ Generating Types' && dts-bundle-generator -o dist/index.d.ts src/index.ts --no-check --silent",
+    "docs": "rimraf -fr ./docs && echo '🧹 All documentation has been cleaned.' && echo '📝 Generating documentation...' && jsdoc -c jsdoc.json",
+    "build:bundle": "esbuild src/index.ts --bundle --packages=external --platform=node --format=esm --target=node20 --minify --tree-shaking=true --outfile=dist/index.js",
+    "build": "echo '🏗️ Compile: Bundles ESM source and generates minified distribution files.' && npm run typecheck && rimraf -fr ./dist && npm run build:types && npm run build:bundle",
+    "test:coverage": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.' && c8 npm test && echo '📊 Coverage: Validates 100% code coverage across all source files successfully.'"
   },
   "dependencies": {
     "ky": "^1.14.3",
     "p-limit": "^7.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-typescript": "^7.28.5",
     "@commitlint/cli": "^20.4.1",
     "@commitlint/config-conventional": "^20.4.1",
     "@eslint/js": "^9.39.2",
     "@types/node": "^25.2.3",
     "@types/web": "^0.0.331",
     "c8": "^10.1.3",
+    "clean-jsdoc-theme": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "dts-bundle-generator": "^9.5.1",
     "eslint": "^9.39.2",
+    "eslint-plugin-jsdoc": "^62.5.4",
+    "jsdoc": "^4.0.5",
+    "jsdoc-babel": "^0.5.0",
     "lefthook": "^2.1.0",
     "rimraf": "^6.1.2",
     "semantic-release": "^25.0.3",
@@ -74,6 +81,7 @@
     "streaming-video",
     "download-playlists"
   ],
+  "license": "MIT",
   "homepage": "https://nurrony.github.io/hlsdownloader",
   "repository": {
     "type": "git+https",

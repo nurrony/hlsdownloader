@@ -3,25 +3,17 @@ import { Utils } from '../Utils.js';
 import InvalidPlayList from './../exceptions/InvalidPlaylist.js';
 
 /**
- * @module HLSDownloader
- */
-
-/**
- * @class HttpClient
- * @memberof HLSDownloader
- * @author Nur Rony<pro.nmrony@gmail.com>
  * @category Services
- * @description Internal service wrapper for handling specialized HLS network requests via `ky`.
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ * Internal service wrapper for handling specialized HLS network requests via `ky`.
  */
 class HttpClient {
-  /** @type {Options} Stores the sanitized ky options. */
+  /** Stores the sanitized ky options. */
   private options: Options;
 
-  /** @static {object} Default ky retry and timeout settings. */
   static defaultKyOptions: Options = { retry: { limit: 0 } };
 
   /**
-   * @type {string[]}
    */
   static unSupportedOptions: string[] = [
     'uri',
@@ -43,8 +35,8 @@ class HttpClient {
   ];
 
   /**
-   * @constructor
-   * @param {object} customOptions - User-provided ky configuration options.
+   * Constructor of HttpClient
+   * @param customOptions - User-provided ky configuration options.
    */
   constructor(customOptions: Record<string, any> = {}) {
     this.options = Object.assign(
@@ -55,12 +47,10 @@ class HttpClient {
   }
 
   /**
-   * @method
-   * @memberof class:HttpClient
-   * @description Fetches content as plain text and validates it as a valid HLS playlist.
-   * @param {string} url - The URL to fetch.
+   * Fetches content as plain text and validates it as a valid HLS playlist.
+   * @param url - The URL to fetch.
    * @throws {InvalidPlayList} Throws if content fails HLS validation.
-   * @returns {Promise<string>} The validated playlist body.
+   * @returns The validated playlist body.
    */
   async fetchText(url: string): Promise<string> {
     const body = await ky.get(url, { ...this.options }).text();
@@ -71,11 +61,9 @@ class HttpClient {
   }
 
   /**
-   * @method
-   * @memberof class:HttpClient
-   * @description Fetches a resource and returns its body as a stream.
-   * @param {string} url - The URL of the segment or file.
-   * @returns {Promise<ReadableStream<Uint8Array>>} The response body stream.
+   * Fetches a resource and returns its body as a stream.
+   * @param url - The URL of the segment or file.
+   * @returns The response body stream.
    */
   async getStream(url: string): Promise<ReadableStream<Uint8Array>> {
     const response = await ky.get(url, { ...this.options });

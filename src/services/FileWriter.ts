@@ -6,19 +6,18 @@ import { pipeline } from 'node:stream/promises';
 import { Utils } from '../Utils.js';
 
 /**
- * @class
- * @memberof module:HLSDownloader
+ * @category Services
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @classdesc Manages file system operations including directory creation, path resolution, and stream persistence.
+ * Manages file system operations including directory creation, path resolution, and stream persistence.
  */
 class FileService {
   private destination: string;
   private overwrite: boolean;
 
   /**
-   * @constructor
-   * @param {string} destination - The root directory for downloads.
-   * @param {boolean} overwrite - Whether to overwrite existing files.
+   * Constructor of FileService
+   * @param destination - The root directory for downloads.
+   * @param overwrite - Whether to overwrite existing files.
    */
   constructor(destination: string, overwrite: boolean = false) {
     this.destination = destination;
@@ -26,11 +25,9 @@ class FileService {
   }
 
   /**
-   * @method
-   * @memberof class:FileService
-   * @description Get the target directory path
-   * @param {string} url - The URL to transform.
-   * @returns {Promise<string>} The localized file path.
+   * Get the target directory path
+   * @param url - The URL to transform.
+   * @returns The localized file path.
    */
   async getTargetPath(url: string): Promise<string> {
     const { pathname } = Utils.parseUrl(url);
@@ -38,11 +35,9 @@ class FileService {
   }
 
   /**
-   * @method
-   * @memberof class:FileService
-   * @description Ensures the destination directory exists for a specific URL.
-   * @param {string} url - The URL of the file to be saved.
-   * @returns {Promise<string>} The prepared absolute target path.
+   * Ensures the destination directory exists for a specific URL.
+   * @param url - The URL of the file to be saved.
+   * @returns The prepared absolute target path.
    */
   async prepareDirectory(url: string): Promise<string> {
     const targetPath = await this.getTargetPath(url);
@@ -52,12 +47,9 @@ class FileService {
   }
 
   /**
-   * @method
-   * @memberof class:FileService
-   * @description Verifies if writing is permitted based on the overwrite flag and existing files.
-   *
-   * @param {string} url - The URL to check against the file system.
-   * @returns {Promise<boolean>} Returns true if writing should proceed.
+   * Verifies if writing is permitted based on the overwrite flag and existing files.
+   * @param url - The URL to check against the file system.
+   * @returns Returns true if writing should proceed.
    */
   async canWrite(url: string): Promise<boolean> {
     try {
@@ -71,13 +63,10 @@ class FileService {
   }
 
   /**
-   * @method
-   * @memberof class:FileService
-   * @description Pipes a web-standard ReadableStream to the local file system using stream/promises.
-   *
-   * @param {ReadableStream} webStream - The source stream from the network.
-   * @param {string} filePath - The destination path.
-   * @returns {Promise<void>} Resolves when the stream finishes writing.
+   * Pipes a web-standard ReadableStream to the local file system using stream/promises.
+   * @param webStream - The source stream from the network.
+   * @param filePath - The destination path.
+   * @returns Resolves when the stream finishes writing.
    */
   async saveStream(webStream: ReadableStream, filePath: string): Promise<void> {
     const readStream = Readable.fromWeb(webStream as any);

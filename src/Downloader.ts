@@ -5,30 +5,77 @@ import HttpClient from './services/HttpClient.js';
 import PlaylistParser from './services/PlaylistParser.js';
 import { Utils } from './Utils.js';
 
-/** @memberof HLSDownloader */
-export interface DownloaderOptions {
+/**
+ * @category Types
+ * Represents a failed segment or playlist download attempt.
+ */
+interface DownloadError {
+  /** The full URL of the resource that failed to download. */
+  url: string;
+
+  /** The error class name (e.g., 'HTTPError', 'TimeoutError'). */
+  name: string;
+
+  /** The descriptive error message provided by the network client or parser. */
+  message: string;
+}
+/**
+ * @category Types
+ * Configuration contract for {@link Downloader}.
+ */
+interface DownloaderOptions {
+  /**
+   * The absolute URL to the master or variant .m3u8 playlist.
+   */
   playlistURL: string;
+
+  /**
+   * The local directory where files will be saved.
+   * If omitted, the downloader runs in 'dry-run' mode.
+   * @default ""
+   */
   destination?: string;
+
+  /**
+   * Indicates whether existing files should be overwritten.
+   * @default false
+   */
   overwrite?: boolean;
+
+  /**
+   * Maximum number of simultaneous network requests.
+   * @default (CPU_CORES - 1)
+   */
   concurrency?: number;
-  // eslint-disable-next-line no-unused-vars
+  /** Callback invoked when a segment downloaded successfully.*/
   onData?: (data: { url: string; path?: string; total: number }) => void;
-  // eslint-disable-next-line no-unused-vars
+
+  /** Callback invoked when a segment fails to download. */
   onError?: (error: { url: string; name: string; message: string }) => void;
+
+  /**  Optional HTTP client configuration */
   [key: string]: any; // For kyOptions
 }
 
-/** @memberof HLSDownloader */
-export interface DownloadSummary {
+/**
+ * @category Types
+ * Final execution report returned by {@link Downloader.startDownload}.
+ */
+interface DownloadSummary {
+  /**  Total number of processed segments.*/
   total: number;
-  errors: Array<{ url: string; name: string; message: string }>;
+
+  /** An array of errors encountered during the process. */
+  errors: DownloadError[];
+
+  /**  Human-readable completion status.*/
   message: string;
 }
 
 /**
- * @class Downloader
- * @memberof HLSDownloader
- * @description The main orchestrator service for managing HLS stream acquisition.
+ * @category
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ * The main orchestrator service for managing HLS stream acquisition.
  */
 class Downloader {
   private playlistURL: string;
@@ -42,9 +89,17 @@ class Downloader {
   private concurrency = 1;
 
   /**
-   * @param {DownloaderOptions} options - Configuration for the download process.
+   * Creates a new Downloader instance.
+   * @author Nur Rony<pro.nmrony@gmail.com>
+   * @param options - Configuration object.
+   * @param options.playlistURL - URL of the master HLS playlist.
+   * @param [options.destination] - Output directory for downloaded files.
+   * @param [options.overwrite] - Whether to overwrite existing files.
+   * @param [options.concurrency] - Maximum concurrent downloads.
+   * @param [options.onData] - Callback triggered on successful segment retrieval.
+   * @param [options.onError] - Callback triggered on failure.
    */
-  constructor(options: DownloaderOptions) {
+  constructor(private options: DownloaderOptions) {
     const {
       onData,
       onError,
@@ -68,9 +123,9 @@ class Downloader {
   }
 
   /**
-   * @memberof Downloader
    * Initiates the download lifecycle.
-   * @returns {Promise<DownloadSummary>}
+   * @author Nur Rony<pro.nmrony@gmail.com>
+   * @returns - {Promise<DownloadSummary>} {@link DownloadSummary}
    */
   async startDownload(): Promise<DownloadSummary> {
     try {
@@ -99,7 +154,12 @@ class Downloader {
     }
   }
 
-  private async processQueue(): Promise<any> {
+  /**
+   * Processes all queued URLs using controlled concurrency.
+   * @author Nur Rony<pro.nmrony@gmail.com>
+   * @returns -  Promise<any | unknow>
+   */
+  private async processQueue(): Promise<any | unknown> {
     if (this.fileService['destination']) {
       if (!(await this.fileService.canWrite(this.playlistURL))) {
         throw new Error('Directory already exists and overwrite is disabled');
@@ -124,6 +184,12 @@ class Downloader {
     return Promise.allSettled(fetchTasks);
   }
 
+  /**
+   * Downloads and saves a single file.
+   * @author Nur Rony<pro.nmrony@gmail.com>
+   * @param url - Resource URL to download.
+   * @returns -
+   */
   private async downloadFile(url: string): Promise<void> {
     try {
       const stream = await this.http.getStream(url);
@@ -138,6 +204,12 @@ class Downloader {
     }
   }
 
+  /**
+   * Handles and aggregates download errors.
+   * @author Nur Rony<pro.nmrony@gmail.com>
+   * @param url - URL that caused the error.
+   * @param error - The thrown error.
+   */
   private handleError(url: string, error: Error): void {
     const errorData = { url, name: error.name, message: error.message };
     this.errors.push(errorData);
@@ -146,13 +218,28 @@ class Downloader {
     }
   }
 
+  /**
+   * Generates a structured summary of the download operation.
+   * @author Nur Rony<pro.nmrony@gmail.com>
+   * @returns - {@link DownloadSummary}
+   */
   private generateSummary(): DownloadSummary {
     return {
-      total: this.items.length,
       errors: this.errors,
-      message: this.errors.length > 0 ? 'Download ended with some errors' : 'Downloaded successfully',
+      total: this.items.length,
+      message: this.errors.length > 0 ? 'Download ended with errors' : 'Downloaded successfully',
     };
   }
 }
 
+/**
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ * @classdesc Downloads or fetch HLS Playlist and its items
+ */
 export default Downloader;
+
+/**
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ * Types for Downloader
+ */
+export { DownloaderOptions, DownloadError, DownloadSummary };

@@ -1,18 +1,18 @@
 /**
- * Exception to throw if HLS playlist is invalid
- * @author Nur Rony <pro.nmrony@gmail.com>
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ * @classdesc Exception to throw if HLS playlist is invalid
  */
-export default class InvalidPlaylist extends Error {
+class InvalidPlaylist extends Error {
   /**
-   * @param message - Optional error message
+   * Constructor of InvalidPlayList
+   * @param message
+   * message - Optional error message
    */
   constructor(message?: string) {
     super(message);
 
-    // Set the error name to the class name
     this.name = this.constructor.name;
 
-    // Restore prototype chain for built-in classes in TS/ES5+
     Object.setPrototypeOf(this, InvalidPlaylist.prototype);
 
     // Capturing the stack trace (standard in V8/Node.js)
@@ -21,3 +21,5 @@ export default class InvalidPlaylist extends Error {
     }
   }
 }
+
+export default InvalidPlaylist;
