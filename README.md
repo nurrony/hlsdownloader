@@ -14,11 +14,11 @@ Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetchi
 
 <div align="center">
 
-[![NPM Version](https://img.shields.io/npm/v/hlsdownloader-ts?color=blue)](https://www.npmjs.com/package/hlsdownloader)
+[![NPM Version](https://img.shields.io/npm/v/hlsdownloader?color=blue)](https://www.npmjs.com/package/hlsdownloader)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3%2B-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml/badge.svg?style=flat-square)](https://github.com/nurrony/hlsdownloader/actions/workflows/test.yaml)
+[![CI](https://github.com/nurrony/hlsdownloader/actions/workflows/ci.yaml/badge.svg?style=flat-square)](https://github.com/nurrony/hlsdownloader/actions/workflows/ci.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/nurrony/hlsdownloader/badge.svg?branch=main)](https://coveralls.io/github/nurrony/hlsdownloader?branch=main)
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square)](https://nurrony.github.io/hlsdownloader)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square) ](https://github.com/nurrony/hlsdownloader/graphs/commit-activity)
