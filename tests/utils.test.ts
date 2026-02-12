@@ -1,9 +1,9 @@
 import assert from 'node:assert';
 import { describe, test } from 'node:test';
 import UnsupportedProtocol from '../src/exceptions/UnsupportedProtocol.js';
-import { Utils } from '../src/Utils.js';
+import { Utils } from '../src/HLSUtils.js';
 
-describe('Utils', () => {
+describe('HLSUtils', () => {
   describe('isValidUrl()', () => {
     test('should return true for each supported protocols', () => {
       assert.ok(Utils.isValidUrl('https://example.com/playlist.m3u8'));

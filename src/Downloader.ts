@@ -1,9 +1,9 @@
 import { cpus } from 'node:os';
 import pLimit, { LimitFunction } from 'p-limit';
+import { Utils } from './HLSUtils.js';
 import FileService from './services/FileWriter.js';
 import HttpClient from './services/HttpClient.js';
 import PlaylistParser from './services/PlaylistParser.js';
-import { Utils } from './Utils.js';
 
 /**
  * @category Types
