@@ -3,7 +3,7 @@ import * as fsPromises from 'node:fs/promises';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import { Utils } from '../Utils.js';
+import { Utils } from '../HLSUtils.js';
 
 /**
  * @category Services

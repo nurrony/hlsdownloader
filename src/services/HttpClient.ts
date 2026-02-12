@@ -1,5 +1,5 @@
 import ky, { Options } from 'ky';
-import { Utils } from '../Utils.js';
+import { Utils } from '../HLSUtils.js';
 import InvalidPlayList from './../exceptions/InvalidPlaylist.js';
 
 /**
