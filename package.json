@@ -26,7 +26,7 @@
     "build:types": "echo '🏷️ Generating Types' && dts-bundle-generator -o dist/index.d.ts src/index.ts --no-check --silent",
     "docs": "rimraf -fr ./docs && echo '🧹 All documentation has been cleaned.' && echo '📝 Generating documentation...' && jsdoc -c jsdoc.json",
     "build:bundle": "esbuild src/index.ts --bundle --packages=external --platform=node --format=esm --target=node20 --minify --tree-shaking=true --outfile=dist/index.js",
-    "build": "echo '🏗️ Compile: Bundles ESM source and generates minified distribution files.' && npm run typecheck && rimraf -fr ./dist && npm run build:types && npm run build:bundle",
+    "build": "echo '📦 Bundles ESM source and generates minified distribution files.' && npm run typecheck && rimraf -fr ./dist && npm run build:types && npm run build:bundle",
     "test:coverage": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.' && c8 npm test && echo '📊 Coverage: Validates 100% code coverage across all source files successfully.'"
   },
   "dependencies": {
