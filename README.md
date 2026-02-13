@@ -74,6 +74,19 @@ const summary = await downloader.startDownload();
 console.log(`Downloaded ${summary.total} segments to ${summary.path}`);
 ```
 
+### Using as CDN Primer
+
+```ts
+import HLSDowloader from 'hlsdownloader';
+
+const downloader = new HLSDownloader({
+  playlistURL: '[https://example.com/stream/master.m3u8](https://example.com/stream/master.m3u8)',
+});
+
+const summary = await downloader.startDownload();
+console.log(`Fetching ${summary.total} segments to Edge servers`);
+```
+
 ### Advanced Usage
 
 ```ts
@@ -81,9 +94,9 @@ import { HLSDownloader } from 'hlsdownloader-ts';
 
 const downloader = new HLSDownloader({
   playlistURL: 'https://example.com/video.m3u8',
-  destination: './output',
-  concurrency: 10, // 10 simultaneous downloads
-  overwrite: true, // Overwrite existing files
+  concurrency: 10, // 10 simultaneous downloads (optional: 1)
+  destination: './output', // path to downlod   (optional: '')
+  overwrite: true, // Overwrite existing files. (optional: false)
 });
 
 const { total, errors } = await downloader.startDownload();
@@ -158,7 +171,7 @@ Fork & Clone: Get the repo locally.
 
 - Install: `npm install`
 - Lint: `npm run lint` (Must pass without warnings)
-- Test: `npm run test:cov` (Must maintain 100% coverage)
+- Test: `npm run test:coverage` (Must maintain 100% coverage)
 - Build: `npm run build` (Generates `./dist` and bundled types)
 - Docs: `npm run docs` (Generates TypeDoc HTML)
 
