@@ -43,6 +43,7 @@ interface SegmentDownloadedData {
 }
 
 /**
+ * @category Types
  * Information about a failed HLS segment download.
  */
 interface SegmentDownloadErrorData {

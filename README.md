@@ -156,6 +156,24 @@ The main service orchestrator for fetching HLS content.
 | `path`   | `string`          | The final output directory.           | Local path to save files.          |
 | `errors` | `DownloadError[]` | Array of detailed failure objects.    | Max parallel network requests.     |
 
+### SegmentDownloadedData (Interface) - `onData` Hook
+
+| Property | Type     | Description                                                                |
+| -------- | -------- | -------------------------------------------------------------------------- |
+| `url`    | `string` | Original segment URL as referenced in the HLS playlist (`.m3u8`).          |
+| `path`   | `string` | Local file system path where the segment was saved. Empty if not provided. |
+| `total`  | `number` | Total number of segments downloaded so far, including this one.            |
+
+---
+
+### SegmentDownloadErrorData (Interface) - `onError` Hook
+
+| Property  | Type     | Description                                                |
+| --------- | -------- | ---------------------------------------------------------- |
+| `url`     | `string` | Original segment URL that failed to download.              |
+| `name`    | `string` | Error name or type (e.g., `NetworkError`, `TimeoutError`). |
+| `message` | `string` | Human-readable error description.                          |
+
 ## Development & Contributing
 
 Contributions are welcome! This project enforces strict quality standards to maintain 100% coverage.

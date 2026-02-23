@@ -11,7 +11,7 @@ pre-commit:
         - 'node_modules/**/*'
       glob:
         - 'src/**/*.ts'
-        - 'eslint.config.js'
+        - 'eslint.config.ts'
         - '*.json'
       run: npm run lint:fix
 
