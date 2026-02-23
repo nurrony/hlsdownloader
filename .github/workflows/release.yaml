@@ -38,6 +38,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
+          cache: "npm"
       - name: "Node and NPM version"
         run: node -v && npm -v
       - name: Install dependencies
