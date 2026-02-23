@@ -31,6 +31,10 @@ prepare-commit-msg:
         - merge
         - rebase
       run: |
+        # If commit message was provided via -m or -F, skip Commitizen
+        if [ "$2" = "message" ]; then
+          exit 0
+        fi
         php -r 'echo "⏳ Openning Conventional Commit Prompt...\n";'
         npx cz --hook
 
