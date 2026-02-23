@@ -133,9 +133,9 @@ The library is organized under the `HLSDownloader` module. For full interactive 
 
 The main service orchestrator for fetching HLS content.
 
-| Method            | Returns                    | Description                           |
-| ----------------- | -------------------------- | ------------------------------------- |
-| `startDownload()` | `Promise<DownloadSummary>` | Begins parsing and fetching segments. |
+| Method          | Returns                    | Description                           |
+| --------------- | -------------------------- | ------------------------------------- |
+| startDownload() | `Promise<DownloadSummary>` | Begins parsing and fetching segments. |
 
 ### DownloaderOptions (Interface)
 
@@ -152,27 +152,27 @@ The main service orchestrator for fetching HLS content.
 
 | Property | Type              | Description                           | Description                        |
 | -------- | ----------------- | ------------------------------------- | ---------------------------------- |
-| `total`  | `number`          | Count of successfully saved segments. | The absolute URL to the M3U8 file. |
-| `path`   | `string`          | The final output directory.           | Local path to save files.          |
-| `errors` | `DownloadError[]` | Array of detailed failure objects.    | Max parallel network requests.     |
+| total    | `number`          | Count of successfully saved segments. | The absolute URL to the M3U8 file. |
+| path     | `string`          | The final output directory.           | Local path to save files.          |
+| errors   | `DownloadError[]` | Array of detailed failure objects.    | Max parallel network requests.     |
 
 ### SegmentDownloadedData (Interface) - `onData` Hook
 
 | Property | Type     | Description                                                                |
 | -------- | -------- | -------------------------------------------------------------------------- |
-| `url`    | `string` | Original segment URL as referenced in the HLS playlist (`.m3u8`).          |
-| `path`   | `string` | Local file system path where the segment was saved. Empty if not provided. |
-| `total`  | `number` | Total number of segments downloaded so far, including this one.            |
+| url      | `string` | Original segment URL as referenced in the HLS playlist (`.m3u8`).          |
+| path     | `string` | Local file system path where the segment was saved. Empty if not provided. |
+| total    | `number` | Total number of segments downloaded so far, including this one.            |
 
 ---
 
 ### SegmentDownloadErrorData (Interface) - `onError` Hook
 
-| Property  | Type     | Description                                                |
-| --------- | -------- | ---------------------------------------------------------- |
-| `url`     | `string` | Original segment URL that failed to download.              |
-| `name`    | `string` | Error name or type (e.g., `NetworkError`, `TimeoutError`). |
-| `message` | `string` | Human-readable error description.                          |
+| Property | Type     | Description                                                |
+| -------- | -------- | ---------------------------------------------------------- |
+| url      | `string` | Original segment URL that failed to download.              |
+| name     | `string` | Error name or type (e.g., `NetworkError`, `TimeoutError`). |
+| message  | `string` | Human-readable error description.                          |
 
 ## Development & Contributing
 
@@ -180,18 +180,18 @@ Contributions are welcome! This project enforces strict quality standards to mai
 
 ### Prerequisites
 
-- Node.js >= 20.0.0
-- npm >= 10.0.0
+- [Node.js](https://nodejs.org/) >= 20.0.0
+- [npm](https://github.com/npm/cli) >= 10.0.0
 
 ### Workflow
 
 Fork & Clone: Get the repo locally.
 
-- Install: `npm install`
-- Lint: `npm run lint` (Must pass without warnings)
-- Test: `npm run test:coverage` (Must maintain 100% coverage)
-- Build: `npm run build` (Generates `./dist` and bundled types)
-- Docs: `npm run docs` (Generates TypeDoc HTML)
+- `Install`: `npm install`
+- `Lint`: `npm run lint` (Must pass without warnings)
+- `Test`: `npm run test:coverage` (Must maintain 100% coverage)
+- `Build`: `npm run build` (Generates `./dist` and bundled types)
+- `Docs`: `npm run docs` (Generates TypeDoc HTML)
 
 ### Guidelines
 
