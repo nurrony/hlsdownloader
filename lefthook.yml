@@ -1,6 +1,8 @@
 pre-commit:
   parallel: false
   jobs:
+    - name: 'Validate Types'
+      run: npm run typecheck
     - name: 'Lint and Fix Coding Style'
       stage_fixed: true
       exclude:
@@ -14,7 +16,6 @@ pre-commit:
         - '**/*.ts'
         - '*.json'
       run: npm run lint:fix
-
     - name: 'Running Unit Tests'
       run: npm run test:coverage
       stage_fixed: true
