@@ -6,9 +6,10 @@ import HLSDownloader, {
   DownloadError,
   DownloadSummary,
   SegmentDownloadedData,
+  SegmentDownloadErrorData,
 } from './Downloader.js';
 
-export type { DownloaderOptions, DownloadError, DownloadSummary, SegmentDownloadedData };
+export type { DownloaderOptions, DownloadError, DownloadSummary, SegmentDownloadedData, SegmentDownloadErrorData };
 
 /**
  * The primary entry point for the HLS Downloader library.

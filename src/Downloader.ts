@@ -43,6 +43,25 @@ interface SegmentDownloadedData {
 }
 
 /**
+ * Information about a failed HLS segment download.
+ */
+interface SegmentDownloadErrorData {
+  /**
+   * The original segment URL as referenced in the HLS playlist (.m3u8).
+   */
+  url: string;
+
+  /**
+   * The error name or type (e.g., network error, timeout, aborted).
+   */
+  name: string;
+
+  /**
+   * Human-readable description of the failure.
+   */
+  message: string;
+}
+/**
  * @category Types
  * Configuration contract for {@link Downloader}.
  */
@@ -75,7 +94,7 @@ interface DownloaderOptions {
   onData?: (data: SegmentDownloadedData) => void;
 
   /** Callback invoked when a segment fails to download. */
-  onError?: (error: { url: string; name: string; message: string }) => void;
+  onError?: (error: SegmentDownloadErrorData) => void;
 
   /**  Optional HTTP client configuration */
   [key: string]: any; // For kyOptions
@@ -268,4 +287,4 @@ export default Downloader;
  * @author Nur Rony<pro.nmrony@gmail.com>
  * Types for Downloader
  */
-export { DownloaderOptions, DownloadError, DownloadSummary, SegmentDownloadedData };
+export { DownloaderOptions, DownloadError, DownloadSummary, SegmentDownloadedData, SegmentDownloadErrorData };
