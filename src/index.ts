@@ -1,9 +1,14 @@
 /**
  * Namespace containing all core classes and services.
  */
-import HLSDownloader, { DownloaderOptions, DownloadError, DownloadSummary } from './Downloader.js';
+import HLSDownloader, {
+  DownloaderOptions,
+  DownloadError,
+  DownloadSummary,
+  SegmentDownloadedData,
+} from './Downloader.js';
 
-export type { DownloaderOptions, DownloadError, DownloadSummary };
+export type { DownloaderOptions, DownloadError, DownloadSummary, SegmentDownloadedData };
 
 /**
  * The primary entry point for the HLS Downloader library.

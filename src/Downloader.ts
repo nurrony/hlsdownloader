@@ -19,6 +19,29 @@ interface DownloadError {
   /** The descriptive error message provided by the network client or parser. */
   message: string;
 }
+
+/**
+ * @category Types
+ * Metadata describing a successfully downloaded HLS media segment.
+ */
+interface SegmentDownloadedData {
+  /**
+   * The original segment URL as referenced in the HLS playlist (.m3u8).
+   */
+  url: string;
+
+  /**
+   * Absolute or relative local file system path where the segment
+   * was saved. Undefined if the segment was kept in memory.
+   */
+  path?: string;
+
+  /**
+   * Total number of segments download.
+   */
+  total: number;
+}
+
 /**
  * @category Types
  * Configuration contract for {@link Downloader}.
@@ -47,8 +70,9 @@ interface DownloaderOptions {
    * @default (CPU_CORES - 1)
    */
   concurrency?: number;
+
   /** Callback invoked when a segment downloaded successfully.*/
-  onData?: (data: { url: string; path?: string; total: number }) => void;
+  onData?: (data: SegmentDownloadedData) => void;
 
   /** Callback invoked when a segment fails to download. */
   onError?: (error: { url: string; name: string; message: string }) => void;
@@ -160,6 +184,8 @@ class Downloader {
    * @returns -  Promise<any | unknow>
    */
   private async processQueue(): Promise<any | unknown> {
+    const total = this.items.length;
+
     if (this.fileService['destination']) {
       if (!(await this.fileService.canWrite(this.playlistURL))) {
         throw new Error('Directory already exists and overwrite is disabled');
@@ -173,7 +199,7 @@ class Downloader {
         try {
           const content = await this.http.getStream(url);
           if (this.onData) {
-            this.onData({ url, total: this.items.length });
+            this.onData({ url, total });
           }
           return content;
         } catch (error: any) {
@@ -242,4 +268,4 @@ export default Downloader;
  * @author Nur Rony<pro.nmrony@gmail.com>
  * Types for Downloader
  */
-export { DownloaderOptions, DownloadError, DownloadSummary };
+export { DownloaderOptions, DownloadError, DownloadSummary, SegmentDownloadedData };
