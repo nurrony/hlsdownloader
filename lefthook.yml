@@ -10,8 +10,8 @@ pre-commit:
         - 'coverage/**/*'
         - 'node_modules/**/*'
       glob:
-        - 'src/**/*.ts'
-        - 'eslint.config.ts'
+        - '*.ts'
+        - '**/*.ts'
         - '*.json'
       run: npm run lint:fix
 
