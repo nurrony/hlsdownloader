@@ -1,21 +1,30 @@
 pre-commit:
-  parallel: false
+  parallel: true
   jobs:
     - name: 'Validate Types'
       run: npm run typecheck
-    - name: 'Lint and Fix Coding Style'
+    - name: Lint and Fix Coding Style (Staged files)
       stage_fixed: true
       exclude:
         - 'docs/**/*'
         - 'dist/**/*'
-        - 'coverage/**'
         - 'coverage/**/*'
         - 'node_modules/**/*'
       glob:
         - '*.ts'
         - '**/*.ts'
         - '*.json'
-      run: npm run lint:fix
+      run: npx --no-install eslint --fix {staged_files}
+    - name: Format Code
+      stage_fixed: true
+      glob:
+        - '*.{ts,js,json,md}'
+        - '**/*.{ts,js,json,md}'
+      exclude:
+        - 'dist/**/*'
+        - 'coverage/**/*'
+        - 'node_modules/**/*'
+      run: npx --no-install prettier --write {staged_files}
     - name: 'Running Unit Tests'
       run: npm run test:coverage
       stage_fixed: true
@@ -31,11 +40,7 @@ prepare-commit-msg:
         - merge
         - rebase
       run: |
-        # If commit message was provided via -m or -F, skip Commitizen
-        if [ "$2" = "message" ]; then
-          exit 0
-        fi
-        php -r 'echo "⏳ Openning Conventional Commit Prompt...\n";'
+        echo "⏳ Openning Conventional Commit Prompt...\n";
         npx cz --hook
 
 # Validate commit messages
@@ -46,7 +51,7 @@ commit-msg:
         - merge
         - rebase
       run: |
-        npx commitlint --edit {1}
+        npx --no-install commitlint --edit {1}
         echo '🔖 Commit message guidelines are followed properly.'
 
 output:
