@@ -1,7 +1,7 @@
 pre-commit:
   parallel: true
   jobs:
-    - name: 'Validate Types'
+    - name: Validate Types
       run: npm run typecheck
     - name: Lint and Fix Coding Style (Staged files)
       stage_fixed: true
