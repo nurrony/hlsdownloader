@@ -1,5 +1,5 @@
 import ky, { Options } from 'ky';
-import { Utils } from '../HLSUtils.js';
+import { HlsUtils } from '../HLSUtils.js';
 import InvalidPlayList from './../exceptions/InvalidPlaylist.js';
 
 /**
@@ -42,7 +42,7 @@ class HttpClient {
     this.options = Object.assign(
       {},
       HttpClient.defaultKyOptions,
-      Utils.omit(customOptions, ...(HttpClient.unSupportedOptions as any))
+      HlsUtils.omit(customOptions, ...(HttpClient.unSupportedOptions as any))
     );
   }
 
@@ -54,7 +54,7 @@ class HttpClient {
    */
   async fetchText(url: string): Promise<string> {
     const body = await ky.get(url, { ...this.options }).text();
-    if (!Utils.isValidPlaylist(body)) {
+    if (!HlsUtils.isValidPlaylist(body)) {
       throw new InvalidPlayList('Invalid playlist');
     }
     return body;

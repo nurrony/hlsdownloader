@@ -6,7 +6,7 @@ import UnsupportedProtocol from './exceptions/UnsupportedProtocol.js';
  * @author Nur Rony<pro.nmrony@gmail.com>
  * @description Static utility helper for HLS operations and URL validation.
  */
-export class Utils {
+export class HlsUtils {
   /**
    * Validates if the provided string is a properly formatted URL with supported protocols.
    * @param url - The URL string to validate.

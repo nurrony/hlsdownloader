@@ -3,7 +3,7 @@ import * as fsPromises from 'node:fs/promises';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import { Utils } from '../HLSUtils.js';
+import { HlsUtils } from '../HLSUtils.js';
 
 /**
  * @category Services
@@ -30,8 +30,8 @@ class FileService {
    * @returns The localized file path.
    */
   async getTargetPath(url: string): Promise<string> {
-    const { pathname } = Utils.parseUrl(url);
-    return path.join(this.destination, Utils.stripFirstSlash(pathname));
+    const { pathname } = HlsUtils.parseUrl(url);
+    return path.join(this.destination, HlsUtils.stripFirstSlash(pathname));
   }
 
   /**
