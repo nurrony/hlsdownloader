@@ -101,14 +101,12 @@ class HttpClient {
   private async requestWithRetry(url: string, attempt: number = 0): Promise<Response> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-
     try {
-      const useProxy = !this.shouldBypassProxy(url);
       const response = await fetch(url, {
         ...this.options,
         signal: controller.signal,
         // @ts-expect-error - dispatcher is node-specific
-        dispatcher: useProxy ? this.dispatcher : undefined,
+        dispatcher: this.shouldBypassProxy(url) ? undefined : this.dispatcher,
       });
 
       // Clear immediately after response received
