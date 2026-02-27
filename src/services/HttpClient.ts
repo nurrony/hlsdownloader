@@ -1,77 +1,180 @@
-import ky, { Options } from 'ky';
+import { ProxyAgent } from 'undici';
 import { HlsUtils } from '../HLSUtils.js';
 import InvalidPlayList from './../exceptions/InvalidPlaylist.js';
 
 /**
- * @category Services
- * @author Nur Rony<pro.nmrony@gmail.com>
- * Internal service wrapper for handling specialized HLS network requests via `ky`.
+ *
+ * A resilient HTTP Client specifically designed for HLS streaming workloads.
+ * Features include:
+ * - Native fetch implementation (Node 20+)
+ * - Exponential backoff retry strategy for transient 5xx/429 errors
+ * - Corporate Proxy support via ProxyAgent
+ * - Domain-based Proxy bypass (NO_PROXY)
+ * - Automatic AbortController management for request timeouts
+ * @example
+ * const client = new HttpClient({
+ * timeout: 5000,
+ * retry: { limit: 3, delay: 1000 },
+ * proxy: 'http://proxy.corp.com:8080'
+ * });
  */
 class HttpClient {
-  /** Stores the sanitized ky options. */
-  private options: Options;
+  /** Initialized request options (headers, etc.) */
+  private options: RequestInit;
 
-  static defaultKyOptions: Options = { retry: { limit: 0 } };
+  /** Max time in milliseconds before a request is aborted */
+  private timeout: number;
 
-  /**
-   */
-  static unSupportedOptions: string[] = [
-    'uri',
-    'url',
-    'json',
-    'form',
-    'body',
-    'method',
-    'setHost',
-    'isStream',
-    'parseJson',
-    'prefixUrl',
-    'cookieJar',
-    'playlistURL',
-    'concurrency',
-    'allowGetBody',
-    'stringifyJson',
-    'methodRewriting',
-  ];
+  /** Retry configuration for transient failures */
+  private retryOptions: { limit: number; delay: number };
+
+  /** The proxy agent used for network requests, if configured */
+  private dispatcher?: ProxyAgent;
+
+  /** List of hostnames that should bypass the corporate proxy */
+  private noProxy: string[] = [];
 
   /**
-   * Constructor of HttpClient
-   * @param customOptions - User-provided ky configuration options.
+   * Creates a new HttpClient instance.
+   * @param customOptions - Configuration object
+   * @param customOptions.timeout - Request timeout in ms (Default: 10000)
+   * @param customOptions.retry - Retry strategy settings
+   * @param customOptions.proxy - Corporate proxy URL
+   * @param customOptions.noProxy - Array of domains to bypass proxy
    */
   constructor(customOptions: Record<string, any> = {}) {
-    this.options = Object.assign(
-      {},
-      HttpClient.defaultKyOptions,
-      HlsUtils.omit(customOptions, ...(HttpClient.unSupportedOptions as any))
+    const sanitized = HlsUtils.omit(
+      customOptions,
+      'uri',
+      'url',
+      'json',
+      'method',
+      'timeout',
+      'retry',
+      'proxy',
+      'noProxy'
+    );
+
+    this.options = { ...sanitized, method: 'GET' };
+    this.timeout = customOptions.timeout ?? 10000;
+    this.retryOptions = customOptions.retry ?? { limit: 2, delay: 500 };
+
+    // Parse bypass list (e.g., 'localhost,127.0.0.1,.internal.com')
+    const noProxyEnv = process.env.NO_PROXY || process.env.no_proxy || '';
+    this.noProxy =
+      customOptions.noProxy ??
+      noProxyEnv
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+
+    const proxyUrl = customOptions.proxy || process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
+    if (proxyUrl) {
+      this.dispatcher = new ProxyAgent({ uri: proxyUrl });
+    }
+  }
+
+  /**
+   * Determines if a given URL should ignore the configured proxy.
+   * Logic matches hostnames or suffix patterns (e.g., '.internal.com').
+   * @param url {string} - domain to bypass
+   * @returns Boolean
+   * @internal
+   */
+  private shouldBypassProxy(url: string): boolean {
+    if (!this.dispatcher) return true;
+    const hostname = new URL(url).hostname;
+    return this.noProxy.some(
+      pattern => hostname === pattern || (pattern.startsWith('.') && hostname.endsWith(pattern))
     );
   }
 
   /**
-   * Fetches content as plain text and validates it as a valid HLS playlist.
-   * @param url - The URL to fetch.
-   * @throws {InvalidPlayList} Throws if content fails HLS validation.
-   * @returns The validated playlist body.
+   * Core request wrapper with retry logic and timeout management.
+   * Handles cleanup of AbortController timers to prevent memory leaks.
+   * @throws {Error} If request fails permanently or retries are exhausted.
+   * @param url {string} - url to fetch
+   * @param attempt {number} [attempt=0] - retry attempt
+   * @returns Fetch API Response
+   * @internal
+   */
+  private async requestWithRetry(url: string, attempt: number = 0): Promise<Response> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+
+    try {
+      const useProxy = !this.shouldBypassProxy(url);
+      const response = await fetch(url, {
+        ...this.options,
+        signal: controller.signal,
+        // @ts-expect-error - dispatcher is node-specific
+        dispatcher: useProxy ? this.dispatcher : undefined,
+      });
+
+      // Clear immediately after response received
+      clearTimeout(timeoutId);
+
+      if (!response.ok && (response.status >= 500 || response.status === 429) && attempt < this.retryOptions.limit) {
+        return this.handleRetry(url, attempt);
+      }
+
+      return response;
+    } catch (error: any) {
+      clearTimeout(timeoutId);
+
+      // Ensure we check status for both thrown errors (like from fetch)
+      // and manual error objects
+      const isRetryable =
+        error.name === 'AbortError' || error.name === 'TypeError' || (error.status && error.status >= 500);
+
+      if (isRetryable && attempt < this.retryOptions.limit) {
+        return this.handleRetry(url, attempt);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Calculates exponential backoff and waits before retrying.
+   * @param url {string} - url to handle retry for
+   * @param attempt {number} - attempt to calculate backoff
+   * @returns Fetch API Response
+   * @internal
+   */
+  private async handleRetry(url: string, attempt: number): Promise<Response> {
+    const backoff = this.retryOptions.delay * Math.pow(2, attempt);
+    await HlsUtils.sleep(backoff);
+    return this.requestWithRetry(url, attempt + 1);
+  }
+
+  /**
+   * Fetches a playlist and validates its HLS structure.
+   * @param url {string} - The M3U8 playlist URL
+   * @returns The raw string content of the playlist
+   * @throws {InvalidPlayList} If the response body is not a valid HLS manifest
    */
   async fetchText(url: string): Promise<string> {
-    const body = await ky.get(url, { ...this.options }).text();
-    if (!HlsUtils.isValidPlaylist(body)) {
-      throw new InvalidPlayList('Invalid playlist');
-    }
+    const response = await this.requestWithRetry(url);
+    const body = await response.text();
+    if (!HlsUtils.isValidPlaylist(body)) throw new InvalidPlayList('Invalid playlist');
     return body;
   }
 
   /**
-   * Fetches a resource and returns its body as a stream.
-   * @param url - The URL of the segment or file.
-   * @returns The response body stream.
+   * Fetches a resource (usually a .ts segment) as a stream.
+   * @param url {string} - The segment URL
+   * @returns A readable stream of the resource
+   * @throws {Error} If the response body is empty
    */
   async getStream(url: string): Promise<ReadableStream<Uint8Array>> {
-    const response = await ky.get(url, { ...this.options });
-    if (!response.body) {
-      throw new Error('Response body is null');
-    }
-    return response.body;
+    const response = await this.requestWithRetry(url);
+    if (!response.body) throw new Error('Response body is null');
+    return response.body as ReadableStream<Uint8Array>;
   }
 }
 
+/**
+ * @author Nur Rony<pro.nmrony@gmail.com>
+ * @classdesc A resilient HTTP Client specifically designed for HLS streaming workloads.
+ */
 export default HttpClient;
