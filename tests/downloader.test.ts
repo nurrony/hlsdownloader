@@ -1,22 +1,31 @@
 import assert from 'node:assert';
 import { describe, mock, test } from 'node:test';
 import Downloader from './../src/Downloader.js';
+import { HlsUtils } from './../src/HLSUtils.js';
 import FileService from './../src/services/FileWriter.js';
 import HttpClient from './../src/services/HttpClient.js';
+import PlaylistParser from './../src/services/PlaylistParser.js';
 
 describe('Downloader', () => {
   const playlistURL = 'https://example.com/master.m3u8';
   const segmentUrl = 'https://example.com/seg-1.ts';
 
   describe('constructor', () => {
+    test('should initialize and inherit from EventEmitter', () => {
+      const downloader = new Downloader({ playlistURL });
+      assert.strictEqual(typeof downloader.on, 'function');
+      assert.strictEqual(typeof downloader.emit, 'function');
+    });
     test('should initialize with default values when optional parameters are missing', () => {
       // Initialize with only the required parameter
       const downloader = new Downloader({ playlistURL });
 
+      const items = (downloader as any).items;
+
+      assert.ok(items instanceof Set, 'Items should be an instance of Set');
+
       // Verify internal state matches defaults defined in constructor
       assert.equal((downloader as any).playlistURL, playlistURL);
-      assert.equal((downloader as any).onData, undefined);
-      assert.equal((downloader as any).onError, undefined);
 
       // Verify FileService defaults passed from Downloader
       const fileService = (downloader as any).fileService;
@@ -24,7 +33,8 @@ describe('Downloader', () => {
       assert.equal((fileService as any).overwrite, false);
 
       // Verify items array starts with the playlist URL
-      assert.deepEqual((downloader as any).items, [playlistURL]);
+      assert.strictEqual(items.size, 1);
+      assert.ok(items.has(playlistURL), 'Set should contain the playlist URL');
 
       assert.ok((downloader as any).concurrency > 0);
       assert.ok((downloader as any).pool);
@@ -39,138 +49,8 @@ describe('Downloader', () => {
       assert.equal((downloader as any).fileService.destination, '');
     });
   });
-  describe('Disk-Downlaod', () => {
-    test('should complete disk download successfully', async t => {
-      // Mock HttpClient
-      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nsegment.ts');
-      t.mock.method(HttpClient.prototype, 'getStream', async () => new ReadableStream());
 
-      // Mock FileService
-      t.mock.method(FileService.prototype, 'canWrite', async () => true);
-      t.mock.method(FileService.prototype, 'prepareDirectory', async () => '/tmp/path');
-      t.mock.method(FileService.prototype, 'saveStream', async () => {});
-
-      const onDataMock = mock.fn();
-      const downloader = new Downloader({
-        playlistURL,
-        destination: '/downloads',
-        onData: onDataMock,
-      });
-
-      const summary = await downloader.startDownload();
-
-      assert.equal(summary.total, 2); // master + segment
-      assert.equal(onDataMock.mock.callCount(), 2);
-      assert.equal(summary.message, 'Downloaded successfully');
-    });
-
-    test('should handle overwrite failure', async t => {
-      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nsegment.ts');
-      t.mock.method(FileService.prototype, 'canWrite', async () => false);
-
-      const downloader = new Downloader({ playlistURL, destination: '/exists' });
-      const summary = await downloader.startDownload();
-
-      assert.equal(summary.errors[0].message, 'Directory already exists and overwrite is disabled');
-    });
-    test('downloadFile(): success path with onData callback', async t => {
-      // 1. Setup Mocks for internal services
-      const mockStream = new ReadableStream();
-      const mockPath = '/downloads/seg-1.ts';
-
-      t.mock.method(HttpClient.prototype, 'getStream', async () => mockStream);
-      t.mock.method(FileService.prototype, 'prepareDirectory', async () => mockPath);
-      const saveStreamMock = t.mock.method(FileService.prototype, 'saveStream', async () => {});
-
-      // 2. Setup Spy for onData
-      const onDataMock = mock.fn();
-
-      const downloader = new Downloader({
-        playlistURL,
-        destination: './output',
-        onData: onDataMock,
-      });
-
-      // 3. Execute the private method (casting to any to access private for testing)
-      await (downloader as any).downloadFile(segmentUrl);
-
-      // 4. Assertions
-      assert.equal(saveStreamMock.mock.callCount(), 1);
-      assert.equal(onDataMock.mock.callCount(), 1);
-
-      const callbackData = onDataMock.mock.calls[0].arguments[0];
-      assert.deepEqual(callbackData, {
-        url: segmentUrl,
-        path: mockPath,
-        total: 1, // Only the playlistURL in items initially
-      });
-    });
-
-    test('downloadFile(): catch block and handleError path', async t => {
-      // 1. Force a failure in the first step of the try-block
-      const networkError = new Error('Network Timeout');
-      t.mock.method(HttpClient.prototype, 'getStream', async () => {
-        throw networkError;
-      });
-
-      // 2. Setup Spy for onError (which is called by handleError)
-      const onErrorMock = mock.fn();
-
-      const downloader = new Downloader({
-        playlistURL,
-        onError: onErrorMock,
-      });
-
-      // 3. Execute
-      await (downloader as any).downloadFile(segmentUrl);
-
-      // 4. Assertions
-      assert.equal(onErrorMock.mock.callCount(), 1);
-      const errorData = onErrorMock.mock.calls[0].arguments[0];
-      assert.equal(errorData.url, segmentUrl);
-      assert.equal(errorData.message, 'Network Timeout');
-    });
-  });
-  describe('Fetch-Only', () => {
-    test('should handle network-only mode (no destination)', async t => {
-      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nsegment.ts');
-      t.mock.method(HttpClient.prototype, 'getStream', async () => new ReadableStream());
-
-      const downloader = new Downloader({ playlistURL }); // No destination
-      const summary = await downloader.startDownload();
-
-      assert.equal(summary.total, 2);
-      assert.equal(summary.errors.length, 0);
-    });
-
-    test('should handle variant playlists recursively', async t => {
-      const fetchTextMock = t.mock.method(HttpClient.prototype, 'fetchText');
-      fetchTextMock.mock.mockImplementation(async url => {
-        if (url.includes('master')) return 'variant.m3u8';
-        if (url.includes('variant')) return 'chunk.ts';
-        return '';
-      });
-      t.mock.method(HttpClient.prototype, 'getStream', async () => new ReadableStream());
-
-      const downloader = new Downloader({ playlistURL: 'https://ex.com/master.m3u8' });
-      const summary = await downloader.startDownload();
-
-      // master + variant + chunk = 3
-      assert.equal(summary.total, 3);
-    });
-
-    test('should trigger onError callback on failures', async t => {
-      t.mock.method(HttpClient.prototype, 'fetchText', async () => {
-        throw new Error('Network Fail');
-      });
-
-      const onErrorMock = mock.fn();
-      const downloader = new Downloader({ playlistURL, onError: onErrorMock });
-
-      await downloader.startDownload();
-      assert.equal(onErrorMock.mock.callCount(), 1);
-    });
-
+  describe('processQueue', () => {
     test('should handle stream errors', async t => {
       t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nsegment1.ts');
 
@@ -180,43 +60,173 @@ describe('Downloader', () => {
         throw streamError;
       });
 
-      const onErrorMock = mock.fn();
       const downloader = new Downloader({
         playlistURL,
-        onError: onErrorMock,
+      });
+
+      const summary = await downloader.startDownload();
+      assert.equal(summary.errors[0].message, 'Stream Break');
+    });
+    test('should handle master playlist fetch failure', async t => {
+      t.mock.method(HttpClient.prototype, 'fetchText', async () => {
+        throw new Error('404 Not Found');
+      });
+
+      const downloader = new Downloader({ playlistURL });
+
+      // This satisfies the EventEmitter requirements and lets the test continue
+      const errorEvents: any[] = [];
+      downloader.on('error', err => {
+        errorEvents.push(err);
       });
 
       const summary = await downloader.startDownload();
 
-      // Verify error was caught and processed through handleError
-      assert.equal(onErrorMock.mock.callCount(), 2); // playlist + segment
-      assert.equal(summary.errors[0].message, 'Stream Break');
+      assert.strictEqual(summary.errors.length, 1);
+      assert.strictEqual(summary.errors[0].message, '404 Not Found');
+      assert.strictEqual(errorEvents.length, 1, 'Should have emitted exactly one error event');
+      assert.strictEqual(errorEvents[0].message, '404 Not Found');
+    });
+
+    test('should capture segment-specific errors without failing the whole job', async t => {
+      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nseg1.ts\nseg2.ts');
+      t.mock.method(PlaylistParser, 'parse', () => ['https://ex.com/seg1.ts', 'https://ex.com/seg2.ts']);
+
+      // Fail only one segment
+      let callCount = 0;
+      t.mock.method(HttpClient.prototype, 'getStream', async () => {
+        callCount++;
+        if (callCount === 2) throw new Error('Segment Timeout');
+        return new ReadableStream();
+      });
+
+      const downloader = new Downloader({ playlistURL });
+      const errorSpy = mock.fn();
+      downloader.on('error', errorSpy);
+
+      const summary = await downloader.startDownload();
+
+      assert.strictEqual(summary.errors.length, 1);
+      assert.strictEqual(errorSpy.mock.callCount(), 1);
+      assert.strictEqual(summary.errors[0].message, 'Segment Timeout');
+    });
+
+    test('should handle variant playlists recursively', async t => {
+      const fetchTextMock = t.mock.method(HttpClient.prototype, 'fetchText');
+      fetchTextMock.mock.mockImplementation(async url => {
+        if (url.includes('master')) return 'variant.m3u8';
+        if (url.includes('variant')) return 'chunk.ts';
+        return '#EXTM3U';
+      });
+
+      t.mock.method(PlaylistParser, 'isPlaylist', (url: string) => url.endsWith('.m3u8'));
+      t.mock.method(PlaylistParser, 'parse', (url: string, content: string) => {
+        if (content === 'variant.m3u8') return ['https://ex.com/variant.m3u8'];
+        if (content === 'chunk.ts') return ['https://ex.com/chunk.ts'];
+        return [];
+      });
+
+      const downloader = new Downloader({ playlistURL: 'https://ex.com/master.m3u8' });
+      const summary = await downloader.startDownload();
+
+      // items: master (init) + variant (from master) + chunk (from variant) = 3
+      assert.strictEqual(summary.total, 3);
     });
   });
 
-  describe('processQueue', () => {
-    test('processQueue (Fetch-only): should trigger onData for each item', async t => {
-      // Mock fetchText to return one segment
-      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nsegment1.ts');
+  describe('Disk-Downlaod', () => {
+    test('should emit "error" and stop if directory is not writable', async t => {
+      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U');
+      t.mock.method(FileService.prototype, 'canWrite', async () => false);
 
-      // Mock getStream to return a dummy stream
-      const mockStream = new ReadableStream();
-      t.mock.method(HttpClient.prototype, 'getStream', async () => mockStream);
-
-      const onDataMock = mock.fn();
-      // Initialize WITHOUT a destination to trigger Fetch-only mode
-      const downloader = new Downloader({
-        playlistURL,
-        onData: onDataMock,
+      const downloader = new Downloader({ playlistURL, destination: '/protected' });
+      let capturedError: any;
+      downloader.on('error', err => {
+        capturedError = err;
       });
 
       await downloader.startDownload();
 
-      // Should be called twice: once for playlist, once for segment1.ts
-      assert.equal(onDataMock.mock.callCount(), 2);
-      const firstCall = onDataMock.mock.calls[0].arguments[0];
-      assert.equal(firstCall.url, playlistURL);
-      assert.ok(firstCall.total >= 2);
+      assert.strictEqual(capturedError.message, 'Directory already exists and overwrite is disabled');
+    });
+
+    test('should emit "start", "progress", and "end" on successful completion', async t => {
+      // 1. Setup Mocks
+      t.mock.method(HlsUtils, 'isValidUrl', () => true);
+      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nsegment.ts');
+      t.mock.method(PlaylistParser, 'parse', () => [segmentUrl]);
+      t.mock.method(FileService.prototype, 'canWrite', async () => true);
+      t.mock.method(HttpClient.prototype, 'getStream', async () => new ReadableStream());
+      t.mock.method(FileService.prototype, 'prepareDirectory', async () => '/tmp/path');
+      t.mock.method(FileService.prototype, 'saveStream', async () => {});
+
+      const downloader = new Downloader({
+        playlistURL,
+        destination: '/downloads',
+      });
+
+      const events: string[] = [];
+      downloader.on('start', () => events.push('start'));
+      downloader.on('progress', () => events.push('progress'));
+      downloader.on('end', () => events.push('end'));
+
+      const summary = await downloader.startDownload();
+
+      // 2. Assertions
+      assert.deepStrictEqual(events, ['start', 'progress', 'progress', 'end']); // Progress for manifest + segment
+      assert.strictEqual(summary.total, 2);
+      assert.strictEqual(summary.errors.length, 0);
+    });
+
+    test('should cover catch block in downloadFile when a segment fails', async t => {
+      const playlistURL = 'https://example.com/master.m3u8';
+      const segmentUrl = 'https://example.com/segment.ts';
+
+      // 1. Setup mocks
+      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nsegment.ts');
+      t.mock.method(PlaylistParser, 'parse', () => [segmentUrl]);
+      t.mock.method(FileService.prototype, 'canWrite', async () => true);
+      t.mock.method(FileService.prototype, 'prepareDirectory', async () => '/tmp/seg.ts');
+      t.mock.method(FileService.prototype, 'saveStream', async () => {});
+
+      // 2. Surgical Mock: The first call (manifest) succeeds, second (segment) fails
+      let streamCallCount = 0;
+      t.mock.method(HttpClient.prototype, 'getStream', async () => {
+        streamCallCount++;
+        if (streamCallCount === 2) {
+          // This hits the 'catch' block in downloadFile
+          throw new Error('Segment Download Failed');
+        }
+        return new ReadableStream();
+      });
+
+      const downloader = new Downloader({ playlistURL, destination: '/downloads' });
+
+      // Handle the error event to prevent process exit
+      const errorSpy = t.mock.fn();
+      downloader.on('error', errorSpy);
+
+      const summary = await downloader.startDownload();
+
+      assert.strictEqual(summary.errors.length, 1, 'Should record the single segment failure');
+      assert.strictEqual(summary.errors[0].message, 'Segment Download Failed');
+      assert.strictEqual(errorSpy.mock.callCount(), 1);
+    });
+  });
+
+  describe('Fetch-Only', () => {
+    test('should process segments as streams without writing to disk', async t => {
+      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nseg.ts');
+      t.mock.method(HttpClient.prototype, 'getStream', async () => new ReadableStream());
+
+      const downloader = new Downloader({ playlistURL }); // No destination
+      const progressSpy = mock.fn();
+      downloader.on('progress', progressSpy);
+
+      const summary = await downloader.startDownload();
+
+      assert.strictEqual(summary.total, 2);
+      assert.strictEqual(progressSpy.mock.callCount(), 2);
     });
   });
 });

@@ -1,9 +1,21 @@
+import { EventEmitter } from 'node:events';
 import { cpus } from 'node:os';
 import pLimit, { LimitFunction } from 'p-limit';
 import { HlsUtils } from './HLSUtils.js';
 import FileService from './services/FileWriter.js';
 import HttpClient from './services/HttpClient.js';
 import PlaylistParser from './services/PlaylistParser.js';
+
+/**
+ * @category Types
+ * Downloader events
+ */
+interface DownloaderEvents {
+  start: (data: { total: number; destination: string }) => void;
+  progress: (data: SegmentDownloadedData) => void;
+  error: (error: DownloadError) => void;
+  end: (summary: DownloadSummary) => void;
+}
 
 /**
  * @category Types
@@ -116,19 +128,21 @@ interface DownloadSummary {
   message: string;
 }
 
+type DownloadInProgress = Promise<
+  PromiseSettledResult<void>[] | PromiseSettledResult<ReadableStream<Uint8Array<ArrayBufferLike>> | undefined>[]
+>;
+
 /**
  * @category
  * @author Nur Rony<pro.nmrony@gmail.com>
  * The main orchestrator service for managing HLS stream acquisition.
  */
-class Downloader {
+class Downloader extends EventEmitter {
+  private items: Set<string> = new Set();
   private playlistURL: string;
-  private onData: DownloaderOptions['onData'];
-  private onError: DownloaderOptions['onError'];
   private pool: LimitFunction;
   private http: HttpClient;
   private fileService: FileService;
-  private items: string[];
   private errors: DownloadSummary['errors'] = [];
   private concurrency = 1;
 
@@ -144,9 +158,9 @@ class Downloader {
    * @param [options.onError] - Callback triggered on failure.
    */
   constructor(private options: DownloaderOptions) {
+    super(); // Initialize EventEmitter
+
     const {
-      onData,
-      onError,
       destination = '',
       playlistURL = '',
       overwrite = false,
@@ -154,8 +168,6 @@ class Downloader {
       ...kyOptions
     } = options || {};
 
-    this.onData = onData;
-    this.onError = onError;
     this.playlistURL = playlistURL;
     this.pool = pLimit(concurrency);
     this.concurrency = concurrency;
@@ -163,7 +175,7 @@ class Downloader {
     this.http = new HttpClient(kyOptions);
     this.fileService = new FileService(destination, overwrite);
 
-    this.items = [playlistURL];
+    this.items.add(this.playlistURL);
   }
 
   /**
@@ -177,7 +189,7 @@ class Downloader {
 
       const mainContent = await this.http.fetchText(this.playlistURL);
       const urls = PlaylistParser.parse(this.playlistURL, mainContent);
-      this.items.push(...urls);
+      urls.forEach(url => this.items.add(url));
 
       const variantPlaylists = urls.filter(u => PlaylistParser.isPlaylist(u));
       const variantResults = await Promise.allSettled(variantPlaylists.map(u => this.http.fetchText(u)));
@@ -185,13 +197,19 @@ class Downloader {
       variantResults.forEach((res, index) => {
         if (res.status === 'fulfilled') {
           const subUrls = PlaylistParser.parse(variantPlaylists[index], res.value);
-          this.items.push(...subUrls);
+          subUrls.forEach(url => this.items.add(url));
         }
       });
 
-      await this.processQueue();
+      // Signal the start of the process
+      this.emit('start', { total: this.items.size, destination: this.options.destination });
 
-      return this.generateSummary();
+      await this.processQueue();
+      const summary = this.generateSummary();
+
+      this.emit('end', summary);
+
+      return summary;
     } catch (error: any) {
       this.handleError(this.playlistURL, error);
       return this.generateSummary();
@@ -199,34 +217,44 @@ class Downloader {
   }
 
   /**
-   * Processes all queued URLs using controlled concurrency.
-   * @author Nur Rony<pro.nmrony@gmail.com>
-   * @returns -  Promise<any | unknow>
+   * [override description]
+   * @param   event  {string|symbol} event to emit
+   * @param    args    evemt arguments
+   * @returns  event success or failed as boolen
    */
-  private async processQueue(): Promise<any | unknown> {
-    const total = this.items.length;
+  public override emit(event: string | symbol, ...args: any[]): boolean {
+    return super.emit(event, ...args);
+  }
+
+  /**
+   * Processes all queued URLs using controlled concurrency.
+   * @author Nur Rony<pro.nmrony@gmail.com
+   * @returns Promise<PromiseSettledResult<void>[] | PromiseSettledResult<ReadableStream<Uint8Array<ArrayBufferLike>> | undefined>[]>
+   */
+  private async processQueue(): DownloadInProgress {
+    const total = this.items.size;
+    const itemsArray = Array.from(this.items);
 
     if (this.fileService['destination']) {
       if (!(await this.fileService.canWrite(this.playlistURL))) {
         throw new Error('Directory already exists and overwrite is disabled');
       }
-      const tasks = this.items.map(url => this.pool(() => this.downloadFile(url)));
+      const tasks = itemsArray.map(url => this.pool(() => this.downloadFile(url)));
       return Promise.allSettled(tasks);
     }
 
-    const fetchTasks = this.items.map(url =>
+    const fetchTasks = itemsArray.map(url =>
       this.pool(async () => {
         try {
-          const content = await this.http.getStream(url);
-          if (this.onData) {
-            this.onData({ url, total });
-          }
-          return content;
+          const stream = await this.http.getStream(url);
+          this.emit('progress', { url, total });
+          return stream;
         } catch (error: any) {
           this.handleError(url, error);
         }
       })
     );
+
     return Promise.allSettled(fetchTasks);
   }
 
@@ -241,10 +269,12 @@ class Downloader {
       const stream = await this.http.getStream(url);
       const path = await this.fileService.prepareDirectory(url);
       await this.fileService.saveStream(stream, path);
-
-      if (this.onData) {
-        this.onData({ url, path, total: this.items.length });
-      }
+      // Emit progress event instead of callback
+      this.emit('progress', {
+        url,
+        path,
+        total: this.items.size,
+      } as SegmentDownloadedData);
     } catch (error: any) {
       this.handleError(url, error);
     }
@@ -259,9 +289,7 @@ class Downloader {
   private handleError(url: string, error: Error): void {
     const errorData = { url, name: error.name, message: error.message };
     this.errors.push(errorData);
-    if (this.onError) {
-      this.onError(errorData);
-    }
+    this.emit('error', errorData);
   }
 
   /**
@@ -272,7 +300,7 @@ class Downloader {
   private generateSummary(): DownloadSummary {
     return {
       errors: this.errors,
-      total: this.items.length,
+      total: this.items.size,
       message: this.errors.length > 0 ? 'Download ended with errors' : 'Downloaded successfully',
     };
   }
@@ -288,4 +316,11 @@ export default Downloader;
  * @author Nur Rony<pro.nmrony@gmail.com>
  * Types for Downloader
  */
-export { DownloaderOptions, DownloadError, DownloadSummary, SegmentDownloadedData, SegmentDownloadErrorData };
+export type {
+  DownloaderEvents,
+  DownloaderOptions,
+  DownloadError,
+  DownloadSummary,
+  SegmentDownloadedData,
+  SegmentDownloadErrorData,
+};
