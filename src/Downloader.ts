@@ -3,7 +3,7 @@ import { cpus } from 'node:os';
 import pLimit, { LimitFunction } from 'p-limit';
 import { HlsUtils } from './HLSUtils.js';
 import FileService from './services/FileWriter.js';
-import HttpClient from './services/HttpClient.js';
+import HttpClient, { HttpClientOptions } from './services/HttpClient.js';
 import PlaylistParser from './services/PlaylistParser.js';
 
 /**
@@ -78,7 +78,7 @@ interface SegmentDownloadErrorData {
  * @category Types
  * Configuration contract for {@link Downloader}.
  */
-interface DownloaderOptions {
+interface DownloaderOptions extends HttpClientOptions {
   /**
    * The absolute URL to the master or variant .m3u8 playlist.
    */
@@ -165,14 +165,17 @@ class Downloader extends EventEmitter {
       playlistURL = '',
       overwrite = false,
       concurrency = Math.max(1, cpus().length - 1),
-      ...kyOptions
+      headers = {},
+      ...httpClientOptions
     } = options || {};
 
     this.playlistURL = playlistURL;
     this.pool = pLimit(concurrency);
     this.concurrency = concurrency;
 
-    this.http = new HttpClient(kyOptions);
+    this.http = new HttpClient({ headers, ...httpClientOptions });
+    this.http.setPrimaryOrigin(this.playlistURL);
+
     this.fileService = new FileService(destination, overwrite);
 
     this.items.add(this.playlistURL);

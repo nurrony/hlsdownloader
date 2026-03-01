@@ -16,6 +16,7 @@ describe('Downloader', () => {
       assert.strictEqual(typeof downloader.on, 'function');
       assert.strictEqual(typeof downloader.emit, 'function');
     });
+
     test('should initialize with default values when optional parameters are missing', () => {
       // Initialize with only the required parameter
       const downloader = new Downloader({ playlistURL });
@@ -48,9 +49,60 @@ describe('Downloader', () => {
       assert.equal((downloader as any).playlistURL, '');
       assert.equal((downloader as any).fileService.destination, '');
     });
+
+    test('should pass custom headers to the underlying fetch call', async t => {
+      const customHeaders = { 'X-Test-Header': 'TestValue' };
+      const downloader = new Downloader({
+        playlistURL: 'https://example.com/master.m3u8',
+        headers: customHeaders,
+      });
+
+      // 1. Prevent ERR_UNHANDLED_ERROR crash if the test fails
+      downloader.on('error', () => {});
+
+      // 2. Mock global fetch and check for the LOWERCASE header
+      const fetchMock = t.mock.method(globalThis, 'fetch', async (url: string, options: any) => {
+        // We check for 'x-test-header' because HttpClient normalizes keys
+        assert.strictEqual(
+          options.headers['x-test-header'],
+          'TestValue',
+          'Header should be passed and normalized to lowercase'
+        );
+        return new Response('#EXTM3U', { status: 200 });
+      });
+
+      await downloader.startDownload();
+
+      assert.ok(fetchMock.mock.callCount() > 0);
+    });
   });
 
   describe('processQueue', () => {
+    test('should strip sensitive headers when requesting from a different origin', async t => {
+      const primaryUrl = 'https://auth.mysite.com/playlist.m3u8';
+      const externalUrl = 'https://cdn.thirdparty.com/segment.ts';
+
+      const downloader = new Downloader({
+        playlistURL: primaryUrl,
+        headers: { Authorization: 'Bearer SecretToken', 'User-Agent': 'HLSDownloader' },
+      });
+
+      const fetchMock = t.mock.method(globalThis, 'fetch', async (url: string) => {
+        const headers: Record<string, string> = (
+          fetchMock.mock.calls[fetchMock.mock.callCount() - 1].arguments[1] as any
+        ).headers;
+
+        if (url === externalUrl) {
+          assert.strictEqual(headers['authorization'], undefined, 'Auth should be stripped for external domain');
+          assert.strictEqual(headers['user-agent'], 'HLSDownloader', 'Non-sensitive headers should remain');
+        }
+        return new Response('#EXTM3U', { status: 200 });
+      });
+
+      // Manually trigger a download to an external URL
+      await (downloader as any).http.getStream(externalUrl);
+    });
+
     test('should handle stream errors', async t => {
       t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nsegment1.ts');
 
@@ -67,6 +119,7 @@ describe('Downloader', () => {
       const summary = await downloader.startDownload();
       assert.equal(summary.errors[0].message, 'Stream Break');
     });
+
     test('should handle master playlist fetch failure', async t => {
       t.mock.method(HttpClient.prototype, 'fetchText', async () => {
         throw new Error('404 Not Found');

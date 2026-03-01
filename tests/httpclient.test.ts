@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { describe, test } from 'node:test';
+import { beforeEach, describe, test } from 'node:test';
 import { ProxyAgent } from 'undici';
 import InvalidPlayList from './../src/exceptions/InvalidPlaylist.js';
 import { HlsUtils } from './../src/HLSUtils.js';
@@ -9,6 +9,69 @@ describe('HttpClient', () => {
   const testUrl = 'https://example.com/playlist.m3u8';
   const internalUrl = 'https://localhost/playlist.m3u8';
   const validPlaylist = '#EXTM3U\n#EXT-X-VERSION:3';
+
+  describe('Header Scoping', () => {
+    const primaryOrigin = 'https://auth.provider.com';
+    const playlistURL = `${primaryOrigin}/master.m3u8`;
+    const sensitiveHeaders = {
+      authorization: 'Bearer secret-token',
+      cookie: 'session=123',
+      'x-test-header': 'not-sensitive',
+    };
+
+    let client: any;
+
+    beforeEach(() => {
+      client = new HttpClient({ headers: sensitiveHeaders });
+      client.setPrimaryOrigin(playlistURL); // Set the baseline origin
+    });
+
+    test('should keep all headers for same-origin requests', async t => {
+      const fetchMock = t.mock.method(globalThis, 'fetch', async (_: any, options: any) => {
+        assert.strictEqual(options.headers['authorization'], 'Bearer secret-token');
+        assert.strictEqual(options.headers['cookie'], 'session=123');
+        return new Response('#EXTM3U', { status: 200 });
+      });
+
+      await client.fetchText(playlistURL);
+      assert.strictEqual(fetchMock.mock.callCount(), 1);
+    });
+
+    test('should strip sensitive headers for cross-origin requests', async t => {
+      const externalUrl = 'https://cdn.thirdparty.com/segment.ts';
+
+      const fetchMock = t.mock.method(globalThis, 'fetch', async (_: any, options: any) => {
+        // Sensitive headers must be undefined
+        assert.strictEqual(options.headers['authorization'], undefined);
+        assert.strictEqual(options.headers['cookie'], undefined);
+        // Non-sensitive/custom headers should remain
+        assert.strictEqual(options.headers['x-test-header'], 'not-sensitive');
+        return new Response('data', { status: 200 });
+      });
+
+      await client.getStream(externalUrl);
+      assert.strictEqual(fetchMock.mock.callCount(), 1);
+    });
+
+    test('should preserve headers when target URL is invalid or relative (Catch block coverage)', async t => {
+      // A malformed URL string that fails 'new URL(targetUrl)'
+      const invalidUrl = 'invalid-url-path';
+
+      const fetchMock = t.mock.method(globalThis, 'fetch', async (_: any, options: any) => {
+        // Catch block should trigger and return original headers
+        assert.strictEqual(options.headers['authorization'], 'Bearer secret-token');
+        return new Response('data', { status: 200 });
+      });
+
+      try {
+        await client.getStream(invalidUrl);
+      } catch {
+        // Ignore fetch error, we only care about the internal call to getRequestHeaders
+      }
+
+      assert.strictEqual(fetchMock.mock.callCount(), 1);
+    });
+  });
 
   describe('Proxy Bypass and Edge Cases', () => {
     test('should bypass dispatcher for noProxy matches', async t => {

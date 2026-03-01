@@ -3,6 +3,34 @@ import { HlsUtils } from '../HLSUtils.js';
 import InvalidPlayList from './../exceptions/InvalidPlaylist.js';
 
 /**
+ * @category Types
+ * Configuration for the internal HTTP Client.
+ */
+interface HttpClientOptions {
+  /** Request timeout in milliseconds (Default: 10000) */
+  timeout?: number;
+
+  /** Retry strategy for transient network failures */
+  retry?: {
+    /** Maximum number of retry attempts */
+    limit: number;
+    /** Base delay in milliseconds for exponential backoff */
+    delay: number;
+  };
+
+  /** Corporate proxy URL (e.g., http://proxy.corp.com:8080) */
+  proxy?: string;
+
+  /** List of hostnames that should bypass the proxy */
+  noProxy?: string[];
+
+  /**
+   * Custom HTTP headers to be sent with every request.
+   * Useful for Auth tokens, Cookies, or custom User-Agents.
+   */
+  headers?: Record<string, string>;
+}
+/**
  *
  * A resilient HTTP Client specifically designed for HLS streaming workloads.
  * Features include:
@@ -15,12 +43,19 @@ import InvalidPlayList from './../exceptions/InvalidPlaylist.js';
  * const client = new HttpClient({
  * timeout: 5000,
  * retry: { limit: 3, delay: 1000 },
- * proxy: 'http://proxy.corp.com:8080'
+ * proxy: 'http://proxy.corp.com:8080',
+ * noProxy: 'localhost,127.0.0.1,.internal.com',
+ * headers: { 'x-custom-header': 'my-custom-header' }
  * });
  */
 class HttpClient {
   /** Initialized request options (headers, etc.) */
   private options: RequestInit;
+
+  private primaryOrigin: string | null = null;
+
+  /** List of sensitive headers */
+  private sensitiveHeaders: string[] = ['authorization', 'cookie', 'x-auth-token'];
 
   /** Max time in milliseconds before a request is aborted */
   private timeout: number;
@@ -42,20 +77,18 @@ class HttpClient {
    * @param customOptions.proxy - Corporate proxy URL
    * @param customOptions.noProxy - Array of domains to bypass proxy
    */
-  constructor(customOptions: Record<string, any> = {}) {
-    const sanitized = HlsUtils.omit(
-      customOptions,
-      'uri',
-      'url',
-      'json',
-      'method',
-      'timeout',
-      'retry',
-      'proxy',
-      'noProxy'
-    );
+  constructor(customOptions: HttpClientOptions = {}) {
+    this.options = { method: 'GET', headers: { 'User-Agent': 'HLSDownloader' } };
 
-    this.options = { ...sanitized, method: 'GET' };
+    // Normalize headers to lowercase for safer matching
+    if (customOptions.headers) {
+      const normalized: Record<string, string> = {};
+      for (const [key, value] of Object.entries(customOptions.headers)) {
+        normalized[key.toLowerCase()] = value;
+      }
+
+      this.options.headers = { 'User-Agent': 'HLSDownloader', ...this.options.headers, ...normalized };
+    }
     this.timeout = customOptions.timeout ?? 10000;
     this.retryOptions = customOptions.retry ?? { limit: 2, delay: 500 };
 
@@ -72,6 +105,41 @@ class HttpClient {
     if (proxyUrl) {
       this.dispatcher = new ProxyAgent({ uri: proxyUrl });
     }
+  }
+
+  /**
+   * Sets the primary origin based on the initial playlist URL.
+   * @param url {string} url to set primary origin from
+   */
+  public setPrimaryOrigin(url: string): void {
+    try {
+      this.primaryOrigin = new URL(url).origin;
+    } catch {
+      this.primaryOrigin = null;
+    }
+  }
+  /**
+   * Get Request headers
+   * @param targetUrl {string} target url to get the request for
+   * @returns request headers
+   */
+  private getRequestHeaders(targetUrl: string): Record<string, string> {
+    const currentHeaders = { ...(this.options.headers as Record<string, string>) };
+
+    try {
+      const targetOrigin = new URL(targetUrl).origin;
+
+      // If the target is NOT the primary origin, strip sensitive headers
+      if (this.primaryOrigin && targetOrigin !== this.primaryOrigin) {
+        this.sensitiveHeaders.forEach(header => {
+          delete currentHeaders[header];
+        });
+      }
+    } catch {
+      // If URL is invalid/relative, we keep headers as it's likely the same host
+    }
+
+    return currentHeaders;
   }
 
   /**
@@ -104,6 +172,7 @@ class HttpClient {
     try {
       const response = await fetch(url, {
         ...this.options,
+        headers: this.getRequestHeaders(url),
         signal: controller.signal,
         // @ts-expect-error - dispatcher is node-specific
         dispatcher: this.shouldBypassProxy(url) ? undefined : this.dispatcher,
@@ -176,3 +245,5 @@ class HttpClient {
  * @classdesc A resilient HTTP Client specifically designed for HLS streaming workloads.
  */
 export default HttpClient;
+
+export type { HttpClientOptions };

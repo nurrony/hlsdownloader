@@ -10,11 +10,14 @@ import HLSDownloader, {
   SegmentDownloadErrorData,
 } from './Downloader.js';
 
+import type { HttpClientOptions } from './services/HttpClient.js';
+
 export type {
   DownloaderEvents,
   DownloaderOptions,
   DownloadError,
   DownloadSummary,
+  HttpClientOptions,
   SegmentDownloadedData,
   SegmentDownloadErrorData,
 };
