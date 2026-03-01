@@ -1,5 +1,5 @@
 pre-commit:
-  parallel: true
+  parallel: false
   jobs:
     - name: Validate Types
       run: npm run typecheck
@@ -10,6 +10,7 @@ pre-commit:
         - 'dist/**/*'
         - 'coverage/**/*'
         - 'node_modules/**/*'
+        - 'package-lock.json'
       glob:
         - '*.ts'
         - '**/*.ts'
@@ -22,6 +23,7 @@ pre-commit:
         - '**/*.{ts,js,json,md}'
       exclude:
         - 'dist/**/*'
+        - 'package-lock.json'
         - 'coverage/**/*'
         - 'node_modules/**/*'
       run: npx --no-install prettier --write {staged_files}
