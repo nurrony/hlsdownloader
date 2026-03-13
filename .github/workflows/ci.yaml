@@ -23,7 +23,7 @@ jobs:
       - name: Testing on Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: latest
+          node-version: "lts/*"
           cache: "npm"
       - name: Version Check
         run: node -v && npm -v
