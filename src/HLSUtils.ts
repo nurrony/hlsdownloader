@@ -71,4 +71,13 @@ export class HlsUtils {
   static isNotFunction(fn: unknown): boolean {
     return typeof fn !== 'function';
   }
+
+  /**
+   * Promise-based delay for retries and throttling
+   * @param ms {number}- time to sleep in microseconds
+   * @returns Promise<any>
+   */
+  static async sleep(ms: number): Promise<any> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
