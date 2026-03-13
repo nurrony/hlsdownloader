@@ -42,13 +42,13 @@ Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetchi
 - **Event Based:** Event based API
 - **Modern ESM**: Optimized for Node.js 20+ environments using native modules.
 - **TypeScript Native:** Built with strong typing for mission-critical applications.
-- **Retryable**: Built-in resilience that automatically retries failed segment requests to ensure download completion.
+- **Resilient Networking and Retryable**: Built-in resilience that automatically retries with exponential backoff of failed segment requests to ensure download completion.
 - **Promise Based**: Fully asynchronous API designed for seamless integration with `async/await` and modern control flows.
 - **Support for HTTP/2**: Leverages multiplexing to download multiple segments over a single connection for reduced overhead.
 - **Overwrite Protection**: Safeguards your local data by preventing accidental overwriting of existing files unless explicitly enabled.
 - **Support for Custom HTTP Headers**: Allows injection of custom headers for handling authentication, user-agents, or session tokens.
 - **Concurrent Downloads**: Maximizes bandwidth by fetching multiple HLS segments simultaneously through parallel HTTP connections.
-- **Resilient Networking:** Automatic retries with exponential backoff and corporate proxy support (undici integration).
+- **Proxy and NoProxy Support:** Proxy support and No Proxy support (undici integration).
 - **Professional Docs**: Integrated JSDoc-to-HTML pipeline using TypeDoc and the Fresh theme.
 
 ---
@@ -179,17 +179,17 @@ The main service orchestrator for fetching HLS content.
 
 ### DownloaderOptions (Interface)
 
-| Option      | Type      | Default                  | Description                                        |
-| ----------- | --------- | ------------------------ | -------------------------------------------------- |
-| playlistURL | `string`  | Required                 | The source .m3u8 URL.                              |
-| destination | `string`  | undefined                | Local path to save files. Omit for "dry-run" mode. |
-| concurrency | `number`  | os.cpus().length         | Simultaneous segment downloads.                    |
-| overwrite   | `boolean` | false                    | Overwrite existing files in the destination.       |
-| headers     | `object`  | {}                       | Custom headers to pass                             |
-| timeout     | `number`  | 10000                    | Network request timeout in ms.                     |
-| retry       | `object`  | { limit: 1, delay: 500 } | Exponential backoff settings.                      |
-| proxy       | `string`  | undefined                | Corporate proxy URL.                               |
-| noProxy     | `string`  | undefined                | Corporate No Proxy Urls                            |
+| Option      | Type      | Default                  | Description                                                                                |
+| ----------- | --------- | ------------------------ | ------------------------------------------------------------------------------------------ |
+| playlistURL | `string`  | Required                 | The source .m3u8 URL.                                                                      |
+| destination | `string`  | undefined                | Local path to save files. Omit for "dry-run" mode.                                         |
+| concurrency | `number`  | os.cpus().length         | Simultaneous segment downloads.                                                            |
+| overwrite   | `boolean` | false                    | Overwrite existing files in the destination.                                               |
+| headers     | `object`  | {}                       | Custom headers to pass                                                                     |
+| timeout     | `number`  | 10000                    | Network request timeout in ms.                                                             |
+| retry       | `object`  | { limit: 1, delay: 500 } | Exponential backoff settings.                                                              |
+| proxy       | `string`  | undefined                | Corporate proxy URL. Also reads URLs for `HTTP_PROXY`, `HTTPS_PROXY` environment variables |
+| noProxy     | `string`  | undefined                | Corporate No Proxy Urls. Also reads urls from `NO_PROXY` environment vriable               |
 
 ### DownloaderEvents (Interface)
 
