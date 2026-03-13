@@ -39,15 +39,16 @@ Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetchi
 
 ## Features
 
+- **Event Based:** Event based API
 - **Modern ESM**: Optimized for Node.js 20+ environments using native modules.
+- **TypeScript Native:** Built with strong typing for mission-critical applications.
 - **Retryable**: Built-in resilience that automatically retries failed segment requests to ensure download completion.
 - **Promise Based**: Fully asynchronous API designed for seamless integration with `async/await` and modern control flows.
 - **Support for HTTP/2**: Leverages multiplexing to download multiple segments over a single connection for reduced overhead.
 - **Overwrite Protection**: Safeguards your local data by preventing accidental overwriting of existing files unless explicitly enabled.
 - **Support for Custom HTTP Headers**: Allows injection of custom headers for handling authentication, user-agents, or session tokens.
-- **Support for Custom HTTP Client**: Modular architecture that lets you swap the default engine for any custom client implementation.
-- **Bring Your Own Progress Bar**: Exposed event hooks and lifecycle data allow you to hook in any CLI or GUI progress visualization.
 - **Concurrent Downloads**: Maximizes bandwidth by fetching multiple HLS segments simultaneously through parallel HTTP connections.
+- **Resilient Networking:** Automatic retries with exponential backoff and corporate proxy support (undici integration).
 - **Professional Docs**: Integrated JSDoc-to-HTML pipeline using TypeDoc and the Fresh theme.
 
 ---
@@ -60,70 +61,109 @@ npm install hlsdownloader
 
 ## Examples
 
-### Basic Usage
+#### Example 1: Basic Download with Event Monitoring
+
+This is the standard implementation for saving a remote HLS stream to a local directory.
 
 ```ts
-import HLSDowloader from 'hlsdownloader';
+import { HLSDownloader } from 'hlsdownloader';
 
-const downloader = new HLSDownloader({
-  playlistURL: '[https://example.com/stream/master.m3u8](https://example.com/stream/master.m3u8)',
-  destination: './downloads/my-video',
-});
+async function downloadStream() {
+  const downloader = new HLSDownloader({
+    playlistURL: 'https://example.com/video/master.m3u8',
+    destination: './downloads/my-video',
+    overwrite: true,
+    concurrency: 5, // Process 5 segments simultaneously
+    retry: { limit: 3, delay: 1000 },
+    timeout: 15000,
+  });
 
-const summary = await downloader.startDownload();
-console.log(`Downloaded ${summary.total} segments to ${summary.path}`);
-```
+  downloader.on('start', ({ total }) => console.log(`start downloading assets...`));
 
-### Using as CDN Primer
+  // Listen to progress updates
+  downloader.on('progress', data => {
+    const percent = ((data.total / data.total) * 100).toFixed(2); // Simple logic for example
+    console.log(`[Progress] Downloaded: ${data.url}`);
+  });
 
-```ts
-import HLSDowloader from 'hlsdownloader';
+  // Handle errors for specific segments
+  downloader.on('error', err => {
+    console.error(`[Segment Error] Failed to fetch ${err.url}: ${err.message}`);
+  });
 
-const downloader = new HLSDownloader({
-  playlistURL: '[https://example.com/stream/master.m3u8](https://example.com/stream/master.m3u8)',
-});
-
-const summary = await downloader.startDownload();
-console.log(`Fetching ${summary.total} segments to Edge servers`);
-```
-
-### Advanced Usage
-
-```ts
-import { HLSDownloader } from 'hlsdownloader-ts';
-
-const downloader = new HLSDownloader({
-  playlistURL: 'https://example.com/video.m3u8',
-  concurrency: 10, // 10 simultaneous downloads (optional: 1)
-  destination: './output', // path to downlod   (optional: '')
-  overwrite: true, // Overwrite existing files. (optional: false)
-});
-
-const { total, errors } = await downloader.startDownload();
-
-if (errors.length > 0) {
-  console.error(`${errors.length} segments failed.`, errors);
+  // Final summary
+  const summary = await downloader.startDownload();
+  console.log(`Finished! Total items: ${summary.total}. Errors: ${summary.errors.length}`);
 }
+
+downloadStream();
 ```
 
-HLSDownloader supports all [Ky API](https://github.com/sindresorhus/ky?tab=readme-ov-file#api) except these options given below
+#### Example 2: "Dry-Run" / CDN Priming (No File Writing)
 
-- uri
-- url
-- json
-- form
-- body
-- method
-- setHost
-- isStream
-- parseJson
-- prefixUrl
-- cookieJar
-- playlistURL
-- concurrency
-- allowGetBody
-- stringifyJson
-- methodRewriting
+If the destination is omitted, the library fetches streams but doesn't write to disk. This is excellent for `CDN Priming` or `validating manifest health`.
+
+```ts
+import { HLSDownloader } from 'hlsdownloader';
+
+async function primeCDN() {
+  const downloader = new HLSDownloader({
+    playlistURL: 'https://cdn.provider.com/live/stream.m3u8',
+    // destination is omitted -> results in memory-only stream fetch
+    concurrency: 10,
+    headers: {
+      Authorization: 'Bearer internal-token-123',
+      'X-Custom-Source': 'Prewarm-Service',
+    },
+  });
+
+  downloader.on('start', ({ total }) => console.log(`Priming ${total} assets...`));
+
+  const result = await downloader.startDownload();
+
+  if (result.errors.length === 0) {
+    console.log('CDN Cache successfully warmed.');
+  } else {
+    console.error('Priming failed for some chunks', result.errors);
+  }
+}
+
+primeCDN();
+```
+
+#### Example 3: Corporate Proxy & Advanced Networking
+
+If you are using behind corporate proxy, pass the proxy and no proxy configuration as follows
+
+```ts
+import { HLSDownloader } from 'hlsdownloader';
+
+const downloader = new HLSDownloader({
+  playlistURL: 'https://secure-stream.corp.internal/index.m3u8',
+  destination: '/mnt/storage/archive',
+  proxy: 'http://proxy.corporate.net:8080',
+  noProxy: '.internal.com,localhost', // Bypass proxy for internal domains
+  headers: {
+    Cookie: 'session_id=abc123',
+    'User-Agent': 'MediaArchiver/1.0',
+  },
+});
+
+downloader.on('start', ({ total }) => console.log(`Priming ${total} assets...`));
+
+// Listen to progress updates
+downloader.on('progress', data => {
+  const percent = ((data.total / data.total) * 100).toFixed(2); // Simple logic for example
+  console.log(`[Progress] Downloaded: ${data.url}`);
+});
+
+// Handle errors for specific segments
+downloader.on('error', err => {
+  console.error(`[Segment Error] Failed to fetch ${err.url}: ${err.message}`);
+});
+
+const summary = await downloader.startDownload();
+```
 
 ## API Documentation
 
@@ -139,24 +179,36 @@ The main service orchestrator for fetching HLS content.
 
 ### DownloaderOptions (Interface)
 
-| Property    | Type       | Default       | Description                                             |
-| ----------- | ---------- | ------------- | ------------------------------------------------------- |
-| playlistURL | `string`   | **Required**  | The absolute URL to the M3U8 file.                      |
-| destination | `string`   | `''`          | Local path to save files.                               |
-| concurrency | `number`   | `os.cpus - 1` | Max parallel network requests.                          |
-| overwrite   | `boolean`  | `false`       | Indicates whether existing files should be overwritten. |
-| onData      | `callback` | `null`        | The local directory where files will be saved.          |
-| onError     | `callback` | `null`        | The local directory where files will be saved.          |
+| Option      | Type      | Default                  | Description                                        |
+| ----------- | --------- | ------------------------ | -------------------------------------------------- |
+| playlistURL | `string`  | Required                 | The source .m3u8 URL.                              |
+| destination | `string`  | undefined                | Local path to save files. Omit for "dry-run" mode. |
+| concurrency | `number`  | os.cpus().length         | Simultaneous segment downloads.                    |
+| overwrite   | `boolean` | false                    | Overwrite existing files in the destination.       |
+| headers     | `object`  | {}                       | Custom headers to pass                             |
+| timeout     | `number`  | 10000                    | Network request timeout in ms.                     |
+| retry       | `object`  | { limit: 1, delay: 500 } | Exponential backoff settings.                      |
+| proxy       | `string`  | undefined                | Corporate proxy URL.                               |
+| noProxy     | `string`  | undefined                | Corporate No Proxy Urls                            |
+
+### DownloaderEvents (Interface)
+
+| Event Name | Description                                  |
+| ---------- | -------------------------------------------- |
+| start      | emits when download started                  |
+| progress   | emits for each segement downloded            |
+| error      | emits when a segement downlod error occurred |
+| end        | emits when download ended                    |
 
 ### DownloadSummary (Interface)
 
-| Property | Type              | Description                           | Description                        |
-| -------- | ----------------- | ------------------------------------- | ---------------------------------- |
-| total    | `number`          | Count of successfully saved segments. | The absolute URL to the M3U8 file. |
-| path     | `string`          | The final output directory.           | Local path to save files.          |
-| errors   | `DownloadError[]` | Array of detailed failure objects.    | Max parallel network requests.     |
+| Property | Type              | Description                           |
+| -------- | ----------------- | ------------------------------------- |
+| total    | `number`          | Count of successfully saved segments. |
+| message  | `string`          | User friendly message.                |
+| errors   | `DownloadError[]` | Array of detailed failure objects.    |
 
-### SegmentDownloadedData (Interface) - `onData` Hook
+### SegmentDownloadedData (Interface) - emits on `progress` events
 
 | Property | Type     | Description                                                                |
 | -------- | -------- | -------------------------------------------------------------------------- |
@@ -166,7 +218,7 @@ The main service orchestrator for fetching HLS content.
 
 ---
 
-### SegmentDownloadErrorData (Interface) - `onError` Hook
+### SegmentDownloadErrorData (Interface) - emits on `error` events
 
 | Property | Type     | Description                                                |
 | -------- | -------- | ---------------------------------------------------------- |
@@ -188,10 +240,11 @@ Contributions are welcome! This project enforces strict quality standards to mai
 Fork & Clone: Get the repo locally.
 
 - `Install`: `npm install`
+- `Test`: `npm run test` (Must pass without warnings)
 - `Lint`: `npm run lint` (Must pass without warnings)
-- `Test`: `npm run test:coverage` (Must maintain 100% coverage)
 - `Build`: `npm run build` (Generates `./dist` and bundled types)
 - `Docs`: `npm run docs` (Generates TypeDoc HTML)
+- `Test with Coverage Report`: `npm run test:coverage` (Must maintain 100% coverage)
 
 ### Guidelines
 
@@ -204,10 +257,6 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 ## Show your support
 
 Give a ⭐️ if this project helped you!. I will be grateful if you all help me to improve this package by giving your suggestions, feature request and pull requests. I am all ears!!
-
-## Special Thanks to
-
-- [Ky Team](https://www.npmjs.com/package/ky)
 
 ## License
 

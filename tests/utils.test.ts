@@ -3,7 +3,7 @@ import { describe, test } from 'node:test';
 import UnsupportedProtocol from '../src/exceptions/UnsupportedProtocol.js';
 import { HlsUtils } from '../src/HLSUtils.js';
 
-describe('HLSUtils', () => {
+describe('HLSUtils - Utility Suite', () => {
   describe('isValidUrl()', () => {
     test('should return true for each supported protocols', () => {
       assert.ok(HlsUtils.isValidUrl('https://example.com/playlist.m3u8'));
@@ -81,6 +81,19 @@ describe('HLSUtils', () => {
         HlsUtils.isNotFunction(function () {}),
         false
       );
+    });
+  });
+
+  describe('sleep()', () => {
+    test('should resolve after approximately the specified time', async () => {
+      const start = Date.now();
+      const delay = 50;
+
+      await HlsUtils.sleep(delay);
+
+      const elapsed = Date.now() - start;
+
+      assert.ok(elapsed >= delay - 5, `Expected elapsed time ${elapsed} to be >= ${delay}`);
     });
   });
 });
