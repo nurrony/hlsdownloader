@@ -30,8 +30,7 @@
     "test:coverage": "rimraf -fr ./coverage && echo '🧹 All test coverage reports has been cleaned.' && c8 npm test && echo '📊 Coverage: Validates 100% code coverage across all source files successfully.'"
   },
   "dependencies": {
-    "p-limit": "^7.3.0",
-    "undici": "^7.22.0"
+    "p-limit": "^7.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
@@ -54,7 +53,11 @@
     "semantic-release": "^25.0.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1"
+    "typescript-eslint": "^8.56.1",
+    "undici": "^7.22.0"
+  },
+  "peerDependencies": {
+    "undici": "^7.22.0"
   },
   "engines": {
     "node": ">=20.0.0",

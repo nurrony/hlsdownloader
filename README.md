@@ -48,8 +48,10 @@ Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetchi
 - **Overwrite Protection**: Safeguards your local data by preventing accidental overwriting of existing files unless explicitly enabled.
 - **Support for Custom HTTP Headers**: Allows injection of custom headers for handling authentication, user-agents, or session tokens.
 - **Concurrent Downloads**: Maximizes bandwidth by fetching multiple HLS segments simultaneously through parallel HTTP connections.
-- **Proxy and NoProxy Support:** Proxy support and No Proxy support (undici integration).
+- **Proxy and NoProxy Support:** Proxy support and No Proxy support ([undici](https://github.com/nodejs/undici) integration).
 - **Professional Docs**: Integrated JSDoc-to-HTML pipeline using TypeDoc and the Fresh theme.
+
+> **Note: This library requires [undici](https://github.com/nodejs/undici) as a peer dependency for proxy support.**
 
 ---
 
