@@ -49,16 +49,21 @@ interface SegmentDownloadedData {
   path?: string;
 
   /**
-   * Total number of segments download.
+   * Total number of segments to download.
    */
   total: number;
+
+  /**
+   * The current sequence number of the processed item (1-based).
+   */
+  processed: number;
 }
 
 /**
  * @category Types
  * Information about a failed HLS segment download.
  */
-interface SegmentDownloadErrorData {
+interface SegmentDownloadErrorData extends DownloadError {
   /**
    * The original segment URL as referenced in the HLS playlist (.m3u8).
    */
@@ -73,6 +78,11 @@ interface SegmentDownloadErrorData {
    * Human-readable description of the failure.
    */
   message: string;
+
+  /**
+   * The current sequence number of the processed item (1-based).
+   */
+  processed: number;
 }
 /**
  * @category Types
@@ -135,6 +145,8 @@ class Downloader extends EventEmitter {
   private fileService: FileService;
   private errors: DownloadSummary['errors'] = [];
   private concurrency = 1;
+  private processedCount = 0;
+  private isDownloading = false;
 
   /**
    * Creates a new Downloader instance.
@@ -180,7 +192,15 @@ class Downloader extends EventEmitter {
    * @returns - {Promise<DownloadSummary>} {@link DownloadSummary}
    */
   async startDownload(): Promise<DownloadSummary> {
+    if (this.isDownloading) {
+      throw new Error('Download already in progress on this instance.');
+    }
+
     try {
+      this.isDownloading = true;
+      this.processedCount = 0;
+      this.errors = [];
+
       HlsUtils.isValidUrl(this.playlistURL);
 
       const mainContent = await this.http.fetchText(this.playlistURL);
@@ -197,6 +217,9 @@ class Downloader extends EventEmitter {
         }
       });
 
+      // Reset counter before starting
+      this.processedCount = 0;
+
       // Signal the start of the process
       this.emit('start', { total: this.items.size, destination: this.options.destination });
 
@@ -209,6 +232,8 @@ class Downloader extends EventEmitter {
     } catch (error: any) {
       this.handleError(this.playlistURL, error);
       return this.generateSummary();
+    } finally {
+      this.isDownloading = false;
     }
   }
 
@@ -243,7 +268,9 @@ class Downloader extends EventEmitter {
       this.pool(async () => {
         try {
           const stream = await this.http.getStream(url);
-          this.emit('progress', { url, total });
+          // Increment and emit
+          this.processedCount++;
+          this.emit('progress', { url, total, processed: this.processedCount } as SegmentDownloadedData);
           return stream;
         } catch (error: any) {
           this.handleError(url, error);
@@ -262,14 +289,18 @@ class Downloader extends EventEmitter {
    */
   private async downloadFile(url: string): Promise<void> {
     try {
+      const total = this.items.size;
       const stream = await this.http.getStream(url);
       const path = await this.fileService.prepareDirectory(url);
       await this.fileService.saveStream(stream, path);
-      // Emit progress event instead of callback
+      // Increment and emit
+      this.processedCount++;
+      // Emit progress event
       this.emit('progress', {
         url,
         path,
-        total: this.items.size,
+        total,
+        processed: this.processedCount,
       } as SegmentDownloadedData);
     } catch (error: any) {
       this.handleError(url, error);
@@ -283,7 +314,14 @@ class Downloader extends EventEmitter {
    * @param error - The thrown error.
    */
   private handleError(url: string, error: Error): void {
-    const errorData = { url, name: error.name, message: error.message };
+    // We increment even on error so the progress bar is smooth
+    this.processedCount++;
+    const errorData: SegmentDownloadErrorData = {
+      url,
+      name: error.name,
+      message: error.message,
+      processed: this.processedCount,
+    };
     this.errors.push(errorData);
     this.emit('error', errorData);
   }

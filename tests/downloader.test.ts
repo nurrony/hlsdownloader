@@ -265,6 +265,50 @@ describe('Downloader', () => {
       assert.strictEqual(summary.errors[0].message, 'Segment Download Failed');
       assert.strictEqual(errorSpy.mock.callCount(), 1);
     });
+
+    test('should emit progress with correct telemetry (processed and total)', async t => {
+      // Setup mocks for a 2-item download (playlist + 1 segment)
+      t.mock.method(HttpClient.prototype, 'fetchText', async () => '#EXTM3U\nsegment.ts');
+      t.mock.method(PlaylistParser, 'parse', () => [segmentUrl]);
+      t.mock.method(HttpClient.prototype, 'getStream', async () => new ReadableStream());
+
+      const downloader = new Downloader({ playlistURL });
+      const progressEvents: any[] = [];
+
+      downloader.on('progress', data => progressEvents.push(data));
+
+      await downloader.startDownload();
+
+      // Assertions for the first item (playlist)
+      assert.strictEqual(progressEvents[0].processed, 1);
+      assert.strictEqual(progressEvents[0].total, 2);
+
+      // Assertions for the second item (segment)
+      assert.strictEqual(progressEvents[1].processed, 2);
+      assert.strictEqual(progressEvents[1].total, 2);
+    });
+
+    test('should throw error if startDownload is called while already running', async t => {
+      // Mock fetchText to hang slightly to simulate a running process
+      t.mock.method(HttpClient.prototype, 'fetchText', async () => {
+        await new Promise(resolve => setTimeout(resolve, 50));
+        return '#EXTM3U';
+      });
+
+      const downloader = new Downloader({ playlistURL });
+
+      // Start the first download (don't await yet)
+      const firstCall = downloader.startDownload();
+
+      // Immediately try to start a second one
+      await assert.rejects(
+        downloader.startDownload(),
+        { message: 'Download already in progress on this instance.' },
+        'Should prevent concurrent execution'
+      );
+
+      await firstCall; // Cleanup
+    });
   });
 
   describe('Fetch-Only', () => {

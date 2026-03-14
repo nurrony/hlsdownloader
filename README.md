@@ -165,6 +165,40 @@ downloader.on('error', err => {
 const summary = await downloader.startDownload();
 ```
 
+#### Example 4: Simple progress bar
+
+This example demostrate a simple download progressbar. You can bring your own progress bar implementation
+
+```ts
+import { HLSDownloader } from 'hlsdownloader';
+
+const downloader = new HLSDownloader({
+  playlistURL: 'https://stream.example.com/playlist/master.m3u8',
+  concurrency: 5,
+  retry: { limit: 3, delay: 1000 },
+  headers: { 'User-Agent': 'MyHeader' },
+  timeout: 15000,
+});
+
+downloader.on('start', ({ total }) => {
+  console.log(`Starting download of ${total} segments...`);
+});
+
+downloader.on('progress', ({ processed, total, url }) => {
+  const percentage = Math.round((processed / total) * 100);
+  const progressBar = '='.repeat(Math.floor(percentage / 5)).padEnd(20, ' ');
+  process.stdout.clearLine(0);
+  process.stdout.cursorTo(0);
+  process.stdout.write(`[${progressBar}] ${percentage}% | Processing: ${processed}/${total}`);
+});
+
+downloader.on('end', () => {
+  process.stdout.write('\nDownload Complete!\n');
+});
+
+await downloader.startDownload();
+```
+
 ## API Documentation
 
 The library is organized under the `HLSDownloader` module. For full interactive documentation, visit our [Documentation](https://nurrony.github.io/hlsdownloader) site.
@@ -210,11 +244,12 @@ The main service orchestrator for fetching HLS content.
 
 ### SegmentDownloadedData (Interface) - emits on `progress` events
 
-| Property | Type     | Description                                                                |
-| -------- | -------- | -------------------------------------------------------------------------- |
-| url      | `string` | Original segment URL as referenced in the HLS playlist (`.m3u8`).          |
-| path     | `string` | Local file system path where the segment was saved. Empty if not provided. |
-| total    | `number` | Total number of segments downloaded so far, including this one.            |
+| Property  | Type     | Description                                                                |
+| --------- | -------- | -------------------------------------------------------------------------- |
+| url       | `string` | Original segment URL as referenced in the HLS playlist (`.m3u8`).          |
+| path      | `string` | Local file system path where the segment was saved. Empty if not provided. |
+| processed | `number` | Total number of segments downloaded so far.                                |
+| total     | `number` | Total number of segments downloaded to download, including this one.       |
 
 ---
 
