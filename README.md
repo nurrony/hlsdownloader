@@ -51,8 +51,6 @@ Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetchi
 - **Proxy and NoProxy Support:** Proxy support and No Proxy support ([undici](https://github.com/nodejs/undici) integration).
 - **Professional Docs**: Integrated JSDoc-to-HTML pipeline using TypeDoc and the Fresh theme.
 
-> **Note: This library requires [undici](https://github.com/nodejs/undici) as a peer dependency for proxy support.**
-
 ---
 
 ## Installation
@@ -60,6 +58,8 @@ Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetchi
 ```bash
 npm install hlsdownloader
 ```
+
+> **Note: This library requires [undici](https://github.com/nodejs/undici) as a peer dependency for proxy support.**
 
 ## Examples
 
