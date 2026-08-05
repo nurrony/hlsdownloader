@@ -1,4 +1,4 @@
-light_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 200" width="520" height="200">
+light_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 575 200" width="575" height="200">
     <defs>
         <style>
             .text-hls { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 800; font-size: 72px; fill: #0f172a; }
@@ -15,7 +15,7 @@ light_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 200" wid
     </text>
 </svg>"""
 
-dark_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 200" width="520" height="200">
+dark_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 575 200" width="575" height="200">
     <defs>
         <style>
             .text-hls { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight: 800; font-size: 72px; fill: #f8fafc; }
@@ -49,4 +49,4 @@ with open("hlsdownloader-dark.svg", "w") as f:
 with open("favicon.svg", "w") as f:
     f.write(favicon_svg)
 
-print("Files generated successfully with expanded width.")
+print("Files generated successfully with fully visible text.")
