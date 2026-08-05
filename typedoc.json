@@ -10,6 +10,8 @@
     "progress": false,
     "favicon": "./assets/favicon.svg",
     "siteName": "HLS Downloader",
+    "basePath": "/hlsdownloader",
+    "siteUrl": "https://nurrony.github.io/hlsdownloader/",
     "sectionOrder": ["Getting Started", "Guides", "Classes", "Modules"],
     "defaultLocale": "en",
     "docs": "./docs",
