@@ -8,15 +8,15 @@
   </a>
 </div>
 
-<div align="center" style="font-size: 18px; text-align: center !important; margin: 0 auto 10px;">
+<div align="center" style="font-size: 18px; text-align: center !important;">
 Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetching from CDN to Edge Server for your end viewers. A high-performance, tree-shaken HLS (HTTP Live Streaming) downloader engine. Built with modern ESM architecture, providing 100% type safety and zero-waste bundling. 
 </div>
-
-<div align="center" style="font-size: 18px; text-align: center; margin: 0 auto 10px;">
+<br />
+<div align="center" style="font-size: 18px; text-align: center;">
 <a href="https://www.npmjs.com/package/hlsdownloader"><b>NPM</b></a> • <a href="https://nurrony.github.io/hlsdownloader/"><b>Documentation</b></a> •  <a href="https://github.com/nurrony/hlsdownloader"><b>GitHub</b></a>
 </div>
-
-<div align="center" style="text-align: center; margin: 0 auto 10px;">
+<br />
+<div align="center" style="text-align: center;">
 
 [![NPM Version](https://img.shields.io/npm/v/hlsdownloader?color=blue)](https://www.npmjs.com/package/hlsdownloader)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
