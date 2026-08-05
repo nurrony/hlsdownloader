@@ -9,20 +9,26 @@
     "strict": true,
     "progress": false,
     "favicon": "./assets/favicon.svg",
-    "siteName": {
-      "light": "./assets/hlsdownloader-light.svg",
-      "dark": "./assets/hlsdownloader-dark.svg",
-      "alt": "HLS Downloader"
-    },
-    "docGroups": ["Guides"],
+    "siteName": "HLS Downloader",
     "sectionOrder": ["Getting Started", "Guides", "Classes", "Modules"],
     "defaultLocale": "en",
     "docs": "./docs",
     "menu": [
-      { "title": "Home", "link": "/", "target": "self", "icon": "lucide:home" },
-      { "title": "GitHub", "link": "https://github.com/nurrony/hlsdownloader.git", "icon": "simpleicons:github" },
+      { "title": "Home", "link": "/", "target": "_self", "icon": "lucide:home" },
       {
-        "title": "Contribution",
+        "title": "GitHub",
+        "target": "_blank",
+        "link": "https://github.com/nurrony/hlsdownloader.git",
+        "icon": "simpleicons:github"
+      },
+      {
+        "title": "NPM",
+        "target": "_blank",
+        "link": "https://www.npmjs.com/package/hlsdownloader",
+        "icon": "simpleicons:npm"
+      },
+      {
+        "title": "Contribution Guide",
         "link": "https://github.com/nurrony/hlsdownloader/blob/main/CONTRIBUTING.md",
         "class": "simpleicons:contributorcovenant"
       }
@@ -41,6 +47,6 @@
         "name": "Description"
       }
     ],
-    "footer": "<style>span[role='img']{display: flex;justify-content: center;}span[role='img'] svg { display: block;}</style><div style='text-align: center;margin:10px auto;'>© 2026 HLS Downloader</div>"
+    "footer": "<style>span[role='img']{display: flex;justify-content: center;}span[role='img'] svg{display: block;}</style><div style='text-align: center;margin:10px auto;'>© 2026 HLS Downloader</div>"
   }
 }
