@@ -41,6 +41,6 @@
         "name": "Description"
       }
     ],
-    "footer": "<div style='text-align: center;margin:10px auto;'>© 2026 HLS Downloader</div>"
+    "footer": "<style>span[role='img']{display: flex;justify-content: center;}span[role='img'] svg { display: block;}</style><div style='text-align: center;margin:10px auto;'>© 2026 HLS Downloader</div>"
   }
 }
