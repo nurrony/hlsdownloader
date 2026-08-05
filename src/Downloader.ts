@@ -7,8 +7,8 @@ import HttpClient, { HttpClientOptions } from './services/HttpClient.js';
 import PlaylistParser from './services/PlaylistParser.js';
 
 /**
- * @category Types
  * Downloader events
+ * @category Types
  */
 interface DownloaderEvents {
   start: (data: { total: number; destination: string }) => void;
@@ -18,8 +18,8 @@ interface DownloaderEvents {
 }
 
 /**
- * @category Types
  * Represents a failed segment or playlist download attempt.
+ * @category Types
  */
 interface DownloadError {
   /** The full URL of the resource that failed to download. */
@@ -33,8 +33,8 @@ interface DownloadError {
 }
 
 /**
- * @category Types
  * Metadata describing a successfully downloaded HLS media segment.
+ * @category Types
  */
 interface SegmentDownloadedData {
   /**
@@ -60,8 +60,8 @@ interface SegmentDownloadedData {
 }
 
 /**
- * @category Types
  * Information about a failed HLS segment download.
+ * @category Types
  */
 interface SegmentDownloadErrorData extends DownloadError {
   /**
@@ -84,9 +84,10 @@ interface SegmentDownloadErrorData extends DownloadError {
    */
   processed: number;
 }
+
 /**
- * @category Types
  * Configuration contract for {@link Downloader}.
+ * @category Types
  */
 interface DownloaderOptions extends HttpClientOptions {
   /**
@@ -114,8 +115,8 @@ interface DownloaderOptions extends HttpClientOptions {
 }
 
 /**
- * @category Types
  * Final execution report returned by {@link Downloader.startDownload}.
+ * @category Types
  */
 interface DownloadSummary {
   /**  Total number of processed segments.*/
@@ -128,14 +129,18 @@ interface DownloadSummary {
   message: string;
 }
 
+/**
+ * Download in process type
+ * @category Types
+ */
 type DownloadInProgress = Promise<
   PromiseSettledResult<void>[] | PromiseSettledResult<ReadableStream<Uint8Array<ArrayBufferLike>> | undefined>[]
 >;
 
 /**
- * @category
- * @author Nur Rony<pro.nmrony@gmail.com>
  * The main orchestrator service for managing HLS stream acquisition.
+ * @category Class
+ * @author Nur Rony<pro.nmrony@gmail.com>
  */
 class Downloader extends EventEmitter {
   private items: Set<string> = new Set();
@@ -341,14 +346,14 @@ class Downloader extends EventEmitter {
 }
 
 /**
+ * Downloads or fetch HLS Playlist and its items
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @classdesc Downloads or fetch HLS Playlist and its items
  */
 export default Downloader;
 
 /**
- * @author Nur Rony<pro.nmrony@gmail.com>
  * Types for Downloader
+ * @author Nur Rony<pro.nmrony@gmail.com>
  */
 export type {
   DownloaderEvents,

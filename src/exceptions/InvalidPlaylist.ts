@@ -1,6 +1,6 @@
 /**
+ * Exception to throw if HLS playlist is invalid
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @classdesc Exception to throw if HLS playlist is invalid
  */
 class InvalidPlaylist extends Error {
   /**
@@ -22,4 +22,6 @@ class InvalidPlaylist extends Error {
   }
 }
 
+/**
+ */
 export default InvalidPlaylist;

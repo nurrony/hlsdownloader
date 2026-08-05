@@ -2,9 +2,9 @@ import { URL } from 'node:url';
 import UnsupportedProtocol from './exceptions/UnsupportedProtocol.js';
 
 /**
+ * Static utility helper for HLS operations and URL validation.
  * @category Utils
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @description Static utility helper for HLS operations and URL validation.
  */
 export class HlsUtils {
   /**

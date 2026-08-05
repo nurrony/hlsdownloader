@@ -1,9 +1,9 @@
 import { URL } from 'node:url';
 
 /**
+ * Logic for parsing HLS manifest files and handling URL resolution for segments.
  * @category Services
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @classdesc Logic for parsing HLS manifest files and handling URL resolution for segments.
  */
 class PlaylistParser {
   /**
@@ -35,4 +35,8 @@ class PlaylistParser {
   }
 }
 
+/**
+ * Logic for parsing HLS manifest files and handling URL resolution for segments.
+ * @returns {PlaylistParser} Instance of PlaylistParser
+ */
 export default new PlaylistParser();
