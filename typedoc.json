@@ -1,0 +1,46 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "plugin": ["@clean-jsdoc-theme/typedoc"],
+  "entryPoints": ["src/**/*.ts"],
+  "entryPointStrategy": "expand",
+  "exclude": ["src/index.ts"],
+  "outputs": [{ "name": "clean-jsdoc-theme", "path": "docs" }],
+  "cleanJsdocTheme": {
+    "strict": true,
+    "progress": false,
+    "favicon": "./assets/favicon.svg",
+    "siteName": {
+      "light": "./assets/hlsdownloader-light.svg",
+      "dark": "./assets/hlsdownloader-dark.svg",
+      "alt": "HLS Downloader"
+    },
+    "docGroups": ["Guides"],
+    "sectionOrder": ["Getting Started", "Guides", "Classes", "Modules"],
+    "defaultLocale": "en",
+    "docs": "./docs",
+    "menu": [
+      { "title": "Home", "link": "/", "target": "self", "icon": "lucide:home" },
+      { "title": "GitHub", "link": "https://github.com/nurrony/hlsdownloader.git", "icon": "simpleicons:github" },
+      {
+        "title": "Contribution",
+        "link": "https://github.com/nurrony/hlsdownloader/blob/main/CONTRIBUTING.md",
+        "class": "simpleicons:contributorcovenant"
+      }
+    ],
+    "locales": [
+      { "code": "en", "name": "English" },
+      { "code": "es", "name": "Española (próximamente)" }
+    ],
+    "meta": [
+      {
+        "content": "Nur Rony",
+        "name": "Author"
+      },
+      {
+        "content": "Downloads HLS Playlist file and TS chunks",
+        "name": "Description"
+      }
+    ],
+    "footer": "<div style='text-align: center;margin:10px auto;'>© 2026 HLS Downloader</div>"
+  }
+}

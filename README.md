@@ -1,18 +1,22 @@
-<div align="center">
-
-[![HLSDownloader](./assets/logo.png)](https://nurrony.github.io/hlsdownloader/)<br />
-
+<div class="center">
+  <a href="https://nurrony.github.io/hlsdownloader/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/hlsdownloader-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="./assets/hlsdownloader-light.svg">
+      <img alt="HLSDownloader" height="200px" src="./assets/hlsdownloader-light.svg">
+    </picture>
+  </a>
 </div>
 
-<p align="center" style="font-size: 18px;">
+<div  style="font-size: 18px; text-align: center !important;">
 Downloads HLS Playlist file and TS chunks. You can use it for content pre-fetching from CDN to Edge Server for your end viewers. A high-performance, tree-shaken HLS (HTTP Live Streaming) downloader engine. Built with modern ESM architecture, providing 100% type safety and zero-waste bundling. 
-</p>
+</div>
 
-<p align="center" style="font-size: 18px;">
+<div class="center" style="font-size: 18px; text-align: center;">
 <a href="https://www.npmjs.com/package/hlsdownloader"><b>NPM</b></a> • <a href="https://nurrony.github.io/hlsdownloader/"><b>Documentation</b></a> •  <a href="https://github.com/nurrony/hlsdownloader"><b>GitHub</b></a>
-</p>
+</div>
 
-<div align="center">
+<div class="center">
 
 [![NPM Version](https://img.shields.io/npm/v/hlsdownloader?color=blue)](https://www.npmjs.com/package/hlsdownloader)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)

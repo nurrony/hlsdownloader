@@ -3,8 +3,8 @@ import { HlsUtils } from '../HLSUtils.js';
 import InvalidPlayList from './../exceptions/InvalidPlaylist.js';
 
 /**
- * @category Types
  * Configuration for the internal HTTP Client.
+ * @category Types
  */
 interface HttpClientOptions {
   /** Request timeout in milliseconds (Default: 10000) */
@@ -30,6 +30,7 @@ interface HttpClientOptions {
    */
   headers?: Record<string, string>;
 }
+
 /**
  *
  * A resilient HTTP Client specifically designed for HLS streaming workloads.
@@ -241,8 +242,8 @@ class HttpClient {
 }
 
 /**
+ * A resilient HTTP Client specifically designed for HLS streaming workloads.
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @classdesc A resilient HTTP Client specifically designed for HLS streaming workloads.
  */
 export default HttpClient;
 

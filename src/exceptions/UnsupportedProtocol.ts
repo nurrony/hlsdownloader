@@ -1,6 +1,6 @@
 /**
+ * Exception to throw if Protocol is not supported
  * @author Nur Rony<pro.nmrony@gmail.com>
- * @classdesc Exception to throw if Protocol is not supported
  */
 class UnsupportedProtocol extends Error {
   /**

@@ -6,9 +6,9 @@ import { pipeline } from 'node:stream/promises';
 import { HlsUtils } from '../HLSUtils.js';
 
 /**
+ * Manages file system operations including directory creation, path resolution, and stream persistence.
  * @category Services
  * @author Nur Rony<pro.nmrony@gmail.com>
- * Manages file system operations including directory creation, path resolution, and stream persistence.
  */
 class FileService {
   private destination: string;
