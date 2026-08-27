@@ -4,6 +4,7 @@ about: Create a report to help us improve
 title: 'BUG: Please add title for the bug'
 labels: bug
 assignees: nurrony
+
 ---
 
 ## Prerequisites
