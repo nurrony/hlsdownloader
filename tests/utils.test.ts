@@ -87,7 +87,7 @@ describe('HLSUtils - Utility Suite', () => {
   describe('sleep()', () => {
     test('should resolve after approximately the specified time', async () => {
       const start = Date.now();
-      const delay = 50;
+      const delay = 20;
 
       await HlsUtils.sleep(delay);
 
