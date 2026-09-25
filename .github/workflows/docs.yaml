@@ -2,7 +2,8 @@ name: Publish Documentation
 
 on:
   workflow_run:
-    workflows: ["Release to NPM"]
+    workflows:
+      - "Release to NPM"
     types:
       - completed
     branches:
@@ -27,41 +28,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout released commit
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
           version: 12
           run_install: false
 
-      - name: Setup NodeJS
+      - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: "lts/*"
-          cache: "pnpm"
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
-      - name: Get latest npm version
+      - name: Check versions
+        run: |
+          node --version
+          pnpm --version
+          echo "Released commit: ${{ github.event.workflow_run.head_sha }}"
+
+      - name: Get published npm version
         id: npm-version
         run: |
           VERSION="$(pnpm view hlsdownloader version)"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "Latest npm version: $VERSION"
-
-      - name: Checkout released version
-        uses: actions/checkout@v7
-        with:
-          ref: "v${{ steps.npm-version.outputs.version }}"
-          fetch-depth: 0
-
-      - name: Version Check
-        run: |
-          node -v
-          pnpm -v
-          echo "Documentation version: ${{ steps.npm-version.outputs.version }}"
-
-      - name: Sync package version
-        run: |
-          pnpm pkg set version="${{ steps.npm-version.outputs.version }}"
-          grep '"version"' package.json
+          echo "Published npm version: $VERSION"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -69,13 +66,13 @@ jobs:
       - name: Generate documentation
         run: pnpm run docs
 
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v6
 
-      - name: Upload artifact
+      - name: Upload documentation
         uses: actions/upload-pages-artifact@v5
         with:
-          path: "./docs"
+          path: ./docs
 
       - name: Deploy to GitHub Pages
         id: deployment
