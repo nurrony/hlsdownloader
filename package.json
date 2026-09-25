@@ -3,7 +3,6 @@
   "version": "0.0.0-semantic-release",
   "description": "Downloads HLS Playlist file and TS chunks",
   "snyk": true,
-  "packageManager": "pnpm@10.15.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -111,11 +110,5 @@
       "main"
     ],
     "debug": true
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "lefthook"
-    ]
   }
 }
