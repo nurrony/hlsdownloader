@@ -2,7 +2,8 @@ pre-commit:
   parallel: false
   jobs:
     - name: Validate Types
-      run: npm run typecheck
+      run: pnpm typecheck
+
     - name: Lint and Fix Coding Style (Staged files)
       stage_fixed: true
       exclude:
@@ -10,12 +11,13 @@ pre-commit:
         - 'dist/**/*'
         - 'coverage/**/*'
         - 'node_modules/**/*'
-        - 'package-lock.json'
+        - 'pnpm-lock.yaml'
       glob:
         - '*.ts'
         - '**/*.ts'
         - '*.json'
-      run: npx --no-install eslint --fix {staged_files}
+      run: pnpm exec eslint --fix {staged_files}
+
     - name: Format Code
       stage_fixed: true
       glob:
@@ -23,15 +25,15 @@ pre-commit:
         - '**/*.{ts,js,json,md}'
       exclude:
         - 'dist/**/*'
-        - 'package-lock.json'
+        - 'pnpm-lock.yaml'
         - 'coverage/**/*'
         - 'node_modules/**/*'
-      run: npx --no-install prettier --write {staged_files}
+      run: pnpm exec prettier --write {staged_files}
+
     - name: 'Running Unit Tests'
-      run: npm run test:coverage
+      run: pnpm test:coverage
       stage_fixed: true
 
-# Build commit messages
 prepare-commit-msg:
   jobs:
     - name: 'Prepare Conventional Commit Message'
@@ -42,10 +44,9 @@ prepare-commit-msg:
         - merge
         - rebase
       run: |
-        echo "⏳ Openning Conventional Commit Prompt...\n";
-        npx cz --hook
+        echo "⏳ Opening Conventional Commit Prompt..."
+        pnpm exec cz --hook
 
-# Validate commit messages
 commit-msg:
   jobs:
     - name: 'Lint Commit Message'
@@ -53,7 +54,7 @@ commit-msg:
         - merge
         - rebase
       run: |
-        npx --no-install commitlint --edit {1}
+        pnpm exec commitlint --edit {1}
         echo '🔖 Commit message guidelines are followed properly.'
 
 output:
