@@ -15,27 +15,40 @@ env:
 jobs:
   unit_test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 12
+          run_install: false
+
       - name: Testing on Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "lts/*"
-          cache: "npm"
+          cache: "pnpm"
+
       - name: Version Check
-        run: node -v && npm -v
+        run: node -v && pnpm -v
+
       - name: Install Dependencies
-        run: npm ci
-      - name: "lint codes"
-        run: npm run lint
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint codes
+        run: pnpm lint
+
       - name: Running Test
-        run: npm run test:coverage
+        run: pnpm test:coverage
         env:
           CI: true
           NODE_ENV: test
+
       - name: Upload coverage reports to Coveralls
         uses: coverallsapp/github-action@v2
         env:
