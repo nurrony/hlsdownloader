@@ -18,19 +18,15 @@ env:
 jobs:
   publish-docs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     permissions:
-      contents: write
+      contents: read
       pages: write
       id-token: write
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
@@ -43,13 +39,34 @@ jobs:
           node-version: "lts/*"
           cache: "pnpm"
 
+      - name: Get latest npm version
+        id: npm-version
+        run: |
+          VERSION="$(pnpm view hlsdownloader version)"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Latest npm version: $VERSION"
+
+      - name: Checkout released version
+        uses: actions/checkout@v7
+        with:
+          ref: "v${{ steps.npm-version.outputs.version }}"
+          fetch-depth: 0
+
       - name: Version Check
-        run: node -v && pnpm -v
+        run: |
+          node -v
+          pnpm -v
+          echo "Documentation version: ${{ steps.npm-version.outputs.version }}"
+
+      - name: Sync package version
+        run: |
+          pnpm pkg set version="${{ steps.npm-version.outputs.version }}"
+          grep '"version"' package.json
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate documents
+      - name: Generate documentation
         run: pnpm run docs
 
       - name: Setup Pages
