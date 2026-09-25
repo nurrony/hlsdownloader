@@ -20,39 +20,57 @@ jobs:
   release:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+
     permissions:
       issues: write
       id-token: write
       contents: write
       pull-requests: write
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
       - name: Fetch all tags
         run: git pull --tags
+
       - name: List tags
         run: git tag -l
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 12
+          run_install: false
+
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "lts/*"
-          cache: "npm"
-      - name: "Node and NPM version"
-        run: node -v && npm -v
+          cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Node and pnpm version
+        run: node -v && pnpm -v
+
       - name: Install dependencies
-        run: npm clean-install
+        run: pnpm install --frozen-lockfile
         env:
           LEFTHOOK: 0
           LEFTHOOK_DISABLE: 1
+
       - name: Verify the integrity of installed dependencies
-        run: npm audit signatures
-      - name: "Build package"
-        run: npm run build
+        run: pnpm audit --audit-level=high
+
+      - name: Build package
+        run: pnpm build
+
       - name: Release
-        run: npx semantic-release
+        run: pnpm exec semantic-release
         env:
           LEFTHOOK: 0
           LEFTHOOK_DISABLE: 1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
