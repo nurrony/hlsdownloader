@@ -16,7 +16,7 @@
     "defaultLocale": "en",
     "docs": "./docs",
     "menu": [
-      { "title": "Home", "link": "/", "target": "_self", "icon": "lucide:home" },
+      { "title": "Home", "link": "/hlsdownloader", "target": "_self", "icon": "lucide:home" },
       {
         "title": "GitHub",
         "target": "_blank",

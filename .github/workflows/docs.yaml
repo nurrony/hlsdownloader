@@ -31,6 +31,7 @@ jobs:
       - name: Checkout released commit
         uses: actions/checkout@v7
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
 
       - name: Setup pnpm
@@ -50,23 +51,18 @@ jobs:
         run: |
           node --version
           pnpm --version
-          echo "Released commit: ${{ github.event.workflow_run.head_sha }}"
+
+          echo "Released commit:"
+          echo "${{ github.event.workflow_run.head_sha }}"
+
+          echo "Checked out commit:"
+          git rev-parse HEAD
+
+          echo "Package version:"
+          node -p "require('./package.json').version"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Get published npm version
-        id: npm-version
-        run: |
-          VERSION="$(pnpm view hlsdownloader version)"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "Published npm version: $VERSION"
-
-      - name: Set package.json version
-        run: |
-          pnpm pkg set version="${{ steps.npm-version.outputs.version }}"
-          echo "package.json version:"
-          node -p "require('./package.json').version"
 
       - name: Generate documentation
         run: pnpm run docs
