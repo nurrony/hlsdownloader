@@ -1,7 +1,10 @@
 name: Publish Documentation
-
 on:
-  push:
+  workflow_run:
+    workflows:
+      - "Release to NPM"
+    types:
+      - completed
     branches:
       - main
 
@@ -14,6 +17,7 @@ env:
 
 jobs:
   publish-docs:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       pages: write
