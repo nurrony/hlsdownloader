@@ -1,13 +1,9 @@
 name: Publish Documentation
 
 on:
-  workflow_run:
-    workflows:
-      - "Release to NPM"
-    types:
-      - completed
+  push:
     branches:
-      - main
+      - master
 
 concurrency:
   group: "pages"
@@ -18,8 +14,6 @@ env:
 
 jobs:
   publish-docs:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     permissions:
       contents: read
       pages: write
@@ -28,11 +22,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout released commit
+      - name: Checkout repository
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
+          fetch-tags: true
+
+      - name: Checkout latest tag
+        id: latest-tag
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          LATEST_TAG="$(git tag --sort=-version:refname | head -n 1)"
+
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No Git tags found."
+            exit 1
+          fi
+
+          VERSION="${LATEST_TAG#v}"
+
+          echo "Latest tag: $LATEST_TAG"
+          echo "Version: $VERSION"
+
+          echo "tag=$LATEST_TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          git checkout "$LATEST_TAG"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
@@ -47,19 +64,26 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
+      - name: Set package version
+        run: |
+          pnpm pkg set version="${{ steps.latest-tag.outputs.version }}"
+
+          echo "Package version:"
+          node -p "require('./package.json').version"
+
       - name: Check versions
         run: |
           node --version
           pnpm --version
 
-          echo "Released commit:"
-          echo "${{ github.event.workflow_run.head_sha }}"
+          echo "Latest tag:"
+          echo "${{ steps.latest-tag.outputs.tag }}"
 
-          echo "Checked out commit:"
-          git rev-parse HEAD
-
-          echo "Package version:"
+          echo "Documentation version:"
           node -p "require('./package.json').version"
+
+          echo "Commit:"
+          git rev-parse HEAD
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
