@@ -60,7 +60,7 @@ jobs:
           LEFTHOOK_DISABLE: 1
 
       - name: Verify the integrity of installed dependencies
-        run: pnpm audit --audit-level=high
+        run: pnpm audit signatures
 
       - name: Build package
         run: pnpm build
