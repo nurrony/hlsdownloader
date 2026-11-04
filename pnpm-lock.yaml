@@ -26,10 +26,10 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(preact-render-to-string@6.8.2)(supports-color@7.2.0)(typedoc@0.28.20(typescript@6.0.3))
       '@commitlint/cli':
-        specifier: ^21.2.3
+        specifier: ^21.2.4
         version: 21.2.4(conventional-commits-parser@7.1.4)(typescript@6.0.3)
       '@commitlint/config-conventional':
-        specifier: ^21.2.3
+        specifier: ^21.2.4
         version: 21.2.4
       '@eslint/js':
         specifier: ^10.0.1
